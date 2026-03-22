@@ -2,6 +2,7 @@
 
 sources = [
     'tsapi_bflat.c',
+    'ts_container.c',
 ]
 
 ts_lib = static_library('ts_lib', sources,
