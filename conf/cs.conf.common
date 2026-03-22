@@ -17,10 +17,10 @@
       - set:
           - oid: "/agent:${TA_MAIN_HOST_TA_NAME}/rpcprovider:"
             value: "${TA_RPCPROVIDER}"
-      - add:
-          - oid: "/agent:${TA_MAIN_HOST_TA_NAME}/rsrc:${TA_MAIN_IF}"
-            value: "/agent:${TA_MAIN_HOST_TA_NAME}/interface:${TA_MAIN_IF}"
-          - oid: "/agent:${TA_MAIN_HOST_TA_NAME}/rpcserver:rpcs_main"
+#      - add:
+#          - oid: "/agent:${TA_MAIN_HOST_TA_NAME}/rsrc:${TA_MAIN_IF}"
+#            value: "/agent:${TA_MAIN_HOST_TA_NAME}/interface:${TA_MAIN_IF}"
+#          - oid: "/agent:${TA_MAIN_HOST_TA_NAME}/rpcserver:rpcs_main"
 
 - include:
     - cs.conf.local.agent
