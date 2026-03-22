@@ -1,0 +1,28 @@
+---
+# (C) Copyright 2025 Demerzel Solutions Limited (Nethermind). All rights reserved.
+- include:
+    - cm_base.yml
+    - cm_net.yml
+    - cm_process.yml
+    - cm_local.yml
+    - cm_volatile.yml
+    - cm_l4_port.yml
+    - cm_sys.yml
+    - cm_system.yml
+
+# Main agent
+- cond:
+    if: ${TA_MAIN_HOST} != ""
+    then:
+      - set:
+          - oid: "/agent:${TA_MAIN_HOST_TA_NAME}/rpcprovider:"
+            value: "${TA_RPCPROVIDER}"
+      - add:
+          - oid: "/agent:${TA_MAIN_HOST_TA_NAME}/rsrc:${TA_MAIN_IF}"
+            value: "/agent:${TA_MAIN_HOST_TA_NAME}/interface:${TA_MAIN_IF}"
+          - oid: "/agent:${TA_MAIN_HOST_TA_NAME}/rpcserver:rpcs_main"
+
+- include:
+    - cs.conf.local.agent
+    - cs.conf.local
+    - cs.conf.volatile

@@ -1,0 +1,32 @@
+---
+- register:
+    # Local agent object.
+    # Name: unique name or none if object only one
+    # Value: none
+    - oid: "/local/agent"
+      access: "read_create"
+      type: "none"
+    # Local agent location host.
+    # Name: none
+    # Value: Hostname
+    - oid: "/local/agent/host"
+      access: "read_write"
+      type: "string"
+    # Local agent network interface.
+    # Name: interface   type
+    # Value: interface name
+    - oid: "/local/agent/iface"
+      access: "read_create"
+      type: "string"
+
+- add:
+    - oid: "/local:/agent:${TA_MAIN_HOST_TA_NAME}"
+
+# Local variables containing information about agents
+- set:
+    - oid: "/local:/agent:${TA_MAIN_HOST_TA_NAME}/host:"
+      value: "${TA_MAIN_HOST}"
+
+- add:
+    - oid: "/local:/agent:${TA_MAIN_HOST_TA_NAME}/iface:main"
+      value: "${TA_MAIN_IF}"

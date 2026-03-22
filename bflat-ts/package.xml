@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<package version="1.0">
+    <description>Bflat Test Suite</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <prologue>
+            <script name="prologue" />
+        </prologue>
+
+        <epilogue>
+            <script name="epilogue" />
+        </epilogue>
+    </session>
+</package>

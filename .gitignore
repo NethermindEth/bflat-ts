@@ -51,5 +51,20 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# debug information files
-*.dwo
+/build
+/builder.log*
+/log.txt
+/meta_data.json
+/ta.list
+/ta.agt*
+/tmp_raw_log
+/te_tmp
+
+._*
+
+/meson-logs
+
+/html
+
+.DS_Store
+

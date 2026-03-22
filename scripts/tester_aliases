@@ -1,0 +1,50 @@
+alias uimp="/home/tester-undo/bin/impersonate.sh"
+
+tkill()
+{
+    if [ $# -eq 0 ]; then
+        echo "Usage: $FUNCNAME <pid> [<pid>] [...]"
+        return 1;
+    fi
+
+    echo "kill -int $@"
+    kill -int "$@"
+}
+
+tlist()
+{
+    local t="$1"
+
+    if [ $# -eq 0 ]; then
+        echo "Usage: $FUNCNAME <testname>"
+        return 1;
+    fi
+
+    ps aux | grep te_test_id - | awk '{print $2}'
+}
+
+tckill()
+{
+    local host="${1:-ibun}"
+    local mailto="mmenshchikov@oktetlabs.ru"
+    local pids=
+
+    if [ $# -eq 0 ]; then
+        echo "Usage: $FUNCNAME <conf name>"
+        return 1;
+    fi
+
+    for i in {1..10} ; do
+        pids="$(ssh ${host} "tlist ${host} | xargs")"
+        test -n "${pids}" && break
+        sleep 0.5
+    done
+
+    if [ -z "${pids}" ]; then
+        echo "No running tests found, try again"
+        return 1;
+    fi
+
+    ssh ${host} tkill "${pids}" &&
+        echo '${subj}' | /usr/bin/mail -s "I've stopped testing on ${host}" ${mailto}
+}
