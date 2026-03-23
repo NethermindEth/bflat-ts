@@ -56,6 +56,12 @@ main(int argc, char **argv)
     const char         *bflat_image;
     const char         *bflat_arch;
     const char         *bflat_libc;
+    const char         *bflat_stdlib;
+    bool                verbose;
+    bool                no_globalization;
+    bool                no_stacktrace_data;
+    bool                no_pthread;
+    bool                no_pie;
 
     rcf_rpc_server     *rpcs              = NULL;
     char               *test_dir          = NULL;
@@ -77,6 +83,12 @@ main(int argc, char **argv)
     TEST_GET_STRING_PARAM(bflat_image);
     TEST_GET_STRING_PARAM(bflat_arch);
     TEST_GET_STRING_PARAM(bflat_libc);
+    TEST_GET_OPT_STRING_PARAM(bflat_stdlib);
+    TEST_GET_BOOL_PARAM(verbose);
+    TEST_GET_BOOL_PARAM(no_globalization);
+    TEST_GET_BOOL_PARAM(no_stacktrace_data);
+    TEST_GET_BOOL_PARAM(no_pthread);
+    TEST_GET_BOOL_PARAM(no_pie);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
     {
@@ -144,22 +156,41 @@ main(int argc, char **argv)
     CHECK_RC(ts_container_share_folder(&container,
                                        src_dir, CONTAINER_SRC_DIR));
 
-    TEST_STEP("Create bflat build job: arch=%s libc=%s file=%s",
-              bflat_arch, bflat_libc, cs_file);
+    TEST_STEP("Create bflat build job: arch=%s libc=%s stdlib=%s file=%s",
+              bflat_arch, bflat_libc,
+              bflat_stdlib != NULL ? bflat_stdlib : "(default)", cs_file);
     {
-        const char *bflat_argv[] = {
-            "bflat", "build",
-            "-x",
-            "--verbose",
-            "--arch",                bflat_arch,
-            "--os",                  "linux",
-            "--libc",                bflat_libc,
-            "--no-globalization",
-            "--no-stacktrace-data",
-            remote_cs_path.ptr,
-            "--out", remote_out.ptr,
-            NULL
-        };
+        /* Fixed upper bound: base args + all optional flags + src + out + NULL */
+        const char *bflat_argv[32];
+        int         bflat_argc = 0;
+
+#define ARGV_ADD(arg_)  bflat_argv[bflat_argc++] = (arg_)
+
+        ARGV_ADD("bflat");
+        ARGV_ADD("build");
+        ARGV_ADD("-x");
+        if (verbose)
+            ARGV_ADD("--verbose");
+        ARGV_ADD("--arch");      ARGV_ADD(bflat_arch);
+        ARGV_ADD("--os");        ARGV_ADD("linux");
+        ARGV_ADD("--libc");      ARGV_ADD(bflat_libc);
+        if (bflat_stdlib != NULL)
+        {
+            ARGV_ADD("--stdlib"); ARGV_ADD(bflat_stdlib);
+        }
+        if (no_globalization)
+            ARGV_ADD("--no-globalization");
+        if (no_stacktrace_data)
+            ARGV_ADD("--no-stacktrace-data");
+        if (no_pthread)
+            ARGV_ADD("--no-pthread");
+        if (no_pie)
+            ARGV_ADD("--no-pie");
+        ARGV_ADD(remote_cs_path.ptr);
+        ARGV_ADD("--out"); ARGV_ADD(remote_out.ptr);
+        ARGV_ADD(NULL);
+
+#undef ARGV_ADD
 
         job = ts_container_run(&container, bflat_argv);
     }

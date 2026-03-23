@@ -25,6 +25,24 @@
                 <value>zisk</value>
                 <value>zisk_sim</value>
             </arg>
+            <arg name="bflat_stdlib">
+                <value>dotnet</value>
+            </arg>
+            <arg name="verbose">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_globalization">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pthread">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pie">
+                <value>TRUE</value>
+            </arg>
         </run>
     </session>
 </package>
