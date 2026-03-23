@@ -1,7 +1,7 @@
 # Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind)
 
 tests = [
-    'build_hello',
+    'build',
 ]
 
 foreach test : tests
@@ -20,3 +20,4 @@ tests_info_xml = custom_target(package_dir.underscorify() + 'tests-info-xml',
                                           meson.current_source_dir() ])
 
 install_data([ 'package.xml' ], install_dir: package_dir)
+install_subdir('cs', install_dir: package_dir)
