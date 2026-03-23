@@ -71,3 +71,14 @@ endforeach
 
 install_data([ 'mainpage.dox', 'package.xml' ],
              install_dir: package_dir)
+
+packages = [
+    'simple',
+]
+
+bflat_ts_mydir = package_dir
+foreach package : packages
+    package_dir = join_paths(bflat_ts_mydir, package)
+    package_tests_c = []
+    subdir(package)
+endforeach

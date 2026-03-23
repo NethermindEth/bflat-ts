@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
+<package version="1.0">
+    <description>Simple bflat build tests</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <run>
+            <script name="build_hello" />
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+        </run>
+    </session>
+</package>

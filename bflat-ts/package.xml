@@ -12,5 +12,9 @@
         <epilogue>
             <script name="epilogue" />
         </epilogue>
+
+        <run>
+            <package name="simple" />
+        </run>
     </session>
 </package>
