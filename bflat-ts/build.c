@@ -20,6 +20,10 @@
  * @param bflat_image   Docker image providing the bflat compiler
  * @param bflat_arch    Target architecture passed to @c --arch
  * @param bflat_libc    Target libc passed to @c --libc
+ * @param run           If @c TRUE, run the compiled binary under qemu after
+ *                      a successful build
+ * @param qemu_path     Path to qemu-riscv64-static on the agent, or empty to
+ *                      use the default (#TSAPI_QEMU_DEFAULT_PATH)
  *
  * @par Scenario:
  *
@@ -40,6 +44,7 @@
 #include "tapi_rpc_stdio.h"
 #include "tapi_rpc_signal.h"
 #include "ts_container.h"
+#include "tsapi_qemu.h"
 
 #include <unistd.h>
 #include <limits.h>
@@ -49,6 +54,9 @@
 
 /** Build timeout: 5 minutes should be enough even on a slow machine */
 #define BUILD_TIMEOUT_MS  (5 * 60 * 1000)
+
+/** Run timeout for the compiled binary under qemu */
+#define RUN_TIMEOUT_MS    (30 * 1000)
 
 int
 main(int argc, char **argv)
@@ -64,6 +72,8 @@ main(int argc, char **argv)
     bool                no_stacktrace_data;
     bool                no_pthread;
     bool                no_pie;
+    bool                run;
+    const char         *qemu_path;
 
     rcf_rpc_server     *rpcs              = NULL;
     char               *test_dir          = NULL;
@@ -71,13 +81,19 @@ main(int argc, char **argv)
     ts_container        container         = TS_CONTAINER_INIT;
     ts_container_params_docker dp         = TS_CONTAINER_PARAMS_DOCKER;
     tapi_job_t         *job               = NULL;
+    tapi_job_t         *run_job           = NULL;
     tapi_job_channel_t *out_channels[2];
+    tapi_job_channel_t *run_channels[2];
     tapi_job_status_t   status;
+    tapi_job_status_t   run_status;
     bool                container_created = false;
+    tsapi_qemu_runner   qemu              = TSAPI_QEMU_RUNNER_INIT;
+    bool                qemu_created      = false;
 
-    te_string           local_cs_path  = TE_STRING_INIT;
-    te_string           remote_cs_path = TE_STRING_INIT;
-    te_string           remote_out     = TE_STRING_INIT;
+    te_string           local_cs_path     = TE_STRING_INIT;
+    te_string           remote_cs_path    = TE_STRING_INIT;
+    te_string           remote_out        = TE_STRING_INIT;
+    te_string           agent_binary_path = TE_STRING_INIT;
 
     TEST_START;
     TEST_GET_STRING_PARAM(ta);
@@ -91,6 +107,8 @@ main(int argc, char **argv)
     TEST_GET_BOOL_PARAM(no_stacktrace_data);
     TEST_GET_BOOL_PARAM(no_pthread);
     TEST_GET_BOOL_PARAM(no_pie);
+    TEST_GET_BOOL_PARAM(run);
+    TEST_GET_OPT_STRING_PARAM(qemu_path);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
     {
@@ -221,9 +239,57 @@ main(int argc, char **argv)
     RING("bflat successfully compiled '%s' (arch=%s libc=%s)",
          cs_file, bflat_arch, bflat_libc);
 
+    if (run)
+    {
+        /* The container mounts src_dir as CONTAINER_SRC_DIR, so the binary
+         * path on the agent is src_dir + suffix after CONTAINER_SRC_DIR. */
+        CHECK_RC(te_string_append(&agent_binary_path, "%s%s",
+                                  src_dir,
+                                  remote_out.ptr + strlen(CONTAINER_SRC_DIR)));
+
+        TEST_STEP("Create qemu runner (qemu='%s')",
+                  qemu_path != NULL ? qemu_path : TSAPI_QEMU_DEFAULT_PATH);
+        CHECK_RC(tsapi_qemu_runner_create(rpcs, qemu_path, &qemu));
+        qemu_created = true;
+
+        TEST_STEP("Run '%s' under qemu", agent_binary_path.ptr);
+        run_job = tsapi_qemu_run(&qemu, agent_binary_path.ptr, NULL);
+        if (run_job == NULL)
+            TEST_FAIL("Failed to create qemu run job for '%s'",
+                      agent_binary_path.ptr);
+
+        CHECK_RC(tapi_job_alloc_output_channels(run_job, 2, run_channels));
+        CHECK_RC(tapi_job_attach_filter(
+                     TAPI_JOB_CHANNEL_SET(run_channels[0]),
+                     "qemu stdout", false, TE_LL_RING, NULL));
+        CHECK_RC(tapi_job_attach_filter(
+                     TAPI_JOB_CHANNEL_SET(run_channels[1]),
+                     "qemu stderr", false, TE_LL_ERROR, NULL));
+
+        CHECK_RC(tapi_job_start(run_job));
+
+        TEST_STEP("Wait for qemu to finish (timeout %d ms)", RUN_TIMEOUT_MS);
+        CHECK_RC(tapi_job_wait(run_job, RUN_TIMEOUT_MS, &run_status));
+
+        if (run_status.type != TAPI_JOB_STATUS_EXITED)
+            TEST_FAIL("Binary was killed by signal (signo=%d)",
+                      run_status.value);
+        if (run_status.value != 0)
+            TEST_FAIL("Binary exited with non-zero status %d",
+                      run_status.value);
+
+        RING("Binary ran successfully under qemu");
+    }
+
     TEST_SUCCESS;
 
 cleanup:
+    if (run_job != NULL)
+        CLEANUP_CHECK_RC(tapi_job_destroy(run_job, -1));
+
+    if (qemu_created)
+        tsapi_qemu_runner_destroy(&qemu);
+
     if (job != NULL)
         CLEANUP_CHECK_RC(tapi_job_destroy(job, -1));
 
@@ -247,6 +313,7 @@ cleanup:
     te_string_free(&local_cs_path);
     te_string_free(&remote_cs_path);
     te_string_free(&remote_out);
+    te_string_free(&agent_binary_path);
     free(test_dir);
     free(src_dir);
 

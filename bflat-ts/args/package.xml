@@ -44,6 +44,12 @@
             <arg name="no_pie">
                 <value>TRUE</value>
             </arg>
+            <arg name="run">
+                <value>TRUE</value>
+            </arg>
+            <arg name="qemu_path">
+                <value>/usr/bin/qemu-riscv64-static</value>
+            </arg>
         </run>
     </session>
 </package>
