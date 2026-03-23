@@ -74,6 +74,7 @@ install_data([ 'mainpage.dox', 'package.xml' ],
 
 packages = [
     'simple',
+    'args',
 ]
 
 bflat_ts_mydir = package_dir

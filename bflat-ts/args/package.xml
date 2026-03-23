@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
+<package version="1.0">
+    <description>bflat build tests - Main() argument variations</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <run>
+            <script name="build" />
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+            <arg name="cs_file">
+                <value>with_args.cs</value>
+                <value>no_args.cs</value>
+            </arg>
+            <arg name="bflat_image">
+                <value>nethermindeth/bflat-riscv64:latest</value>
+            </arg>
+            <arg name="bflat_arch">
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>musl</value>
+                <value>zisk</value>
+                <value>zisk_sim</value>
+            </arg>
+            <arg name="bflat_stdlib">
+                <value>dotnet</value>
+            </arg>
+            <arg name="verbose">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_globalization">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pthread">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pie">
+                <value>TRUE</value>
+            </arg>
+        </run>
+    </session>
+</package>

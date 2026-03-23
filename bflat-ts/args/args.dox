@@ -1,0 +1,9 @@
+/** @defgroup bflat_ts_args bflat build - Main() argument variations
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests verifying bflat compiles C# programs with and without
+ *        Main() arguments.
+ *
+ * @}
+ */

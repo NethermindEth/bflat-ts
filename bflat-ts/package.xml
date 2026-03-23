@@ -16,5 +16,9 @@
         <run>
             <package name="simple" />
         </run>
+
+        <run>
+            <package name="args" />
+        </run>
     </session>
 </package>

@@ -2,7 +2,7 @@
 
 # build.c lives one level up and is shared across test packages
 executable('build', '../build.c',
-           c_args: ['-DTE_TEST_NAME="simple/build"'],
+           c_args: ['-DTE_TEST_NAME="args/build"'],
            install: true, install_dir: package_dir,
            dependencies: test_deps)
 

@@ -8,7 +8,7 @@
  * @author Maksim Menshikov <maksim.menshikov@nethermind.io>
  */
 
-/** @page bflat_ts_simple_build Build a C# program with bflat
+/** @page bflat_ts_build Build a C# program with bflat
  *
  * @objective Verify that bflat can successfully compile a C# source file
  *            targeting a given architecture/libc inside the specified bflat
@@ -25,7 +25,9 @@
  *
  */
 
-#define TE_TEST_NAME "simple/build"
+#ifndef TE_TEST_NAME
+#define TE_TEST_NAME "build"
+#endif
 
 #include "te_config.h"
 #include "tapi_test.h"
