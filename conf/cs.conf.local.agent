@@ -13,12 +13,13 @@
       access: "read_write"
       type: "string"
     # Local agent network interface.
-    # Name: interface   type
+    # Name: interface type
     # Value: interface name
     - oid: "/local/agent/iface"
       access: "read_create"
       type: "string"
 
+# Main agent
 - add:
     - oid: "/local:/agent:${TA_MAIN_HOST_TA_NAME}"
 
@@ -30,3 +31,18 @@
 - add:
     - oid: "/local:/agent:${TA_MAIN_HOST_TA_NAME}/iface:main"
       value: "${TA_MAIN_IF}"
+
+# Zisk agent
+- cond:
+    if: ${TA_ZISK_HOST} != ""
+    then:
+      - add:
+          - oid: "/local:/agent:${TA_ZISK_HOST_TA_NAME}"
+
+      - set:
+          - oid: "/local:/agent:${TA_ZISK_HOST_TA_NAME}/host:"
+            value: "${TA_ZISK_HOST}"
+
+      - add:
+          - oid: "/local:/agent:${TA_ZISK_HOST_TA_NAME}/iface:main"
+            value: "${TA_ZISK_IF}"

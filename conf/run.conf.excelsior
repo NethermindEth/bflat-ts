@@ -1,0 +1,4 @@
+--script=dut.excelsior
+--script=env.excelsior
+
+--opts=run.conf.common

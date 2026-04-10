@@ -22,6 +22,18 @@
 #            value: "/agent:${TA_MAIN_HOST_TA_NAME}/interface:${TA_MAIN_IF}"
 #          - oid: "/agent:${TA_MAIN_HOST_TA_NAME}/rpcserver:rpcs_main"
 
+# Zisk agent
+- cond:
+    if: ${TA_ZISK_HOST} != ""
+    then:
+      - set:
+          - oid: "/agent:${TA_ZISK_HOST_TA_NAME}/rpcprovider:"
+            value: "${TA_RPCPROVIDER}"
+#      - add:
+#          - oid: "/agent:${TA_ZISK_HOST_TA_NAME}/rsrc:${TA_ZISK_IF}"
+#            value: "/agent:${TA_ZISK_HOST_TA_NAME}/interface:${TA_ZISK_IF}"
+#          - oid: "/agent:${TA_ZISK_HOST_TA_NAME}/rpcserver:rpcs_zisk"
+
 - include:
     - cs.conf.local.agent
     - cs.conf.local
