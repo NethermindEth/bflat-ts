@@ -20,10 +20,20 @@
  * @param bflat_image   Docker image providing the bflat compiler
  * @param bflat_arch    Target architecture passed to @c --arch
  * @param bflat_libc    Target libc passed to @c --libc
- * @param run           If @c TRUE, run the compiled binary under qemu after
- *                      a successful build
- * @param qemu_path     Path to qemu-riscv64-static on the agent, or empty to
- *                      use the default (#TSAPI_QEMU_DEFAULT_PATH)
+ * @param run             If @c TRUE, run the compiled binary after a successful
+ *                        build: under qemu for @c musl, inside the Zisk
+ *                        container for @c zisk / @c zisk_sim
+ * @param run_timeout_ms  Timeout in milliseconds for the run step; must be
+ *                        large enough to accommodate a Docker image pull on
+ *                        first use
+ * @param qemu_path       Path to qemu-riscv64-static on the agent, or empty
+ *                        to use the default (#TSAPI_QEMU_DEFAULT_PATH)
+ * @param zisk_image      Zisk Docker image to use when running @c zisk /
+ *                        @c zisk_sim binaries, or empty for
+ *                        #TSAPI_ZISK_DEFAULT_IMAGE
+ * @param bflat_extlib    Path passed to @c --extlib (e.g. path to
+ *                        @c libziskos.bflat.manifest inside the container),
+ *                        or empty to omit the flag
  *
  * @par Scenario:
  *
@@ -45,6 +55,7 @@
 #include "tapi_rpc_signal.h"
 #include "ts_container.h"
 #include "tsapi_qemu.h"
+#include "tsapi_zisk.h"
 
 #include <unistd.h>
 #include <limits.h>
@@ -55,8 +66,8 @@
 /** Build timeout: 5 minutes should be enough even on a slow machine */
 #define BUILD_TIMEOUT_MS  (5 * 60 * 1000)
 
-/** Run timeout for the compiled binary under qemu */
-#define RUN_TIMEOUT_MS    (30 * 1000)
+/** Default run timeout: 10 minutes, covers Docker image pull on first use */
+#define RUN_TIMEOUT_MS_DEFAULT  (10 * 60 * 1000)
 
 int
 main(int argc, char **argv)
@@ -73,7 +84,10 @@ main(int argc, char **argv)
     bool                no_pthread;
     bool                no_pie;
     bool                run;
+    int                 run_timeout_ms;
     const char         *qemu_path;
+    const char         *zisk_image;
+    const char         *bflat_extlib;
 
     rcf_rpc_server     *rpcs              = NULL;
     char               *test_dir          = NULL;
@@ -89,6 +103,8 @@ main(int argc, char **argv)
     bool                container_created = false;
     tsapi_qemu_runner   qemu              = TSAPI_QEMU_RUNNER_INIT;
     bool                qemu_created      = false;
+    tsapi_zisk_runner   zisk              = TSAPI_ZISK_RUNNER_INIT;
+    bool                zisk_created      = false;
 
     te_string           local_cs_path     = TE_STRING_INIT;
     te_string           remote_cs_path    = TE_STRING_INIT;
@@ -108,7 +124,10 @@ main(int argc, char **argv)
     TEST_GET_BOOL_PARAM(no_pthread);
     TEST_GET_BOOL_PARAM(no_pie);
     TEST_GET_BOOL_PARAM(run);
+    TEST_GET_INT_PARAM(run_timeout_ms);
     TEST_GET_OPT_STRING_PARAM(qemu_path);
+    TEST_GET_OPT_STRING_PARAM(zisk_image);
+    TEST_GET_OPT_STRING_PARAM(bflat_extlib);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
     {
@@ -176,9 +195,11 @@ main(int argc, char **argv)
     CHECK_RC(ts_container_share_folder(&container,
                                        src_dir, CONTAINER_SRC_DIR));
 
-    TEST_STEP("Create bflat build job: arch=%s libc=%s stdlib=%s file=%s",
+    TEST_STEP("Create bflat build job: arch=%s libc=%s stdlib=%s extlib=%s file=%s",
               bflat_arch, bflat_libc,
-              bflat_stdlib != NULL ? bflat_stdlib : "(default)", cs_file);
+              bflat_stdlib != NULL ? bflat_stdlib : "(default)",
+              bflat_extlib != NULL ? bflat_extlib : "(none)",
+              cs_file);
     {
         /* Fixed upper bound: base args + all optional flags + src + out + NULL */
         const char *bflat_argv[32];
@@ -206,6 +227,10 @@ main(int argc, char **argv)
             ARGV_ADD("--no-pthread");
         if (no_pie)
             ARGV_ADD("--no-pie");
+        if (bflat_extlib != NULL && bflat_libc != NULL && strcmp(bflat_libc, "zisk") == 0)
+        {
+            ARGV_ADD("--extlib"); ARGV_ADD(bflat_extlib);
+        }
         ARGV_ADD(remote_cs_path.ptr);
         ARGV_ADD("--out"); ARGV_ADD(remote_out.ptr);
         ARGV_ADD(NULL);
@@ -241,44 +266,89 @@ main(int argc, char **argv)
 
     if (run)
     {
-        /* The container mounts src_dir as CONTAINER_SRC_DIR, so the binary
-         * path on the agent is src_dir + suffix after CONTAINER_SRC_DIR. */
-        CHECK_RC(te_string_append(&agent_binary_path, "%s%s",
-                                  src_dir,
-                                  remote_out.ptr + strlen(CONTAINER_SRC_DIR)));
+        /* binary_name = stem after "/src/" inside the container path */
+        const char *binary_name = remote_out.ptr + strlen(CONTAINER_SRC_DIR) + 1;
 
-        TEST_STEP("Create qemu runner (qemu='%s')",
-                  qemu_path != NULL ? qemu_path : TSAPI_QEMU_DEFAULT_PATH);
-        CHECK_RC(tsapi_qemu_runner_create(rpcs, qemu_path, &qemu));
-        qemu_created = true;
+        if (strcmp(bflat_libc, "musl") == 0 ||
+            strcmp(bflat_libc, "zisk_sim") == 0)
+        {
+            /* The container mounts src_dir as CONTAINER_SRC_DIR, so the
+             * binary path on the agent is src_dir + suffix. */
+            CHECK_RC(te_string_append(&agent_binary_path, "%s/%s",
+                                      src_dir, binary_name));
 
-        TEST_STEP("Run '%s' under qemu", agent_binary_path.ptr);
-        run_job = tsapi_qemu_run(&qemu, agent_binary_path.ptr, NULL);
-        if (run_job == NULL)
-            TEST_FAIL("Failed to create qemu run job for '%s'",
+            TEST_STEP("Create qemu runner (qemu='%s')",
+                      qemu_path != NULL ? qemu_path : TSAPI_QEMU_DEFAULT_PATH);
+            CHECK_RC(tsapi_qemu_runner_create(rpcs, qemu_path, &qemu));
+            qemu_created = true;
+
+            TEST_STEP("Run '%s' under qemu-riscv64-static",
                       agent_binary_path.ptr);
+            run_job = tsapi_qemu_run(&qemu, agent_binary_path.ptr, NULL);
+            if (run_job == NULL)
+                TEST_FAIL("Failed to create qemu run job for '%s'",
+                          agent_binary_path.ptr);
+        }
+        else if (strcmp(bflat_libc, "zisk") == 0)
+        {
+            TEST_STEP("Create Zisk runner (image='%s')",
+                      zisk_image != NULL ? zisk_image : TSAPI_ZISK_DEFAULT_IMAGE);
+            CHECK_RC(tsapi_zisk_runner_create(rpcs, zisk_image, &zisk));
+            zisk_created = true;
 
-        CHECK_RC(tapi_job_alloc_output_channels(run_job, 2, run_channels));
-        CHECK_RC(tapi_job_attach_filter(
-                     TAPI_JOB_CHANNEL_SET(run_channels[0]),
-                     "qemu stdout", false, TE_LL_RING, NULL));
-        CHECK_RC(tapi_job_attach_filter(
-                     TAPI_JOB_CHANNEL_SET(run_channels[1]),
-                     "qemu stderr", false, TE_LL_ERROR, NULL));
+            /* bflat post-processes the zisk ELF with patch_elf.py,
+             * producing <binary>.patched — run that instead of the raw ELF. */
+            CHECK_RC(te_string_append(&agent_binary_path,
+                                      "%s.patched", binary_name));
 
-        CHECK_RC(tapi_job_start(run_job));
+            TEST_STEP("Run '%s/%s' in Zisk container",
+                      src_dir, agent_binary_path.ptr);
+            run_job = tsapi_zisk_run(&zisk, src_dir, agent_binary_path.ptr,
+                                     NULL);
+            if (run_job == NULL)
+                TEST_FAIL("Failed to create Zisk run job for '%s'",
+                          agent_binary_path.ptr);
+        }
+        else
+        {
+            WARN("run=TRUE but no runner defined for bflat_libc='%s', skipping",
+                 bflat_libc);
+        }
 
-        TEST_STEP("Wait for qemu to finish (timeout %d ms)", RUN_TIMEOUT_MS);
-        CHECK_RC(tapi_job_wait(run_job, RUN_TIMEOUT_MS, &run_status));
+        if (run_job != NULL)
+        {
+            te_errno wait_rc;
+            int      effective_timeout = run_timeout_ms > 0
+                                         ? run_timeout_ms
+                                         : RUN_TIMEOUT_MS_DEFAULT;
 
-        if (run_status.type != TAPI_JOB_STATUS_EXITED)
-            TEST_FAIL("Binary was killed by signal (signo=%d)",
-                      run_status.value);
-        if (run_status.value != 0)
-            TEST_FAIL("Binary exited with non-zero status %d",
-                      run_status.value);
+            CHECK_RC(tapi_job_alloc_output_channels(run_job, 2, run_channels));
+            CHECK_RC(tapi_job_attach_filter(
+                         TAPI_JOB_CHANNEL_SET(run_channels[0]),
+                         "runner stdout", false, TE_LL_RING, NULL));
+            CHECK_RC(tapi_job_attach_filter(
+                         TAPI_JOB_CHANNEL_SET(run_channels[1]),
+                         "runner stderr", false, TE_LL_ERROR, NULL));
 
-        RING("Binary ran successfully under qemu");
+            CHECK_RC(tapi_job_start(run_job));
+
+            TEST_STEP("Wait for binary to finish (timeout %d ms)",
+                      effective_timeout);
+            wait_rc = tapi_job_wait(run_job, effective_timeout, &run_status);
+            if (TE_RC_GET_ERROR(wait_rc) == TE_EINPROGRESS)
+                TEST_FAIL("Binary run timed out after %d ms", effective_timeout);
+            CHECK_RC(wait_rc);
+
+            if (run_status.type != TAPI_JOB_STATUS_EXITED)
+                TEST_FAIL("Binary was killed by signal (signo=%d)",
+                          run_status.value);
+            if (run_status.value != 0)
+                TEST_FAIL("Binary exited with non-zero status %d",
+                          run_status.value);
+
+            RING("Binary '%s' (libc=%s) ran successfully",
+                 binary_name, bflat_libc);
+        }
     }
 
     TEST_SUCCESS;
@@ -289,6 +359,9 @@ cleanup:
 
     if (qemu_created)
         tsapi_qemu_runner_destroy(&qemu);
+
+    if (zisk_created)
+        tsapi_zisk_runner_destroy(&zisk);
 
     if (job != NULL)
         CLEANUP_CHECK_RC(tapi_job_destroy(job, -1));

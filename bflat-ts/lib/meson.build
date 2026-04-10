@@ -4,6 +4,7 @@ sources = [
     'tsapi_bflat.c',
     'ts_container.c',
     'tsapi_qemu.c',
+    'tsapi_zisk.c',
 ]
 
 ts_lib = static_library('ts_lib', sources,
