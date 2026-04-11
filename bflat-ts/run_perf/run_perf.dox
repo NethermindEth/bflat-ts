@@ -1,0 +1,51 @@
+/** @defgroup bflat_ts_run_perf bflat run - Startup-steps performance analysis
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests that compile a C# program with bflat, execute it under
+ *        @c ziskemu @c -v (full verbose instruction trace) inside a real
+ *        Zisk zkVM Docker container, and measure how many RISC-V
+ *        instruction steps the .NET NativeAOT runtime needs to complete
+ *        before control reaches the C# @c Main() method.
+ *
+ * The two metrics reported for every iteration are:
+ *
+ * - @b startup_steps — instruction count from @c _start (ELF entry point)
+ *   until the first step inside @c __managed__Main (the bflat-generated
+ *   wrapper that calls the C# @c static @c int @c Main()).  This captures
+ *   the entire platform-abstraction, TLS, heap, and runtime-heap
+ *   initialisation cost imposed by the @c pal, @c tls, @c rhp, @c ubootstrap,
+ *   and @c ugc-zero modules.
+ *
+ * - @b total_steps — instruction count for the entire execution from
+ *   @c _start to the final @c exit syscall.
+ *
+ * Both metrics are emitted through @c RING() so they appear in the TE
+ * verdict log and can be scraped by external tooling for trend analysis
+ * across builds and module configurations.
+ *
+ * @par Analysis pipeline
+ *
+ * The trace is written to a file inside the shared volume by redirecting
+ * @c ziskemu output via @c sh @c -c:
+ * @code
+ *   sh -c 'ziskemu -v -e /n/<binary> > /n/<binary>.trace 2>&1'
+ * @endcode
+ * After the run, the file is analysed on the agent with
+ * @c zisk_startup_steps.py (part of this test package), which uses
+ * @c readelf to resolve the symbol table and then counts @c pc= entries
+ * in the trace until the first hit inside @c __managed__Main.
+ *
+ * @par Submodule dependency
+ *
+ * @c zkvm-tools (https://github.com/NethermindEth/zkvm-tools) is included
+ * as a git submodule at @c zkvm-tools/.  Its @c zisk_profile.py is used
+ * by @c zisk_startup_steps.py for symbol-table loading; run
+ * @code
+ *   ./zkvm-tools/build.sh
+ * @endcode
+ * to optionally build the compiled helpers (@c zisk_decoder, etc.) for
+ * richer annotated-trace output.
+ *
+ * @}
+ */

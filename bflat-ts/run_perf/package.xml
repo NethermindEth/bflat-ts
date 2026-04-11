@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
+<package version="1.0">
+    <description>bflat run-performance tests - startup steps analysis under ziskemu</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <run>
+            <script name="run_perf" />
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+            <arg name="cs_file">
+                <value>startup.cs</value>
+            </arg>
+            <arg name="bflat_image">
+                <value>maximmenshikov/bflat-riscv64-zk-test25</value>
+            </arg>
+            <arg name="bflat_arch">
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+            </arg>
+            <arg name="bflat_stdlib">
+                <value>dotnet</value>
+            </arg>
+            <arg name="verbose">
+                <value>FALSE</value>
+            </arg>
+            <arg name="no_globalization">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pthread">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pie">
+                <value>TRUE</value>
+            </arg>
+            <arg name="bflat_extlib">
+                <value
+                >https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
+            </arg>
+            <arg name="zisk_image">
+                <value>nethermindeth/zisk:latest</value>
+            </arg>
+            <arg name="run_timeout_ms">
+                <value>1800000</value>
+            </arg>
+        </run>
+    </session>
+</package>

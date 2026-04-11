@@ -82,6 +82,7 @@ packages = [
     'tls',
     'dispatch',
     'build_perf',
+    'run_perf',
 ]
 
 bflat_ts_mydir = package_dir

@@ -48,5 +48,9 @@
         <run>
             <package name="build_perf" />
         </run>
+
+        <run>
+            <package name="run_perf" />
+        </run>
     </session>
 </package>

@@ -340,19 +340,13 @@ static class CryptoUtils
 record MetricPoint(string Name, long ValueMs, string Tag);
 record PerfReport(string Compiler, string Arch, string Libc, MetricPoint[] Points);
 
-[JsonSerializable(typeof(MetricPoint))]
-[JsonSerializable(typeof(MetricPoint[]))]
-[JsonSerializable(typeof(PerfReport))]
-partial class PerfJsonCtx : JsonSerializerContext { }
-
 static class JsonUtils
 {
     static readonly JsonSerializerOptions _opts = new()
     {
-        TypeInfoResolver        = PerfJsonCtx.Default,
-        PropertyNamingPolicy    = JsonNamingPolicy.CamelCase,
-        WriteIndented           = true,
-        Encoder                 = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented        = true,
+        Encoder              = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
 
     public static string Serialize(PerfReport r) =>
@@ -436,6 +430,10 @@ static class AsyncUtils
 // Memory / Span  (ArrayPool, MemoryPool, unsafe reads)
 // =============================================================================
 
+/// <summary>Delegate for Span-based fill callbacks (Span is a ref struct,
+/// cannot be used as a Func type argument).</summary>
+delegate int SpanByteAction(Span<byte> span);
+
 static class MemUtils
 {
     public static int SumSpan(ReadOnlySpan<int> s)
@@ -449,7 +447,7 @@ static class MemUtils
         while (lo < hi) { (s[lo], s[hi]) = (s[hi], s[lo]); lo++; hi--; }
     }
 
-    public static byte[] RentProcess(int n, Func<Span<byte>, int> fill)
+    public static byte[] RentProcess(int n, SpanByteAction fill)
     {
         byte[] arr = ArrayPool<byte>.Shared.Rent(n);
         try
