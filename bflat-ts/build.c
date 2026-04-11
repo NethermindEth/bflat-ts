@@ -34,6 +34,8 @@
  * @param bflat_extlib    Path passed to @c --extlib (e.g. path to
  *                        @c libziskos.bflat.manifest inside the container),
  *                        or empty to omit the flag
+ * @param zisk_ta         Test agent to run the Zisk container on; if omitted
+ *                        (or equal to @p ta) the same agent is used
  *
  * @par Scenario:
  *
@@ -105,6 +107,10 @@ main(int argc, char **argv)
     bool                qemu_created      = false;
     tsapi_zisk_runner   zisk              = TSAPI_ZISK_RUNNER_INIT;
     bool                zisk_created      = false;
+    const char         *zisk_ta           = NULL;
+    rcf_rpc_server     *zisk_rpcs         = NULL;
+    char               *zisk_src_dir      = NULL;
+    bool                zisk_src_created  = false;
 
     te_string           local_cs_path     = TE_STRING_INIT;
     te_string           remote_cs_path    = TE_STRING_INIT;
@@ -128,6 +134,7 @@ main(int argc, char **argv)
     TEST_GET_OPT_STRING_PARAM(qemu_path);
     TEST_GET_OPT_STRING_PARAM(zisk_image);
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
+    TEST_GET_TA(zisk, zisk_ta);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
     {
@@ -291,19 +298,60 @@ main(int argc, char **argv)
         }
         else if (strcmp(bflat_libc, "zisk") == 0)
         {
-            TEST_STEP("Create Zisk runner (image='%s')",
-                      zisk_image != NULL ? zisk_image : TSAPI_ZISK_DEFAULT_IMAGE);
-            CHECK_RC(tsapi_zisk_runner_create(rpcs, zisk_image, &zisk));
-            zisk_created = true;
+            const char        *run_src_dir = src_dir;
+            rcf_rpc_server    *run_rpcs    = rpcs;
 
             /* bflat post-processes the zisk ELF with patch_elf.py,
              * producing <binary>.patched — run that instead of the raw ELF. */
             CHECK_RC(te_string_append(&agent_binary_path,
                                       "%s.patched", binary_name));
 
+            if (zisk_ta != NULL && strcmp(zisk_ta, ta) != 0)
+            {
+                te_string agent_src = TE_STRING_INIT;
+                te_string agent_dst = TE_STRING_INIT;
+
+                TEST_STEP("Create RPC server on Zisk agent '%s'", zisk_ta);
+                CHECK_RC(rcf_rpc_server_create(zisk_ta, "rpcs_zisk",
+                                               &zisk_rpcs));
+
+                TEST_STEP("Create temporary directory on Zisk agent '%s'",
+                          zisk_ta);
+                zisk_src_dir = tapi_file_make_custom_pathname(NULL, "/tmp",
+                                                              NULL);
+                if (zisk_src_dir == NULL)
+                    TEST_FAIL("Failed to generate temp dir name for zisk_ta");
+
+                RPC_AWAIT_ERROR(zisk_rpcs);
+                if (rpc_mkdir(zisk_rpcs, zisk_src_dir, RPC_S_IRWXU) != 0)
+                    TEST_FAIL("Failed to create dir '%s' on '%s'",
+                              zisk_src_dir, zisk_ta);
+                zisk_src_created = true;
+
+                TEST_STEP("Copy '%s' from '%s' to '%s'",
+                          agent_binary_path.ptr, ta, zisk_ta);
+                CHECK_RC(te_string_append(&agent_src, "%s/%s",
+                                          src_dir, agent_binary_path.ptr));
+                CHECK_RC(te_string_append(&agent_dst, "%s/%s",
+                                          zisk_src_dir, agent_binary_path.ptr));
+                CHECK_RC(tapi_file_copy_ta(ta, agent_src.ptr,
+                                           zisk_ta, agent_dst.ptr));
+                te_string_free(&agent_src);
+                te_string_free(&agent_dst);
+
+                run_src_dir = zisk_src_dir;
+                run_rpcs    = zisk_rpcs;
+            }
+
+            TEST_STEP("Create Zisk runner (image='%s') on agent '%s'",
+                      zisk_image != NULL ? zisk_image : TSAPI_ZISK_DEFAULT_IMAGE,
+                      run_rpcs->ta);
+            CHECK_RC(tsapi_zisk_runner_create(run_rpcs, zisk_image, &zisk));
+            zisk_created = true;
+
             TEST_STEP("Run '%s/%s' in Zisk container",
-                      src_dir, agent_binary_path.ptr);
-            run_job = tsapi_zisk_run(&zisk, src_dir, agent_binary_path.ptr,
+                      run_src_dir, agent_binary_path.ptr);
+            run_job = tsapi_zisk_run(&zisk, run_src_dir, agent_binary_path.ptr,
                                      NULL);
             if (run_job == NULL)
                 TEST_FAIL("Failed to create Zisk run job for '%s'",
@@ -362,6 +410,24 @@ cleanup:
 
     if (zisk_created)
         tsapi_zisk_runner_destroy(&zisk);
+
+    if (zisk_src_created && zisk_rpcs != NULL)
+    {
+        tarpc_pid_t pid;
+
+        RPC_AWAIT_ERROR(zisk_rpcs);
+        pid = rpc_te_shell_cmd(zisk_rpcs, "rm -rf %s", -1,
+                               NULL, NULL, NULL, zisk_src_dir);
+        if (pid > 0)
+        {
+            RPC_AWAIT_ERROR(zisk_rpcs);
+            rpc_waitpid(zisk_rpcs, pid, NULL, 0);
+        }
+    }
+    free(zisk_src_dir);
+
+    if (zisk_rpcs != NULL)
+        CLEANUP_CHECK_RC(rcf_rpc_server_destroy(zisk_rpcs));
 
     if (job != NULL)
         CLEANUP_CHECK_RC(tapi_job_destroy(job, -1));

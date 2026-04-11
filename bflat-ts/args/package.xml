@@ -59,6 +59,7 @@
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:latest</value>
             </arg>
+
         </run>
     </session>
 </package>
