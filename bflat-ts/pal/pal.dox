@@ -1,0 +1,11 @@
+/** @defgroup bflat_ts_pal bflat build - PAL (Platform Abstraction Layer) stubs
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests verifying that the PAL module stubs work correctly:
+ *        bump allocator (__wrap___libc_malloc_impl), environment variable
+ *        wrappers (__wrap_getenv), and sysconf stubs
+ *        (__wrap_sysconf returning 1 for SC_NPROCESSORS_ONLN, etc.).
+ *
+ * @}
+ */

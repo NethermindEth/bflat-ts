@@ -1,0 +1,11 @@
+/** @defgroup bflat_ts_rng bflat build - Random number generation (rng_stupid)
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests verifying that the rng_stupid module's LCG-based
+ *        implementation of minipal_get_cryptographically_secure_random_bytes
+ *        works correctly: values stay within requested ranges and the
+ *        call completes without crashing.
+ *
+ * @}
+ */

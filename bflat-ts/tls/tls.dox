@@ -1,0 +1,11 @@
+/** @defgroup bflat_ts_tls bflat build - Thread-local storage (tls)
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests verifying that the tls module (__wrap___init_tls,
+ *        __wrap___copy_tls, __wrap___tls_get_addr) and the rhp
+ *        thread-statics slot table work correctly for C# programs
+ *        that use [ThreadStatic] fields.
+ *
+ * @}
+ */

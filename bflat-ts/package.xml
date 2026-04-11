@@ -20,5 +20,33 @@
         <run>
             <package name="args" />
         </run>
+
+        <run>
+            <package name="nofp" />
+        </run>
+
+        <run>
+            <package name="pal" />
+        </run>
+
+        <run>
+            <package name="rhp" />
+        </run>
+
+        <run>
+            <package name="rng" />
+        </run>
+
+        <run>
+            <package name="tls" />
+        </run>
+
+        <run>
+            <package name="dispatch" />
+        </run>
+
+        <run>
+            <package name="build_perf" />
+        </run>
     </session>
 </package>

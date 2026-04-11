@@ -1,0 +1,23 @@
+/** @defgroup bflat_ts_rhp bflat build - Runtime Heap Platform (rhp)
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests verifying that the rhp and rhp_native stub modules work
+ *        correctly.  The rhp module provides zero-GC replacements for the
+ *        NativeAOT runtime-heap helpers:
+ *
+ *        - Object allocation  : RhpNewFast, RhpNewObject
+ *        - Array allocation   : RhpNewArrayFast, RhpNewPtrArrayFast
+ *        - String allocation  : RhNewString
+ *        - Type casting       : CheckCastAny (delegates to NoCacheLookup)
+ *        - Number formatting  : UInt32ToDecStrForKnownSmallNumber
+ *        - Thread statics     : RhGetThreadStaticStorage,
+ *                               GetUninlinedThreadStaticBaseForType
+ *
+ *        The rhp_native module provides RISC-V assembly stubs for:
+ *        - RhpAssignRefRiscV64  : reference store without write barrier
+ *        - RhpCidResolve        : interface-dispatch cell resolver
+ *          (tail-calls __rhp_cid_resolve_nocache defined in rhp)
+ *
+ * @}
+ */

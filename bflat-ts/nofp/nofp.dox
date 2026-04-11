@@ -1,0 +1,23 @@
+/** @defgroup bflat_ts_nofp bflat build - Floating-point stubs (nofp)
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests verifying bflat compiles C# programs containing
+ *        float/double operations when the nofp stub module is used.
+ *
+ * All FP compiler-helper symbols (__addsf3, __adddf3, __mulsf3,
+ * __muldf3, __fixdfsi, __floatsidf, __addtf3, … and their siblings)
+ * are replaced by empty no-op stubs.  The purpose is to prevent
+ * link errors on targets (e.g. zkVMs) that have no hardware or
+ * software floating-point support.
+ *
+ * Tests in this group only verify that:
+ *   - programs referencing FP types compile and link successfully, and
+ *   - execution reaches Main() and exits with status 0.
+ *
+ * Numerical correctness of FP results is explicitly NOT checked,
+ * because the stubs make every FP operation produce an undefined
+ * (typically zero) value.
+ *
+ * @}
+ */
