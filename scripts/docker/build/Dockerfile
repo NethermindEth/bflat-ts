@@ -70,12 +70,14 @@ RUN apt-get update && \
 
 RUN echo "${USER} ALL=NOPASSWD: ALL" >> /etc/sudoers
 
-RUN if [ "$DOCKER_GID" != "${GID}" ] ; then groupadd --gid ${GID} ${USER} ; fi
+RUN if [ "$DOCKER_GID" != "${GID}" ] && [ "$GID" != "0" ]; then groupadd --gid ${GID} ${USER} ; fi
 
-RUN useradd --system \
+RUN if [ "${UID}" != "0" ] ; then \
+        useradd --system \
             --gid ${GID} --gid ${DOCKER_GID} \
             --uid ${UID} \
             --shell /bin/bash \
-            ${USER}
+            ${USER} ; \
+    fi
 RUN usermod -a -G ${DOCKER_GID} ${USER}
 RUN usermod -a -G docker ${USER}

@@ -109,13 +109,13 @@
           - oid: "/local:/tst_if:zisk"
             value: "${TA_ZISK_IF}"
 - cond:
-    if: ${TA_ZISK_HOST} != "" && ${TA_ZISK_IF_IP} != ""
+    if: ${TA_ZISK_HOST} != "" & ${TA_ZISK_IF_IP} != ""
     then:
         - add:
             - oid: "/local:/tst_if_ip:zisk"
               value: "${TA_ZISK_IF_IP}"
 - cond:
-    if: ${TA_ZISK_HOST} != "" && ${TA_ZISK_IF_MAC} != ""
+    if: ${TA_ZISK_HOST} != "" & ${TA_ZISK_IF_MAC} != ""
     then:
         - add:
             - oid: "/local:/tst_if_mac:zisk"

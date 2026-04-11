@@ -12,6 +12,85 @@
           <notes />
         </iter>
       </test>
+      <test name="simple" type="package">
+        <objective>Simple bflat build tests</objective>
+        <notes />
+        <iter result="PASSED">
+          <notes />
+          <test name="build" type="script">
+            <objective>Build a C# program with bflat</objective>
+            <notes />
+            <iter result="PASSED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc" />
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file">hello.cs</arg>
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+          </test>
+        </iter>
+      </test>
+      <test name="args" type="package">
+        <objective>bflat build tests - Main() argument variations</objective>
+        <notes />
+        <iter result="PASSED">
+          <notes />
+          <test name="build" type="script">
+            <objective>Build a C# program with bflat</objective>
+            <notes />
+            <iter result="FAILED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc" />
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file">with_args.cs</arg>
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+            <iter result="PASSED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc" />
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file">no_args.cs</arg>
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+          </test>
+        </iter>
+      </test>
       <test name="epilogue" type="script">
         <objective>Cleanup after testing</objective>
         <notes />
