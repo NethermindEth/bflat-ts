@@ -1,0 +1,64 @@
+#!/bin/bash
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind)
+#
+# Publish the most recent test run to Bublik:
+#   1. Build the log bundle and te_logs.tar  (via scripts/bundle.sh)
+#   2. Copy te_logs.tar to the Bublik incoming directory  (from .bublik_path)
+#   3. Trigger Bublik import                              (from .bublik_distr_path)
+#
+# Usage:
+#   ./scripts/publish
+#
+# Config files (one path per file, no trailing whitespace):
+#   .bublik_path        – destination directory for te_logs.tar
+#   .bublik_distr_path  – directory that contains the Taskfile; "task publish"
+#                         is executed there
+
+set -eo pipefail
+
+RUNDIR="$(pwd -P)"
+TS_TOPDIR="$(cd "$(dirname "$(which "$0")")"/.. ; pwd -P)"
+
+die() { echo "error: $*" >&2; exit 1; }
+
+# ── Read config files ─────────────────────────────────────────────────────────
+
+BUBLIK_PATH_FILE="${TS_TOPDIR}/.bublik_path"
+BUBLIK_DISTR_FILE="${TS_TOPDIR}/.bublik_distr_path"
+
+[ -f "${BUBLIK_PATH_FILE}" ]  || die ".bublik_path not found in '${TS_TOPDIR}'"
+[ -f "${BUBLIK_DISTR_FILE}" ] || die ".bublik_distr_path not found in '${TS_TOPDIR}'"
+
+BUBLIK_PATH="$(cat "${BUBLIK_PATH_FILE}" | tr -d '[:space:]')"
+BUBLIK_DISTR_PATH="$(cat "${BUBLIK_DISTR_FILE}" | tr -d '[:space:]')"
+
+[ -n "${BUBLIK_PATH}" ]       || die ".bublik_path is empty"
+[ -n "${BUBLIK_DISTR_PATH}" ] || die ".bublik_distr_path is empty"
+
+# ── Step 1: bundle ────────────────────────────────────────────────────────────
+
+echo "==> Bundling logs..."
+"${TS_TOPDIR}/scripts/bundle.sh"
+
+TAR="${TS_TOPDIR}/te_logs.tar"
+[ -f "${TAR}" ] || die "bundle.sh finished but '${TAR}' was not produced"
+
+# ── Step 2: copy te_logs.tar to Bublik incoming directory ────────────────────
+
+echo ""
+echo "==> Copying te_logs.tar to '${BUBLIK_PATH}'..."
+cp "${TAR}" "${BUBLIK_PATH}/"
+echo "Copied: ${TAR} -> ${BUBLIK_PATH}/te_logs.tar"
+
+# ── Step 3: trigger Bublik publish ───────────────────────────────────────────
+
+echo ""
+echo "==> Running 'task publish' in '${BUBLIK_DISTR_PATH}'..."
+[ -d "${BUBLIK_DISTR_PATH}" ] || die "bublik_distr_path directory not found: '${BUBLIK_DISTR_PATH}'"
+
+cd "${BUBLIK_DISTR_PATH}"
+task publish
+
+echo ""
+echo "Done."
