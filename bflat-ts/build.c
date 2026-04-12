@@ -59,6 +59,7 @@
 #include "tsapi_qemu.h"
 #include "tsapi_zisk.h"
 
+#include <time.h>
 #include <unistd.h>
 #include <limits.h>
 
@@ -116,6 +117,11 @@ main(int argc, char **argv)
     te_string           remote_cs_path    = TE_STRING_INIT;
     te_string           remote_out        = TE_STRING_INIT;
     te_string           agent_binary_path = TE_STRING_INIT;
+
+    struct timespec     t_build_start, t_build_end;
+    long long           build_elapsed_ms  = -1;
+    struct timespec     t_run_start, t_run_end;
+    long long           run_elapsed_ms    = -1;
 
     TEST_START;
     TEST_GET_STRING_PARAM(ta);
@@ -257,6 +263,7 @@ main(int argc, char **argv)
                                     "bflat stderr", false, TE_LL_ERROR, NULL));
 
     TEST_STEP("Start bflat build");
+    clock_gettime(CLOCK_MONOTONIC, &t_build_start);
     CHECK_RC(tapi_job_start(job));
 
     TEST_STEP("Wait for bflat to finish (timeout %d ms)", BUILD_TIMEOUT_MS);
@@ -267,6 +274,30 @@ main(int argc, char **argv)
         TEST_FAIL("bflat was killed by a signal (signo=%d)", status.value);
     if (status.value != 0)
         TEST_FAIL("bflat exited with non-zero status %d", status.value);
+
+    clock_gettime(CLOCK_MONOTONIC, &t_build_end);
+    build_elapsed_ms =
+        (long long)(t_build_end.tv_sec  - t_build_start.tv_sec)  * 1000LL +
+        (long long)(t_build_end.tv_nsec - t_build_start.tv_nsec) / 1000000LL;
+
+    TEST_ARTIFACT("Build time: %lld ms (cs=%s arch=%s libc=%s)",
+                  build_elapsed_ms, cs_file, bflat_arch, bflat_libc);
+
+    {
+        const char *binary_stem =
+            remote_out.ptr + strlen(CONTAINER_SRC_DIR) + 1;
+        te_string   agent_raw_bin = TE_STRING_INIT;
+        rpc_stat    st;
+
+        CHECK_RC(te_string_append(&agent_raw_bin, "%s/%s",
+                                  src_dir, binary_stem));
+        RPC_AWAIT_ERROR(rpcs);
+        if (rpc_stat_func(rpcs, agent_raw_bin.ptr, &st) == 0)
+            TEST_ARTIFACT("Binary size: %llu bytes (cs=%s arch=%s libc=%s)",
+                          (unsigned long long)st.st_size,
+                          cs_file, bflat_arch, bflat_libc);
+        te_string_free(&agent_raw_bin);
+    }
 
     RING("bflat successfully compiled '%s' (arch=%s libc=%s)",
          cs_file, bflat_arch, bflat_libc);
@@ -378,6 +409,7 @@ main(int argc, char **argv)
                          TAPI_JOB_CHANNEL_SET(run_channels[1]),
                          "runner stderr", false, TE_LL_ERROR, NULL));
 
+            clock_gettime(CLOCK_MONOTONIC, &t_run_start);
             CHECK_RC(tapi_job_start(run_job));
 
             TEST_STEP("Wait for binary to finish (timeout %d ms)",
@@ -393,6 +425,14 @@ main(int argc, char **argv)
             if (run_status.value != 0)
                 TEST_FAIL("Binary exited with non-zero status %d",
                           run_status.value);
+
+            clock_gettime(CLOCK_MONOTONIC, &t_run_end);
+            run_elapsed_ms =
+                (long long)(t_run_end.tv_sec  - t_run_start.tv_sec)  * 1000LL +
+                (long long)(t_run_end.tv_nsec - t_run_start.tv_nsec) / 1000000LL;
+
+            TEST_ARTIFACT("Run time: %lld ms (cs=%s arch=%s libc=%s)",
+                          run_elapsed_ms, cs_file, bflat_arch, bflat_libc);
 
             RING("Binary '%s' (libc=%s) ran successfully",
                  binary_name, bflat_libc);
