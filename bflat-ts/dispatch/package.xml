@@ -7,14 +7,9 @@
     <author mailto="maksim.menshikov@nethermind.io" />
 
     <session track_conf="silent">
-        <run>
-            <script name="build" />
+        <run-template name="bflat_build">
             <arg name="ta">
                 <value>agt_main</value>
-            </arg>
-            <arg name="cs_file">
-                <value>interface_call.cs</value>
-                <value>virtual_call.cs</value>
             </arg>
             <arg name="bflat_image">
                 <value>nethermindeth/bflat-riscv64:latest</value>
@@ -59,6 +54,20 @@
             </arg>
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:latest</value>
+            </arg>
+        </run-template>
+
+        <run name="interface_call" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_call.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_call" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_call.cs</value>
             </arg>
         </run>
     </session>

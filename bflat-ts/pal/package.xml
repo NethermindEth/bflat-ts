@@ -7,15 +7,9 @@
     <author mailto="maksim.menshikov@nethermind.io" />
 
     <session track_conf="silent">
-        <run>
-            <script name="build" />
+        <run-template name="bflat_build">
             <arg name="ta">
                 <value>agt_main</value>
-            </arg>
-            <arg name="cs_file">
-                <value>alloc_many.cs</value>
-                <value>proc_count.cs</value>
-                <value>env_dotnet.cs</value>
             </arg>
             <arg name="bflat_image">
                 <value>nethermindeth/bflat-riscv64:latest</value>
@@ -52,13 +46,35 @@
                 <value>600000</value>
             </arg>
             <arg name="bflat_extlib">
-                <value>https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
+                <value
+                >https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
             </arg>
             <arg name="qemu_path">
                 <value>/usr/bin/qemu-riscv64-static</value>
             </arg>
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:latest</value>
+            </arg>
+        </run-template>
+
+        <run name="alloc_many" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>alloc_many.cs</value>
+            </arg>
+        </run>
+
+        <run name="proc_count" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>proc_count.cs</value>
+            </arg>
+        </run>
+
+        <run name="env_dotnet" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>env_dotnet.cs</value>
             </arg>
         </run>
     </session>

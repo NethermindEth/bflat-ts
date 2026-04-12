@@ -6,7 +6,7 @@
     <author mailto="maksim.menshikov@nethermind.io" />
 
     <session track_conf="silent">
-        <run>
+        <run name="hello">
             <script name="build" />
             <arg name="ta">
                 <value>agt_main</value>
