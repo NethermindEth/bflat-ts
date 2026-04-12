@@ -124,6 +124,8 @@ main(int argc, char **argv)
     long long   startup_steps   = -1;
     long long   total_steps     = -1;
     long long   run_elapsed_ms  = -1;
+    int         max_startup_steps = 0;
+    int         max_run_time_ms   = 0;
 
     struct timespec t_run_start, t_run_end;
 
@@ -142,6 +144,8 @@ main(int argc, char **argv)
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
     TEST_GET_OPT_STRING_PARAM(zisk_image);
     TEST_GET_INT_PARAM(run_timeout_ms);
+    TEST_GET_INT_PARAM(max_startup_steps);
+    TEST_GET_INT_PARAM(max_run_time_ms);
     TEST_GET_TA(zisk, zisk_ta);
 
     /* ------------------------------------------------------------------ */
@@ -494,8 +498,23 @@ main(int argc, char **argv)
         }
     }
 
-    RING("run_perf: cs=%s startup_steps=%lld total_steps=%lld run_elapsed_ms=%lld",
-         cs_file, startup_steps, total_steps, run_elapsed_ms);
+    TEST_ARTIFACT("Startup steps: %lld, total steps: %lld, main steps: %lld",
+                  startup_steps, total_steps,
+                  (startup_steps >= 0 && total_steps >= 0)
+                      ? total_steps - startup_steps : (long long)-1);
+    TEST_ARTIFACT("Run time: %lld ms", run_elapsed_ms);
+
+    TEST_STEP("Check thresholds");
+    if (max_startup_steps > 0 && startup_steps >= 0 &&
+        startup_steps > (long long)max_startup_steps)
+    {
+        TEST_VERDICT("Startup steps exceed threshold");
+    }
+    if (max_run_time_ms > 0 && run_elapsed_ms >= 0 &&
+        run_elapsed_ms > (long long)max_run_time_ms)
+    {
+        TEST_VERDICT("Run time exceeds threshold");
+    }
 
     if (startup_steps >= 0 && total_steps >= 0)
     {

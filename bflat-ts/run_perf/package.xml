@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description>bflat run-performance tests - startup steps analysis under ziskemu</description>
+    <description
+    >bflat run-performance tests - startup steps analysis under ziskemu</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -50,6 +51,14 @@
             </arg>
             <arg name="run_timeout_ms">
                 <value>1800000</value>
+            </arg>
+            <!-- Threshold: 0 = disabled. Baseline: ~4 790 000 steps (+25% headroom) -->
+            <arg name="max_startup_steps">
+                <value>6000000</value>
+            </arg>
+            <!-- Threshold: 0 = disabled. Baseline: ~152 s, limit 5 min -->
+            <arg name="max_run_time_ms">
+                <value>300000</value>
             </arg>
         </run>
     </session>

@@ -83,6 +83,7 @@ main(int argc, char **argv)
     tapi_job_channel_t *out_channels[2];
     tapi_job_status_t   status;
     bool                container_created = false;
+    int                 max_build_time_ms = 0;
 
     te_string           local_cs_path  = TE_STRING_INIT;
     te_string           remote_cs_path = TE_STRING_INIT;
@@ -104,6 +105,7 @@ main(int argc, char **argv)
     TEST_GET_BOOL_PARAM(no_pthread);
     TEST_GET_BOOL_PARAM(no_pie);
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
+    TEST_GET_INT_PARAM(max_build_time_ms);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
     {
@@ -241,8 +243,15 @@ main(int argc, char **argv)
     if (status.value != 0)
         TEST_FAIL("bflat exited with non-zero status %d", status.value);
 
-    RING("build_perf: cs=%s arch=%s libc=%s build_time_ms=%lld",
-         cs_file, bflat_arch, bflat_libc, build_elapsed_ms);
+    TEST_ARTIFACT("Build time: %lld ms (cs=%s arch=%s libc=%s)",
+                  build_elapsed_ms, cs_file, bflat_arch, bflat_libc);
+
+    TEST_STEP("Check thresholds");
+    if (max_build_time_ms > 0 && build_elapsed_ms >= 0 &&
+        build_elapsed_ms > (long long)max_build_time_ms)
+    {
+        TEST_VERDICT("Build time exceeds threshold");
+    }
 
     {
         te_mi_logger *logger;

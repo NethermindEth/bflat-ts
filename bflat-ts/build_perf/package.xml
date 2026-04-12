@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description>bflat build-performance tests - compile time measurement</description>
+    <description
+    >bflat build-performance tests - compile time measurement</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -45,6 +46,10 @@
             <arg name="bflat_extlib">
                 <value
                 >https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
+            </arg>
+            <!-- Threshold: 0 = disabled. Limit 5 min for big_refs.cs compilation -->
+            <arg name="max_build_time_ms">
+                <value>300000</value>
             </arg>
         </run>
     </session>
