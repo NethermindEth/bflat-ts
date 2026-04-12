@@ -1,18 +1,15 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description>Simple bflat build tests</description>
+    <description
+    >bflat build tests - generic types and collections</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
     <session track_conf="silent">
-        <run name="hello">
-            <script name="build" />
+        <run-template name="bflat_build">
             <arg name="ta">
                 <value>agt_main</value>
-            </arg>
-            <arg name="cs_file">
-                <value>hello.cs</value>
             </arg>
             <arg name="bflat_image">
                 <value>nethermindeth/bflat-riscv64:latest</value>
@@ -43,7 +40,7 @@
                 <value>TRUE</value>
             </arg>
             <arg name="run">
-                <value>FALSE</value>
+                <value>TRUE</value>
             </arg>
             <arg name="run_timeout_ms">
                 <value>600000</value>
@@ -60,6 +57,20 @@
             </arg>
             <arg name="expected_stdout">
                 <value>-</value>
+            </arg>
+        </run-template>
+
+        <run name="list_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_basic.cs</value>
             </arg>
         </run>
     </session>

@@ -55,6 +55,9 @@
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:latest</value>
             </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
         </run-template>
 
         <run name="random_next" template="bflat_build">

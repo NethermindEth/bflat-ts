@@ -118,6 +118,10 @@ main(int argc, char **argv)
     te_string           remote_out        = TE_STRING_INIT;
     te_string           agent_binary_path = TE_STRING_INIT;
 
+    const char         *expected_stdout   = NULL;
+    tapi_job_channel_t *stdout_filter     = NULL;
+    tapi_job_buffer_t   stdout_buf        = TAPI_JOB_BUFFER_INIT;
+
     struct timespec     t_build_start, t_build_end;
     long long           build_elapsed_ms  = -1;
     struct timespec     t_run_start, t_run_end;
@@ -140,6 +144,7 @@ main(int argc, char **argv)
     TEST_GET_OPT_STRING_PARAM(qemu_path);
     TEST_GET_OPT_STRING_PARAM(zisk_image);
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
+    TEST_GET_OPT_STRING_PARAM(expected_stdout);
     TEST_GET_TA(zisk, zisk_ta);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
@@ -402,9 +407,14 @@ main(int argc, char **argv)
                                          : RUN_TIMEOUT_MS_DEFAULT;
 
             CHECK_RC(tapi_job_alloc_output_channels(run_job, 2, run_channels));
-            CHECK_RC(tapi_job_attach_filter(
-                         TAPI_JOB_CHANNEL_SET(run_channels[0]),
-                         "runner stdout", false, TE_LL_RING, NULL));
+            {
+                bool capture = expected_stdout != NULL &&
+                               expected_stdout[0] != '\0';
+                CHECK_RC(tapi_job_attach_filter(
+                             TAPI_JOB_CHANNEL_SET(run_channels[0]),
+                             "runner stdout", capture, TE_LL_RING,
+                             capture ? &stdout_filter : NULL));
+            }
             CHECK_RC(tapi_job_attach_filter(
                          TAPI_JOB_CHANNEL_SET(run_channels[1]),
                          "runner stderr", false, TE_LL_ERROR, NULL));
@@ -433,6 +443,39 @@ main(int argc, char **argv)
 
             TEST_ARTIFACT("Run time: %lld ms (cs=%s arch=%s libc=%s)",
                           run_elapsed_ms, cs_file, bflat_arch, bflat_libc);
+
+            if (stdout_filter != NULL)
+            {
+                te_errno  rd;
+                char     *p;
+                size_t    len;
+
+                TEST_STEP("Read stdout and compare with expected: '%s'",
+                          expected_stdout);
+
+                do {
+                    rd = tapi_job_receive(
+                             TAPI_JOB_CHANNEL_SET(stdout_filter),
+                             1000, &stdout_buf);
+                } while (rd == 0 && !stdout_buf.eos);
+
+                /* Strip trailing CR/LF */
+                p   = stdout_buf.data.ptr;
+                len = (p != NULL) ? strlen(p) : 0;
+                while (len > 0 &&
+                       (p[len - 1] == '\n' || p[len - 1] == '\r'))
+                    p[--len] = '\0';
+
+                {
+                    const char *actual = (p != NULL) ? p : "";
+
+                    if (strcmp(actual, expected_stdout) != 0)
+                        TEST_FAIL("stdout mismatch:\n"
+                                  "  expected: '%s'\n"
+                                  "  actual:   '%s'",
+                                  expected_stdout, actual);
+                }
+            }
 
             RING("Binary '%s' (libc=%s) ran successfully",
                  binary_name, bflat_libc);
@@ -489,6 +532,7 @@ cleanup:
         }
     }
 
+    te_string_free(&stdout_buf.data);
     te_string_free(&local_cs_path);
     te_string_free(&remote_cs_path);
     te_string_free(&remote_out);

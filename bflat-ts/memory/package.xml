@@ -1,18 +1,15 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description>Simple bflat build tests</description>
+    <description
+    >bflat build tests - heap allocator correctness under grow and large allocations</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
     <session track_conf="silent">
-        <run name="hello">
-            <script name="build" />
+        <run-template name="bflat_build">
             <arg name="ta">
                 <value>agt_main</value>
-            </arg>
-            <arg name="cs_file">
-                <value>hello.cs</value>
             </arg>
             <arg name="bflat_image">
                 <value>nethermindeth/bflat-riscv64:latest</value>
@@ -43,7 +40,7 @@
                 <value>TRUE</value>
             </arg>
             <arg name="run">
-                <value>FALSE</value>
+                <value>TRUE</value>
             </arg>
             <arg name="run_timeout_ms">
                 <value>600000</value>
@@ -60,6 +57,27 @@
             </arg>
             <arg name="expected_stdout">
                 <value>-</value>
+            </arg>
+        </run-template>
+
+        <run name="list_growth" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_growth.cs</value>
+            </arg>
+        </run>
+
+        <run name="stringbuilder" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>stringbuilder.cs</value>
+            </arg>
+        </run>
+
+        <run name="large_array" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>large_array.cs</value>
             </arg>
         </run>
     </session>

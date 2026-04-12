@@ -52,5 +52,25 @@
         <run>
             <package name="run_perf" />
         </run>
+
+        <run>
+            <package name="memory" />
+        </run>
+
+        <run>
+            <package name="tls_stress" />
+        </run>
+
+        <run>
+            <package name="dispatch_stress" />
+        </run>
+
+        <run>
+            <package name="generics" />
+        </run>
+
+        <run>
+            <package name="format" />
+        </run>
     </session>
 </package>
