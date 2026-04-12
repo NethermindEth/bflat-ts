@@ -46,6 +46,7 @@
 #include "tapi_rpc_stdio.h"
 #include "tapi_rpc_signal.h"
 #include "ts_container.h"
+#include "te_mi_log.h"
 
 #include <time.h>
 #include <unistd.h>
@@ -242,6 +243,20 @@ main(int argc, char **argv)
 
     RING("build_perf: cs=%s arch=%s libc=%s build_time_ms=%lld",
          cs_file, bflat_arch, bflat_libc, build_elapsed_ms);
+
+    {
+        te_mi_logger *logger;
+
+        if (te_mi_logger_meas_create("bflat build", &logger) == 0)
+        {
+            te_mi_logger_add_meas(logger, NULL, TE_MI_MEAS_TIME,
+                                  "Build time",
+                                  TE_MI_MEAS_AGGR_SINGLE,
+                                  (double)build_elapsed_ms,
+                                  TE_MI_MEAS_MULTIPLIER_MILLI);
+            te_mi_logger_destroy(logger);
+        }
+    }
 
     TEST_SUCCESS;
 

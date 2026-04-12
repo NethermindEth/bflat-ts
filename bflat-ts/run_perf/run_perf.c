@@ -57,8 +57,10 @@
 #include "tapi_rpc_signal.h"
 #include "ts_container.h"
 #include "tsapi_zisk.h"
+#include "te_mi_log.h"
 
 #include <stdio.h>
+#include <time.h>
 #include <unistd.h>
 #include <limits.h>
 
@@ -119,8 +121,11 @@ main(int argc, char **argv)
     te_string   results_path_local= TE_STRING_INIT;
     te_string   run_cmd           = TE_STRING_INIT;
 
-    long long   startup_steps = -1;
-    long long   total_steps   = -1;
+    long long   startup_steps   = -1;
+    long long   total_steps     = -1;
+    long long   run_elapsed_ms  = -1;
+
+    struct timespec t_run_start, t_run_end;
 
     TEST_START;
     TEST_GET_STRING_PARAM(ta);
@@ -381,7 +386,8 @@ main(int argc, char **argv)
         CHECK_RC(tapi_job_attach_filter(TAPI_JOB_CHANNEL_SET(run_ch[1]),
                                         "zisk stderr", false, TE_LL_ERROR, NULL));
 
-        TEST_STEP("Start ziskemu (full trace mode)");
+        TEST_STEP("Start ziskemu (wall-clock timer starts now)");
+        clock_gettime(CLOCK_MONOTONIC, &t_run_start);
         CHECK_RC(tapi_job_start(run_job));
 
         {
@@ -395,6 +401,10 @@ main(int argc, char **argv)
                 TEST_FAIL("ziskemu timed out after %d ms", eff_timeout);
             CHECK_RC(wait_rc);
         }
+        clock_gettime(CLOCK_MONOTONIC, &t_run_end);
+        run_elapsed_ms =
+            (long long)(t_run_end.tv_sec  - t_run_start.tv_sec)  * 1000LL +
+            (long long)(t_run_end.tv_nsec - t_run_start.tv_nsec) / 1000000LL;
 
         if (run_status.type != TAPI_JOB_STATUS_EXITED)
             TEST_FAIL("ziskemu killed by signal %d", run_status.value);
@@ -484,8 +494,38 @@ main(int argc, char **argv)
         }
     }
 
-    RING("run_perf: cs=%s startup_steps=%lld total_steps=%lld",
-         cs_file, startup_steps, total_steps);
+    RING("run_perf: cs=%s startup_steps=%lld total_steps=%lld run_elapsed_ms=%lld",
+         cs_file, startup_steps, total_steps, run_elapsed_ms);
+
+    if (startup_steps >= 0 && total_steps >= 0)
+    {
+        te_mi_logger *logger;
+
+        if (te_mi_logger_meas_create("bflat run", &logger) == 0)
+        {
+            te_mi_logger_add_meas(logger, NULL, TE_MI_MEAS_TIME,
+                                  "Run time",
+                                  TE_MI_MEAS_AGGR_SINGLE,
+                                  (double)run_elapsed_ms,
+                                  TE_MI_MEAS_MULTIPLIER_MILLI);
+            te_mi_logger_add_meas(logger, NULL, TE_MI_MEAS_UNITLESS_VALUE,
+                                  "Startup steps",
+                                  TE_MI_MEAS_AGGR_SINGLE,
+                                  (double)startup_steps,
+                                  TE_MI_MEAS_MULTIPLIER_PLAIN);
+            te_mi_logger_add_meas(logger, NULL, TE_MI_MEAS_UNITLESS_VALUE,
+                                  "Total steps",
+                                  TE_MI_MEAS_AGGR_SINGLE,
+                                  (double)total_steps,
+                                  TE_MI_MEAS_MULTIPLIER_PLAIN);
+            te_mi_logger_add_meas(logger, NULL, TE_MI_MEAS_UNITLESS_VALUE,
+                                  "Main steps",
+                                  TE_MI_MEAS_AGGR_SINGLE,
+                                  (double)(total_steps - startup_steps),
+                                  TE_MI_MEAS_MULTIPLIER_PLAIN);
+            te_mi_logger_destroy(logger);
+        }
+    }
 
     TEST_SUCCESS;
 
