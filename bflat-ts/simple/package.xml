@@ -15,7 +15,7 @@
                 <value>hello.cs</value>
             </arg>
             <arg name="bflat_image">
-                <value>maximmenshikov/bflat-riscv64-zk-test25</value>
+                <value>nethermindeth/bflat-riscv64:latest</value>
             </arg>
             <arg name="bflat_arch">
                 <value>riscv64</value>

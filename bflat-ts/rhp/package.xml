@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description>bflat build tests - Runtime Heap Platform (rhp) stubs</description>
+    <description
+    >bflat build tests - Runtime Heap Platform (rhp) stubs</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -19,7 +20,7 @@
                 <value>number_fmt.cs</value>
             </arg>
             <arg name="bflat_image">
-                <value>maximmenshikov/bflat-riscv64-zk-test25</value>
+                <value>nethermindeth/bflat-riscv64:latest</value>
             </arg>
             <arg name="bflat_arch">
                 <value>riscv64</value>

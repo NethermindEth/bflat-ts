@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description>bflat build tests - Thread-local storage (tls + rhp thread statics)</description>
+    <description
+    >bflat build tests - Thread-local storage (tls + rhp thread statics)</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -16,7 +17,7 @@
                 <value>thread_static_multiple.cs</value>
             </arg>
             <arg name="bflat_image">
-                <value>maximmenshikov/bflat-riscv64-zk-test25</value>
+                <value>nethermindeth/bflat-riscv64:latest</value>
             </arg>
             <arg name="bflat_arch">
                 <value>riscv64</value>

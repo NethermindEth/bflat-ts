@@ -16,7 +16,7 @@
                 <value>double_noop.cs</value>
             </arg>
             <arg name="bflat_image">
-                <value>maximmenshikov/bflat-riscv64-zk-test25</value>
+                <value>nethermindeth/bflat-riscv64:latest</value>
             </arg>
             <arg name="bflat_arch">
                 <value>riscv64</value>
@@ -50,8 +50,7 @@
                 <value>600000</value>
             </arg>
             <arg name="bflat_extlib">
-                <value
-                >https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
+                <value>https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
             </arg>
             <arg name="qemu_path">
                 <value>/usr/bin/qemu-riscv64-static</value>
