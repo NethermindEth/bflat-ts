@@ -72,5 +72,9 @@
         <run>
             <package name="format" />
         </run>
+
+        <run>
+            <package name="zisk_guest" />
+        </run>
     </session>
 </package>

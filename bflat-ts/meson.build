@@ -88,6 +88,7 @@ packages = [
     'dispatch_stress',
     'generics',
     'format',
+    'zisk_guest',
 ]
 
 bflat_ts_mydir = package_dir
