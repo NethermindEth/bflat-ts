@@ -311,6 +311,8 @@ main(int argc, char **argv)
     if (run_status.type != TAPI_JOB_STATUS_EXITED)
         TEST_FAIL("ziskemu was killed by a signal (signo=%d)",
                   run_status.value);
+    if (run_status.value == 137)
+        TEST_VERDICT("ziskemu was killed by OOM (Out Of Memory)");
     if (run_status.value != 0)
         TEST_FAIL("ziskemu exited with non-zero status %d",
                   run_status.value);
