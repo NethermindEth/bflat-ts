@@ -80,13 +80,16 @@ extern te_errno tsapi_zisk_runner_create(rcf_rpc_server    *rpcs,
  * @param binary_name   Filename of the ELF binary inside @p binary_dir
  * @param input_bin     Filename of the input binary inside @p binary_dir,
  *                      passed as @c -i to ziskemu, or @c NULL to omit
+ * @param verbose       If @c true, pass @c -v flag to ziskemu for verbose
+ *                      instruction trace output
  *
  * @return Job handle, or @c NULL on failure
  */
 extern tapi_job_t *tsapi_zisk_run(tsapi_zisk_runner *runner,
                                    const char        *binary_dir,
                                    const char        *binary_name,
-                                   const char        *input_bin);
+                                   const char        *input_bin,
+                                   bool               verbose);
 
 /**
  * Destroy a Zisk runner and release all associated resources.

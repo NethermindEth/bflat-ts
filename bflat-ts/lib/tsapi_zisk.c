@@ -45,7 +45,8 @@ tapi_job_t *
 tsapi_zisk_run(tsapi_zisk_runner *runner,
                const char        *binary_dir,
                const char        *binary_name,
-               const char        *input_bin)
+               const char        *input_bin,
+               bool               verbose)
 {
     te_errno    rc;
     te_string   bin_path   = TE_STRING_INIT;
@@ -76,7 +77,8 @@ tsapi_zisk_run(tsapi_zisk_runner *runner,
         goto out;
 
     zisk_argv[zisk_argc++] = TSAPI_ZISK_EMU_BIN;
-    zisk_argv[zisk_argc++] = "-v";
+    if (verbose)
+        zisk_argv[zisk_argc++] = "-v";
     zisk_argv[zisk_argc++] = "-e";
     zisk_argv[zisk_argc++] = bin_path.ptr;
 
