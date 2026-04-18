@@ -568,6 +568,253 @@
         </iter>
       </test>
 
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <!-- gvm                                                             -->
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <test name="gvm" type="package">
+        <objective
+                >GVM TypeLoader tests: Comparer&lt;T&gt;.Default crash patterns in
+bflat / Zisk zkVM</objective>
+        <notes />
+        <iter result="PASSED">
+          <notes />
+
+          <test name="comparer_broken" type="script">
+            <objective>Build a C# program with bflat</objective>
+            <notes />
+            <iter result="PASSED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_define" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc" />
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file" />
+              <arg name="expected_stdout" />
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+          </test>
+
+          <test name="comparer_fixed" type="script">
+            <objective>Build a C# program with bflat</objective>
+            <notes />
+            <iter result="PASSED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_define" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc" />
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file" />
+              <arg name="expected_stdout" />
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+          </test>
+
+          <!-- suite_broken: level-2 TypeLoader crash (Test8 nested KVP) -->
+          <test name="suite_broken" type="script">
+            <objective>Build a C# program with bflat</objective>
+            <notes />
+            <iter result="FAILED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_define" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc" />
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file" />
+              <arg name="expected_stdout" />
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+          </test>
+
+          <!-- suite_fixed: passes on zisk, fails on zisk_sim (no-stacktrace-data strips NativeLayout) -->
+          <test name="suite_fixed" type="script">
+            <objective>Build a C# program with bflat</objective>
+            <notes />
+            <iter result="PASSED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_define" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc">zisk</arg>
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file" />
+              <arg name="expected_stdout" />
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+            <iter result="FAILED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_define" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc">zisk_sim</arg>
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file" />
+              <arg name="expected_stdout" />
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+          </test>
+
+          <!-- suite_broken_st: BROKEN code fails even with stacktrace data -->
+          <test name="suite_broken_st" type="script">
+            <objective>Build a C# program with bflat</objective>
+            <notes />
+            <iter result="FAILED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_define" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc" />
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file" />
+              <arg name="expected_stdout" />
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+          </test>
+
+          <!-- suite_fixed_st: explicit comparers + stacktrace data works everywhere -->
+          <test name="suite_fixed_st" type="script">
+            <objective>Build a C# program with bflat</objective>
+            <notes />
+            <iter result="PASSED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_define" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc" />
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file" />
+              <arg name="expected_stdout" />
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+          </test>
+
+          <test name="nested_broken" type="script">
+            <objective>Build a C# program with bflat</objective>
+            <notes />
+            <iter result="PASSED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_define" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc" />
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file" />
+              <arg name="expected_stdout" />
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+          </test>
+
+          <test name="nested_fixed" type="script">
+            <objective>Build a C# program with bflat</objective>
+            <notes />
+            <iter result="PASSED">
+              <arg name="bflat_arch" />
+              <arg name="bflat_define" />
+              <arg name="bflat_extlib" />
+              <arg name="bflat_image" />
+              <arg name="bflat_libc" />
+              <arg name="bflat_stdlib" />
+              <arg name="cs_file" />
+              <arg name="expected_stdout" />
+              <arg name="no_globalization" />
+              <arg name="no_pie" />
+              <arg name="no_pthread" />
+              <arg name="no_stacktrace_data" />
+              <arg name="qemu_path" />
+              <arg name="run" />
+              <arg name="run_timeout_ms" />
+              <arg name="ta" />
+              <arg name="verbose" />
+              <arg name="zisk_image" />
+              <notes />
+            </iter>
+          </test>
+
+        </iter>
+      </test>
+
       <test name="epilogue" type="script">
         <objective>Cleanup after testing</objective>
         <notes />
