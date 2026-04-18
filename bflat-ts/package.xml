@@ -76,5 +76,9 @@
         <run>
             <package name="zisk_guest" />
         </run>
+
+        <run>
+            <package name="gvm" />
+        </run>
     </session>
 </package>

@@ -89,6 +89,7 @@ packages = [
     'generics',
     'format',
     'zisk_guest',
+    'gvm',
 ]
 
 bflat_ts_mydir = package_dir
