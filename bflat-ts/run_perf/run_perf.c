@@ -370,7 +370,7 @@ main(int argc, char **argv)
             const char *zisk_argv[] = {
                 "sh", "-c", run_cmd.ptr, NULL
             };
-            run_job = tsapi_zisk_run(&zisk, run_src, "", NULL);
+            run_job = tsapi_zisk_run(&zisk, run_src, "", NULL, true);
             /* Override: run_job from tsapi_zisk_run would try to run
              * ziskemu directly; we need sh -c for redirection. */
             if (run_job != NULL)
