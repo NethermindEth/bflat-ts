@@ -268,7 +268,7 @@ main(int argc, char **argv)
         TEST_STEP("Create Zisk run job for '%s/%s' with input '%s'",
                   run_dir, GUEST_BINARY_NAME, INPUT_BIN_NAME);
         run_job = tsapi_zisk_run(&zisk, run_dir,
-                                 GUEST_BINARY_NAME, INPUT_BIN_NAME);
+                                 GUEST_BINARY_NAME, INPUT_BIN_NAME, false);
         if (run_job == NULL)
             TEST_FAIL("Failed to create Zisk run job");
     }
