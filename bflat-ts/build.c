@@ -36,6 +36,8 @@
  *                        or empty to omit the flag
  * @param zisk_ta         Test agent to run the Zisk container on; if omitted
  *                        (or equal to @p ta) the same agent is used
+ * @param bflat_define    Optional C# preprocessor symbol passed as @c -d:SYMBOL
+ *                        (e.g. @c FIXED); omit to compile without any define
  *
  * @par Scenario:
  *
@@ -91,6 +93,7 @@ main(int argc, char **argv)
     const char         *qemu_path;
     const char         *zisk_image;
     const char         *bflat_extlib;
+    const char         *bflat_define;
 
     rcf_rpc_server     *rpcs              = NULL;
     char               *test_dir          = NULL;
@@ -144,6 +147,7 @@ main(int argc, char **argv)
     TEST_GET_OPT_STRING_PARAM(qemu_path);
     TEST_GET_OPT_STRING_PARAM(zisk_image);
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
+    TEST_GET_OPT_STRING_PARAM(bflat_define);
     TEST_GET_OPT_STRING_PARAM(expected_stdout);
     TEST_GET_TA(zisk, zisk_ta);
 
@@ -220,7 +224,7 @@ main(int argc, char **argv)
               cs_file);
     {
         /* Fixed upper bound: base args + all optional flags + src + out + NULL */
-        const char *bflat_argv[32];
+        const char *bflat_argv[34];
         int         bflat_argc = 0;
 
 #define ARGV_ADD(arg_)  bflat_argv[bflat_argc++] = (arg_)
@@ -248,6 +252,10 @@ main(int argc, char **argv)
         if (bflat_extlib != NULL && bflat_libc != NULL && strcmp(bflat_libc, "zisk") == 0)
         {
             ARGV_ADD("--extlib"); ARGV_ADD(bflat_extlib);
+        }
+        if (bflat_define != NULL && strcmp(bflat_define, "-") != 0)
+        {
+            ARGV_ADD("-d"); ARGV_ADD(bflat_define);
         }
         ARGV_ADD(remote_cs_path.ptr);
         ARGV_ADD("--out"); ARGV_ADD(remote_out.ptr);
@@ -388,7 +396,7 @@ main(int argc, char **argv)
             TEST_STEP("Run '%s/%s' in Zisk container",
                       run_src_dir, agent_binary_path.ptr);
             run_job = tsapi_zisk_run(&zisk, run_src_dir, agent_binary_path.ptr,
-                                     NULL);
+                                     NULL, false);
             if (run_job == NULL)
                 TEST_FAIL("Failed to create Zisk run job for '%s'",
                           agent_binary_path.ptr);
