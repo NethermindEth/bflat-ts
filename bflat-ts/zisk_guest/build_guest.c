@@ -1,13 +1,16 @@
 /** @file
  * @brief Build prologue: compile Nethermind ZiskGuest ELF with bflat
  *
- * Prologue script for the @c zisk_guest test package.  Checks whether the
- * pre-built binary already exists at
- * @c ${TS_TOPDIR}/bflat-ts/zisk_guest/bin/nethermind; if it does, exits
- * immediately with success.  Otherwise:
+ * Prologue script for the @c zisk_guest test package.  Always updates the
+ * Nethermind source tree before building so that the freshest code is
+ * compiled.  Steps:
  *
  *  -# Reads @c ${TS_TOPDIR}/.nethermind_path to locate the Nethermind source
  *     tree and resolves it to an absolute path via @c realpath(3).
+ *  -# Updates the repository: @c git @c fetch @c origin followed by
+ *     @c git @c reset @c --hard @c FETCH_HEAD.
+ *  -# Removes any stale @c nethermind binary so the build always produces a
+ *     fresh artefact from the updated sources.
  *  -# Runs @c dotnet build on @c Nethermind.Stateless.ZiskGuest.csproj
  *     (redirecting all output to @c /tmp/zisk_guest_dotnet_build.log).
  *  -# Compiles the resulting managed artifacts to a native riscv64/zisk ELF
@@ -43,6 +46,7 @@
 #include "ts_container.h"
 #include "tsapi_bflat.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <limits.h>
@@ -150,15 +154,56 @@ main(int argc, char **argv)
     }
 
     /* ------------------------------------------------------------------ */
-    TEST_STEP("Check whether binary already exists");
+    TEST_STEP("Update Nethermind repository (git pull + git reset --hard)");
+    {
+        char  git_cmd[PATH_MAX + 64];
+        int   git_rc;
+
+        /*
+         * git fetch origin — update all remote-tracking refs without touching
+         * the working tree.  Works regardless of the branch name (main,
+         * master, etc.) and always sets FETCH_HEAD to the fetched tip.
+         */
+        snprintf(git_cmd, sizeof(git_cmd),
+                 "git -C '%s' fetch origin 2>&1", nm_dir_s.ptr);
+        RING("Running: %s", git_cmd);
+        git_rc = system(git_cmd);
+        if (git_rc != 0)
+            TEST_FAIL("'git fetch origin' failed in '%s' (exit code %d)",
+                      nm_dir_s.ptr, git_rc);
+
+        /*
+         * git reset --hard FETCH_HEAD — reset the working tree to whatever
+         * was just fetched, discarding any local modifications.  FETCH_HEAD
+         * is always valid after a successful fetch and is branch-name
+         * agnostic.
+         */
+        snprintf(git_cmd, sizeof(git_cmd),
+                 "git -C '%s' reset --hard FETCH_HEAD 2>&1", nm_dir_s.ptr);
+        RING("Running: %s", git_cmd);
+        git_rc = system(git_cmd);
+        if (git_rc != 0)
+            TEST_FAIL("'git reset --hard FETCH_HEAD' failed in '%s' "
+                      "(exit code %d)", nm_dir_s.ptr, git_rc);
+
+        RING("Nethermind repository updated successfully");
+    }
+
+    /* ------------------------------------------------------------------ */
+    TEST_STEP("Remove stale binary so a fresh build is always performed");
     CHECK_RC(te_string_append(&bin_path_s,
                               "%s/bflat-ts/zisk_guest/bin/nethermind",
                               ts_topdir_s.ptr));
 
     if (access(bin_path_s.ptr, F_OK) == 0)
     {
-        RING("binary already built: %s", bin_path_s.ptr);
-        TEST_SUCCESS;
+        if (unlink(bin_path_s.ptr) != 0)
+            TEST_FAIL("Failed to remove stale binary '%s'", bin_path_s.ptr);
+        RING("Removed stale binary: %s", bin_path_s.ptr);
+    }
+    else
+    {
+        RING("No stale binary found at '%s'", bin_path_s.ptr);
     }
 
     /* ------------------------------------------------------------------ */
