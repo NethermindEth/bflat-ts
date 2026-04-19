@@ -93,7 +93,7 @@ main(int argc, char **argv)
     const char         *qemu_path;
     const char         *zisk_image;
     const char         *bflat_extlib;
-    const char         *bflat_define;
+    const char         *bflat_define      = NULL;
 
     rcf_rpc_server     *rpcs              = NULL;
     char               *test_dir          = NULL;
@@ -147,7 +147,8 @@ main(int argc, char **argv)
     TEST_GET_OPT_STRING_PARAM(qemu_path);
     TEST_GET_OPT_STRING_PARAM(zisk_image);
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
-    TEST_GET_OPT_STRING_PARAM(bflat_define);
+    if (TEST_HAS_PARAM(bflat_define))
+        TEST_GET_OPT_STRING_PARAM(bflat_define);
     TEST_GET_OPT_STRING_PARAM(expected_stdout);
     TEST_GET_TA(zisk, zisk_ta);
 
