@@ -9,3 +9,21 @@
  */
 
 #include "tsapi_bflat.h"
+
+#include <stdlib.h>
+#include <string.h>
+
+const char *
+tsapi_bflat_resolve_image(const char *arg)
+{
+    const char *env;
+
+    if (arg != NULL && strcmp(arg, "-") != 0)
+        return arg;
+
+    env = getenv("TS_BFLAT_IMAGE");
+    if (env != NULL && *env != '\0')
+        return env;
+
+    return TSAPI_BFLAT_DEFAULT_IMAGE;
+}

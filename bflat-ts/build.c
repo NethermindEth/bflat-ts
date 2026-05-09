@@ -17,7 +17,9 @@
  * @param ta            Test Agent name (must have Docker available)
  * @param cs_file       C# source filename (resolved from the @c cs/ subdir
  *                      next to the test binary)
- * @param bflat_image   Docker image providing the bflat compiler
+ * @param bflat_image   Docker image providing the bflat compiler.  Use @c -
+ *                      (or omit) to pick up the @c TS_BFLAT_IMAGE environment
+ *                      variable, falling back to #TSAPI_BFLAT_DEFAULT_IMAGE.
  * @param bflat_arch    Target architecture passed to @c --arch
  * @param bflat_libc    Target libc passed to @c --libc
  * @param run             If @c TRUE, run the compiled binary after a successful
@@ -58,6 +60,7 @@
 #include "tapi_rpc_stdio.h"
 #include "tapi_rpc_signal.h"
 #include "ts_container.h"
+#include "tsapi_bflat.h"
 #include "tsapi_qemu.h"
 #include "tsapi_zisk.h"
 
@@ -133,7 +136,8 @@ main(int argc, char **argv)
     TEST_START;
     TEST_GET_STRING_PARAM(ta);
     TEST_GET_STRING_PARAM(cs_file);
-    TEST_GET_STRING_PARAM(bflat_image);
+    TEST_GET_OPT_STRING_PARAM(bflat_image);
+    bflat_image = tsapi_bflat_resolve_image(bflat_image);
     TEST_GET_STRING_PARAM(bflat_arch);
     TEST_GET_STRING_PARAM(bflat_libc);
     TEST_GET_OPT_STRING_PARAM(bflat_stdlib);

@@ -40,7 +40,7 @@ if [ "$is_docker" == "1" ] ; then
     export TE_DOCKER_TAG="bflat-ts-build"
     export TE_DOCKER_MOUNT_PATHS="${TS_TOPDIR}:${TE_BASE}"
     export TE_DOCKER_WORK_DIR="$(pwd)"
-    export TE_DOCKER_ENV="TE_BASE:TS_TOPDIR"
+    export TE_DOCKER_ENV="TE_BASE:TS_TOPDIR:TS_BFLAT_IMAGE"
     ${TS_TOPDIR}/scripts/docker_env.sh ${TS_TOPDIR}/scripts/run.sh $@
     exit $?
 fi

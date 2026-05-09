@@ -65,7 +65,7 @@
             <script name="build_guest" />
             <arg name="ta"><value>agt_main</value></arg>
             <arg name="bflat_image"><value
-                >nethermindeth/bflat-riscv64:latest</value></arg>
+                >-</value></arg>
         </prologue>
 
         <!-- Sepolia block 150026 -->

@@ -21,7 +21,8 @@
  *  -# Verifies that the binary is present and logs its size.
  *
  * @param ta          Test Agent name (must have Docker available)
- * @param bflat_image bflat Docker image; @c - or omitted uses
+ * @param bflat_image bflat Docker image; @c - or omitted picks up
+ *                    @c TS_BFLAT_IMAGE from the environment, falling back to
  *                    #TSAPI_BFLAT_DEFAULT_IMAGE
  *
  * Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind)
@@ -51,9 +52,6 @@
 #include <unistd.h>
 #include <limits.h>
 #include <string.h>
-
-/** Default bflat Docker image when the parameter is absent or @c - */
-#define TSAPI_BFLAT_DEFAULT_IMAGE   "nethermindeth/bflat-riscv64:latest"
 
 /** bflat compilation timeout: 10 minutes */
 #define BUILD_TIMEOUT_MS    (10 * 60 * 1000)
@@ -91,8 +89,7 @@ main(int argc, char **argv)
     TEST_GET_STRING_PARAM(ta);
     TEST_GET_OPT_STRING_PARAM(bflat_image);
 
-    if (bflat_image == NULL || strcmp(bflat_image, "-") == 0)
-        bflat_image = TSAPI_BFLAT_DEFAULT_IMAGE;
+    bflat_image = tsapi_bflat_resolve_image(bflat_image);
 
     /* ------------------------------------------------------------------ */
     TEST_STEP("Read TS_TOPDIR environment variable");
