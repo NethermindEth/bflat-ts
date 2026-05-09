@@ -80,7 +80,8 @@ ts_container_run_docker(ts_container *container,
     size_t          i;
     const char    **new_argv;
     const char     *def_argv[] =
-        { "docker", "run", "--rm", "-t", "--cap-add=SYS_PTRACE",
+        { "docker", "run", "--rm", "-t", "--pull=always",
+        "--cap-add=SYS_PTRACE",
         "--security-opt", "apparmor=unconfined",
         "--security-opt", "seccomp=unconfined",
         "--privileged",
