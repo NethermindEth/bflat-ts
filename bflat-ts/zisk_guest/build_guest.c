@@ -276,7 +276,6 @@ main(int argc, char **argv)
         ARGV_ADD("--libc");             ARGV_ADD("zisk");
         ARGV_ADD("--no-pie");
         ARGV_ADD("--no-pthread");
-        ARGV_ADD("--no-stacktrace-data");
         ARGV_ADD("--no-globalization");
         ARGV_ADD("--nostdlibrefs");
         ARGV_ADD("-r");
@@ -295,6 +294,8 @@ main(int argc, char **argv)
         ARGV_ADD(CONTAINER_BIN_DIR "/Nethermind.Abi.dll");
         ARGV_ADD("-r");
         ARGV_ADD(CONTAINER_BIN_DIR "/Nethermind.Blockchain.dll");
+        ARGV_ADD("-r");
+        ARGV_ADD(CONTAINER_BIN_DIR "/Nethermind.Config.dll");
         ARGV_ADD("-r");
         ARGV_ADD(CONTAINER_BIN_DIR "/Nethermind.Consensus.dll");
         ARGV_ADD("-r");
@@ -323,8 +324,10 @@ main(int argc, char **argv)
         ARGV_ADD(CONTAINER_BIN_DIR "/Nethermind.Trie.dll");
         ARGV_ADD("-r");
         ARGV_ADD(CONTAINER_BIN_DIR "/Nethermind.TxPool.dll");
+        ARGV_ADD("-r");
+        ARGV_ADD(CONTAINER_BIN_DIR "/Nethermind.Zkvm.Abstractions.dll");
         ARGV_ADD("--extlib");
-        ARGV_ADD(CONTAINER_BIN_DIR "/libziskos.bflat.manifest");
+        ARGV_ADD(CONTAINER_BIN_DIR "/runtimes/linux-riscv64/native/libziskos.bflat.manifest");
         ARGV_ADD("-o");
         ARGV_ADD(CONTAINER_SRC_DIR "/Program.patched");
         ARGV_ADD(CONTAINER_SRC_DIR "/Program.cs");
