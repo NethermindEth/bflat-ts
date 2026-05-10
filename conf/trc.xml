@@ -683,7 +683,7 @@ bflat / Zisk zkVM</objective>
               <arg name="zisk_image" />
               <notes />
             </iter>
-            <iter result="FAILED">
+            <iter result="PASSED">
               <arg name="bflat_arch" />
               <arg name="bflat_define" />
               <arg name="bflat_extlib" />
