@@ -56,6 +56,7 @@
 #include "tapi_rpc_stdio.h"
 #include "tapi_rpc_signal.h"
 #include "ts_container.h"
+#include "tsapi_bflat.h"
 #include "tsapi_zisk.h"
 #include "te_mi_log.h"
 
@@ -132,7 +133,8 @@ main(int argc, char **argv)
     TEST_START;
     TEST_GET_STRING_PARAM(ta);
     TEST_GET_STRING_PARAM(cs_file);
-    TEST_GET_STRING_PARAM(bflat_image);
+    TEST_GET_OPT_STRING_PARAM(bflat_image);
+    bflat_image = tsapi_bflat_resolve_image(bflat_image);
     TEST_GET_STRING_PARAM(bflat_arch);
     TEST_GET_STRING_PARAM(bflat_libc);
     TEST_GET_OPT_STRING_PARAM(bflat_stdlib);
