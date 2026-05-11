@@ -1,0 +1,23 @@
+// Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind)
+using System;
+
+interface I { int F(); }
+class C1 : I { public int F() => 1; }
+class C2 : I { public int F() => 2; }
+class C3 : I { public int F() => 3; }
+class C4 : I { public int F() => 4; }
+class C5 : I { public int F() => 5; }
+
+class Program
+{
+    static int Main()
+    {
+        {I i = new C1(); if (i.F() != 1) return 1;}
+        {I i = new C2(); if (i.F() != 2) return 1;}
+        {I i = new C3(); if (i.F() != 3) return 1;}
+        {I i = new C4(); if (i.F() != 4) return 1;}
+        {I i = new C5(); if (i.F() != 5) return 1;}
+        Console.WriteLine("dispatch: interface_5_impl ok");
+        return 0;
+    }
+}

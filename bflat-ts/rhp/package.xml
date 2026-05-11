@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description
-    >bflat build tests - Runtime Heap Platform (rhp) stubs</description>
+    <description>bflat RuntimeHelpers (rhp) tests</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -60,10 +59,493 @@
             </arg>
         </run-template>
 
-        <run name="objects" template="bflat_build">
+        <run name="arr_bool_1" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>objects.cs</value>
+                <value>arr_bool_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_bool_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_bool_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_bool_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_bool_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_bool_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_bool_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_bool_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_bool_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_bool_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_bool_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_bool_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_bool_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_byte_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_byte_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_byte_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_byte_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_byte_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_byte_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_byte_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_byte_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_byte_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_byte_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_byte_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_byte_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_byte_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_byte_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_char_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_char_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_char_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_char_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_char_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_char_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_char_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_char_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_char_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_char_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_char_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_char_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_char_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_char_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_int_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_int_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_int_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_int_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_int_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_int_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_int_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_int_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_int_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_int_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_int_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_int_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_int_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_int_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_long_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_long_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_long_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_long_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_long_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_long_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_long_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_long_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_long_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_long_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_long_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_long_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_long_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_long_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_sbyte_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_sbyte_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_sbyte_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_sbyte_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_sbyte_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_sbyte_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_sbyte_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_sbyte_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_sbyte_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_sbyte_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_sbyte_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_sbyte_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_sbyte_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_sbyte_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_short_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_short_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_short_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_short_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_short_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_short_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_short_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_short_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_short_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_short_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_short_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_short_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_short_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_short_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_uint_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_uint_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_uint_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_uint_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_uint_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_uint_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_uint_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_uint_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_uint_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_uint_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_uint_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_uint_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_uint_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_uint_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ulong_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ulong_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ulong_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ulong_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ulong_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ulong_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ulong_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ulong_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ulong_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ulong_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ulong_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ulong_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ulong_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ulong_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ushort_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ushort_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ushort_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ushort_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ushort_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ushort_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ushort_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ushort_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ushort_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ushort_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ushort_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ushort_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="arr_ushort_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arr_ushort_8.cs</value>
             </arg>
         </run>
 
@@ -71,6 +553,503 @@
             <script name="build" />
             <arg name="cs_file">
                 <value>arrays.cs</value>
+            </arg>
+        </run>
+
+        <run name="box_unbox_bool" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>box_unbox_bool.cs</value>
+            </arg>
+        </run>
+
+        <run name="box_unbox_byte" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>box_unbox_byte.cs</value>
+            </arg>
+        </run>
+
+        <run name="box_unbox_char" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>box_unbox_char.cs</value>
+            </arg>
+        </run>
+
+        <run name="box_unbox_double" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>box_unbox_double.cs</value>
+            </arg>
+        </run>
+
+        <run name="box_unbox_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>box_unbox_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="box_unbox_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>box_unbox_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="check_as_null" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>check_as_null.cs</value>
+            </arg>
+        </run>
+
+        <run name="check_as_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>check_as_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="check_is_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>check_is_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="check_is_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>check_is_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_0" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_0.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_100" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_100.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_1000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_1000.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_12345" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_12345.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_extreme_2147483647" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_extreme_2147483647.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_extreme_neg2147483648" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_extreme_neg2147483648.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_neg1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_neg1.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_neg10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_neg10.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_neg1000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_neg1000.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_format_neg12345" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_format_neg12345.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_cast" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_cast.cs</value>
+            </arg>
+        </run>
+
+        <run name="multidim_int_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>multidim_int_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="multidim_int_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>multidim_int_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="multidim_int_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>multidim_int_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_class_fields_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_class_fields_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_class_fields_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_class_fields_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_class_fields_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_class_fields_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_class_fields_32" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_class_fields_32.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_class_fields_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_class_fields_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_class_fields_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_class_fields_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_class_fields_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_class_fields_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_object_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_object_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_object_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_object_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_object_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_object_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_object_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_object_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_object_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_object_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="new_object_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>new_object_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="number_fmt" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>number_fmt.cs</value>
+            </arg>
+        </run>
+
+        <run name="object_arr_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>object_arr_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="object_arr_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>object_arr_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="object_arr_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>object_arr_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="object_arr_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>object_arr_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="object_arr_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>object_arr_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="object_arr_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>object_arr_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="objects" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>objects.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_arr_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_arr_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_arr_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_arr_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_arr_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_arr_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_arr_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_arr_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_arr_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_arr_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_arr_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_arr_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_arr_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_arr_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_100" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_100.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_1000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_1000.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_lit_len_0" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_lit_len_0.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_lit_len_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_lit_len_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_lit_len_128" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_lit_len_128.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_lit_len_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_lit_len_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_lit_len_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_lit_len_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_lit_len_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_lit_len_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_lit_len_32" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_lit_len_32.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_lit_len_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_lit_len_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_lit_len_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_lit_len_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_lit_len_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_lit_len_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_literal_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_literal_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_literal_short" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_literal_short.cs</value>
             </arg>
         </run>
 
@@ -88,11 +1067,19 @@
             </arg>
         </run>
 
-        <run name="number_fmt" template="bflat_build">
+        <run name="type_cast_object_to_int_unbox" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>number_fmt.cs</value>
+                <value>type_cast_object_to_int_unbox.cs</value>
             </arg>
         </run>
+
+        <run name="type_cast_object_to_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>type_cast_object_to_string.cs</value>
+            </arg>
+        </run>
+
     </session>
 </package>

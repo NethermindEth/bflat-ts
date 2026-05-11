@@ -1,0 +1,15 @@
+        // Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind)
+using System;
+
+        class H_29 { [ThreadStatic] public static int V; }
+
+        class Program
+        {
+            static int Main()
+            {
+                H_29.V = 29;
+                if (H_29.V != 29) return 1;
+                Console.WriteLine("tls: per_class_29 ok");
+                return 0;
+            }
+        }

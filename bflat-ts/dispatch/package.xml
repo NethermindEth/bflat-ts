@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description
-    >bflat build tests - Interface and virtual dispatch</description>
+    <description>bflat virtual/interface dispatch tests</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -60,10 +59,542 @@
             </arg>
         </run-template>
 
+        <run name="abstract_one_method" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>abstract_one_method.cs</value>
+            </arg>
+        </run>
+
+        <run name="abstract_two_methods" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>abstract_two_methods.cs</value>
+            </arg>
+        </run>
+
+        <run name="as_cast" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>as_cast.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_11" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_11.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_12" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_12.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_13" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_13.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_14" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_14.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_15" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_15.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_3" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_3.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_6" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_6.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_7" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_7.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="chain_base_add_9" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>chain_base_add_9.cs</value>
+            </arg>
+        </run>
+
+        <run name="explicit_interface_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>explicit_interface_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_dispatch" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_dispatch.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_10_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_10_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_2_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_2_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_3_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_3_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_4_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_4_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_5_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_5_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_6_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_6_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_7_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_7_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_8_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_8_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_9_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_9_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_array_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_array_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_array_20" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_array_20.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_array_3" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_array_3.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_array_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_array_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_array_50" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_array_50.cs</value>
+            </arg>
+        </run>
+
         <run name="interface_call" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
                 <value>interface_call.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_inherit" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_inherit.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_is_check" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_is_check.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_loop_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_loop_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_loop_100" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_loop_100.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_loop_1000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_loop_1000.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_11" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_11.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_12" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_12.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_13" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_13.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_14" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_14.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_15" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_15.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_3" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_3.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_6" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_6.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_7" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_7.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_mul_9" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_mul_9.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_property" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_property.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_simple" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_simple.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_three_on_one_class" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_three_on_one_class.cs</value>
+            </arg>
+        </run>
+
+        <run name="interface_two_on_one_class" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_two_on_one_class.cs</value>
+            </arg>
+        </run>
+
+        <run name="is_check_base" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>is_check_base.cs</value>
+            </arg>
+        </run>
+
+        <run name="method_hiding_new" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>method_hiding_new.cs</value>
+            </arg>
+        </run>
+
+        <run name="overload_int_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>overload_int_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="overload_string_object" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>overload_string_object.cs</value>
+            </arg>
+        </run>
+
+        <run name="poly_array_interface" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>poly_array_interface.cs</value>
+            </arg>
+        </run>
+
+        <run name="poly_array_virtual" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>poly_array_virtual.cs</value>
+            </arg>
+        </run>
+
+        <run name="sealed_override" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sealed_override.cs</value>
+            </arg>
+        </run>
+
+        <run name="static_method_call" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>static_method_call.cs</value>
+            </arg>
+        </run>
+
+        <run name="static_method_chain" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>static_method_chain.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_10_derived" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_10_derived.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_2_derived" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_2_derived.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_3_derived" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_3_derived.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_4_derived" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_4_derived.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_5_derived" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_5_derived.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_6_derived" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_6_derived.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_7_derived" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_7_derived.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_8_derived" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_8_derived.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_9_derived" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_9_derived.cs</value>
             </arg>
         </run>
 
@@ -73,5 +604,195 @@
                 <value>virtual_call.cs</value>
             </arg>
         </run>
+
+        <run name="virtual_chain_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_chain_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_chain_3" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_chain_3.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_chain_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_chain_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_chain_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_chain_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_chain_6" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_chain_6.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_chain_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_chain_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_loop_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_loop_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_loop_100" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_loop_100.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_loop_1000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_loop_1000.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_11" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_11.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_12" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_12.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_13" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_13.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_14" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_14.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_15" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_15.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_3" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_3.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_6" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_6.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_7" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_7.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_param_add_9" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_param_add_9.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_property" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_property.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_simple" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_simple.cs</value>
+            </arg>
+        </run>
+
+        <run name="virtual_via_base" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>virtual_via_base.cs</value>
+            </arg>
+        </run>
+
     </session>
 </package>
