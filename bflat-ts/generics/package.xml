@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description
-    >bflat build tests - generic types and collections</description>
+    <description>bflat generics tests</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -60,10 +59,73 @@
             </arg>
         </run-template>
 
-        <run name="list_int" template="bflat_build">
+        <run name="array_of_bool" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>list_int.cs</value>
+                <value>array_of_bool.cs</value>
+            </arg>
+        </run>
+
+        <run name="array_of_double" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>array_of_double.cs</value>
+            </arg>
+        </run>
+
+        <run name="array_of_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>array_of_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="array_of_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>array_of_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="array_of_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>array_of_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="constraint_class_new" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>constraint_class_new.cs</value>
+            </arg>
+        </run>
+
+        <run name="constraint_interface" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>constraint_interface.cs</value>
+            </arg>
+        </run>
+
+        <run name="default_bool" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>default_bool.cs</value>
+            </arg>
+        </run>
+
+        <run name="default_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>default_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="default_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>default_string.cs</value>
             </arg>
         </run>
 
@@ -73,5 +135,629 @@
                 <value>dict_basic.cs</value>
             </arg>
         </run>
+
+        <run name="dict_char_int_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_char_int_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_containskey" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_containskey.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_count" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_count.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_int_bool_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_int_bool_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_int_int_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_int_int_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_int_string_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_int_string_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_iterate" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_iterate.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_long_long_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_long_long_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_remove" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_remove.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_string_int_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_string_int_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_string_string_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_string_string_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_trygetvalue" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_trygetvalue.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_class_box_double" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_class_box_double.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_class_box_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_class_box_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_class_box_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_class_box_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_class_two_type_params" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_class_two_type_params.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_func" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_func.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_func_two" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_func_two.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_interface_impl" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_interface_impl.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_method_class_constraint" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_method_class_constraint.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_method_identity_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_method_identity_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_method_identity_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_method_identity_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_method_infer" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_method_infer.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_method_struct_constraint" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_method_struct_constraint.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_method_two_params" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_method_two_params.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_struct_box" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_struct_box.cs</value>
+            </arg>
+        </run>
+
+        <run name="hashset_int_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>hashset_int_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="hashset_intersect" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>hashset_intersect.cs</value>
+            </arg>
+        </run>
+
+        <run name="hashset_remove" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>hashset_remove.cs</value>
+            </arg>
+        </run>
+
+        <run name="hashset_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>hashset_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="ienumerable_foreach_list" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>ienumerable_foreach_list.cs</value>
+            </arg>
+        </run>
+
+        <run name="kvp_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>kvp_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="linkedlist_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>linkedlist_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_bool_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_bool_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_byte_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_byte_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_capacity_1024" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_capacity_1024.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_capacity_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_capacity_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_capacity_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_capacity_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_capacity_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_capacity_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_capacity_64" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_capacity_64.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_char_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_char_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_double_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_double_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_float_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_float_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_growth_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_growth_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_growth_100" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_growth_100.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_growth_1000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_growth_1000.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_growth_200" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_growth_200.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_growth_2000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_growth_2000.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_growth_50" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_growth_50.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_growth_500" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_growth_500.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_growth_5000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_growth_5000.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_clear" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_clear.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_contains" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_contains.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_count_0" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_count_0.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_count_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_count_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_count_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_count_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_count_100" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_count_100.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_count_1000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_count_1000.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_count_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_count_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_count_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_count_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_count_50" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_count_50.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_count_500" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_count_500.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_indexof" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_indexof.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_insert" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_insert.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_remove" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_remove.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_removeat" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_removeat.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_reverse" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_reverse.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_sort" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_sort.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_sum_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_sum_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_sum_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_sum_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_int_sum_100" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_int_sum_100.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_long_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_long_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_sbyte_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_sbyte_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_short_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_short_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_string_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_string_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_uint_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_uint_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_ulong_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_ulong_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_ushort_add" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_ushort_add.cs</value>
+            </arg>
+        </run>
+
+        <run name="nested_dict_of_dict" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>nested_dict_of_dict.cs</value>
+            </arg>
+        </run>
+
+        <run name="nested_dict_of_list" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>nested_dict_of_list.cs</value>
+            </arg>
+        </run>
+
+        <run name="nested_list_of_list" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>nested_list_of_list.cs</value>
+            </arg>
+        </run>
+
+        <run name="queue_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>queue_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="queue_count" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>queue_count.cs</value>
+            </arg>
+        </run>
+
+        <run name="sorteddict_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sorteddict_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="stack_basic" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>stack_basic.cs</value>
+            </arg>
+        </run>
+
+        <run name="stack_peek" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>stack_peek.cs</value>
+            </arg>
+        </run>
+
+        <run name="typeof_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>typeof_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="typeof_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>typeof_string.cs</value>
+            </arg>
+        </run>
+
     </session>
 </package>

@@ -1,10 +1,7 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description
-    >GVM TypeLoader tests: Comparer&lt;T&gt;.Default crash patterns in
-bflat / Zisk zkVM — broken (tests compiler fix) and fixed (explicit comparers)
-variants for three reproducer programs</description>
+    <description>bflat generic virtual method tests</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -60,90 +57,712 @@ variants for three reproducer programs</description>
             <arg name="expected_stdout">
                 <value>-</value>
             </arg>
-            <arg name="bflat_define">
-                <value>-</value>
-            </arg>
         </run-template>
 
-        <!-- comparer_default: minimal Comparer<T>.Default / TypeLoader crash -->
-
-        <run name="comparer_broken" template="bflat_build">
+        <run name="comparer_default" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
                 <value>comparer_default.cs</value>
             </arg>
         </run>
 
-        <run name="comparer_fixed" template="bflat_build">
+        <run name="dict_containskey_int" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>comparer_default.cs</value>
-            </arg>
-            <arg name="bflat_define">
-                <value>FIXED</value>
+                <value>dict_containskey_int.cs</value>
             </arg>
         </run>
 
-        <!-- gvm_suite: 8-test suite covering SortedList/Dict/Set/Hash/Dict/Mixed/typeof/KVP -->
-        <!-- _st variants include stacktrace data (no_stacktrace_data=FALSE);
-             default variants strip it (no_stacktrace_data=TRUE from template) -->
-
-        <run name="suite_broken" template="bflat_build">
+        <run name="dict_containskey_long" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>gvm_suite.cs</value>
+                <value>dict_containskey_long.cs</value>
             </arg>
         </run>
 
-        <run name="suite_fixed" template="bflat_build">
+        <run name="dict_containskey_string" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>gvm_suite.cs</value>
-            </arg>
-            <arg name="bflat_define">
-                <value>FIXED</value>
+                <value>dict_containskey_string.cs</value>
             </arg>
         </run>
 
-        <run name="suite_broken_st" template="bflat_build">
+        <run name="eqcomparer_bool" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>gvm_suite.cs</value>
-            </arg>
-            <arg name="no_stacktrace_data">
-                <value>FALSE</value>
+                <value>eqcomparer_bool.cs</value>
             </arg>
         </run>
 
-        <run name="suite_fixed_st" template="bflat_build">
+        <run name="eqcomparer_char" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>gvm_suite.cs</value>
-            </arg>
-            <arg name="bflat_define">
-                <value>FIXED</value>
-            </arg>
-            <arg name="no_stacktrace_data">
-                <value>FALSE</value>
+                <value>eqcomparer_char.cs</value>
             </arg>
         </run>
 
-        <!-- nested_generic: two-level crash with nested generic types -->
-
-        <run name="nested_broken" template="bflat_build">
+        <run name="eqcomparer_default_compare_char" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>nested_generic.cs</value>
+                <value>eqcomparer_default_compare_char.cs</value>
             </arg>
         </run>
 
-        <run name="nested_fixed" template="bflat_build">
+        <run name="eqcomparer_default_compare_double" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>nested_generic.cs</value>
+                <value>eqcomparer_default_compare_double.cs</value>
             </arg>
-            <arg name="bflat_define">
-                <value>FIXED</value>
+        </run>
+
+        <run name="eqcomparer_default_compare_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eqcomparer_default_compare_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="eqcomparer_default_compare_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eqcomparer_default_compare_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="eqcomparer_default_compare_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eqcomparer_default_compare_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="eqcomparer_double" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eqcomparer_double.cs</value>
+            </arg>
+        </run>
+
+        <run name="eqcomparer_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eqcomparer_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="eqcomparer_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eqcomparer_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="eqcomparer_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eqcomparer_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_list_init_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_list_init_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_list_init_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_list_init_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="generic_list_init_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>generic_list_init_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_array_count_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_array_count_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_array_count_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_array_count_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_basic_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_basic_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_calls_helper" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_calls_helper.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_chain_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_chain_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_chain_3" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_chain_3.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_chain_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_chain_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_bool" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_bool.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_bool_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_bool_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_byte" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_byte.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_byte_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_byte_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_char" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_char.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_char_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_char_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_double" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_double.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_double_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_double_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_float" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_float.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_float_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_float_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_int_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_int_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_long_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_long_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_sbyte_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_sbyte_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_short" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_short.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_short_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_short_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_string_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_string_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_uint" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_uint.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_uint_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_uint_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_ulong" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_ulong.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_ulong_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_ulong_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_echo_ushort_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_echo_ushort_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_iface_bool" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_iface_bool.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_iface_double" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_iface_double.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_iface_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_iface_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_iface_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_iface_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_iface_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_iface_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_in_generic_class_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_in_generic_class_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_in_generic_class_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_in_generic_class_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_in_generic_class_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_in_generic_class_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_many_calls_int_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_many_calls_int_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_many_calls_int_20" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_many_calls_int_20.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_many_calls_int_3" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_many_calls_int_3.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_many_calls_int_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_many_calls_int_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_01" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_01.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_02" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_02.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_03" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_03.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_04" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_04.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_05" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_05.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_06" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_06.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_07" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_07.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_08" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_08.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_09" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_09.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_11" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_11.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_12" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_12.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_13" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_13.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_14" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_14.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_mixed_calls_15" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_mixed_calls_15.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_object_echo" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_object_echo.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_two_params_int_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_two_params_int_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_two_params_long_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_two_params_long_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_two_params_string_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_two_params_string_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_with_class_constraint" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_with_class_constraint.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_with_struct_constraint" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_with_struct_constraint.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_bool_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_bool_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_byte_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_byte_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_char_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_char_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_double_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_double_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_float_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_float_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_in_list_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_in_list_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_in_list_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_in_list_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_in_list_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_in_list_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_int_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_int_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_long_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_long_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_sbyte_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_sbyte_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_short_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_short_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_string_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_string_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_uint_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_uint_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_ulong_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_ulong_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="gvm_wrap_ushort_v" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_wrap_ushort_v.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_contains_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_contains_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_contains_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_contains_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="list_contains_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>list_contains_string.cs</value>
             </arg>
         </run>
 

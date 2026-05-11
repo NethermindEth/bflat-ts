@@ -1,0 +1,14 @@
+// Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind)
+using System;
+
+class Program
+{
+    static int Main()
+    {
+        string s = "";
+        for (int i = 0; i < 5; i++) s += i.ToString();
+        if (s != "01234") return 1;
+        Console.WriteLine("format: multi_step_b ok");
+        return 0;
+    }
+}

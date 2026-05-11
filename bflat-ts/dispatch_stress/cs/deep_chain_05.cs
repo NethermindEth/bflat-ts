@@ -1,0 +1,19 @@
+// Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind)
+using System;
+
+class V0 { public virtual int F() => 0; }
+class V1 : V0 { public override int F() => 1; }
+class V2 : V1 { public override int F() => 2; }
+class V3 : V2 { public override int F() => 3; }
+class V4 : V3 { public override int F() => 4; }
+class V5 : V4 { public override int F() => 5; }
+
+class Program
+{
+    static int Main()
+    {
+        V0 v = new V5(); if (v.F() != 5) return 1;
+        Console.WriteLine("dispatch_stress: deep_chain_05 ok");
+        return 0;
+    }
+}

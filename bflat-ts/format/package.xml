@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description
-    >bflat build tests - number and string formatting beyond basic cases</description>
+    <description>bflat format/ToString tests</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -60,18 +59,922 @@
             </arg>
         </run-template>
 
-        <run name="int_bounds" template="bflat_build">
+        <run name="bool_false_to_string" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>int_bounds.cs</value>
+                <value>bool_false_to_string.cs</value>
             </arg>
         </run>
 
-        <run name="string_interp" template="bflat_build">
+        <run name="bool_true_to_string" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
-                <value>string_interp.cs</value>
+                <value>bool_true_to_string.cs</value>
             </arg>
         </run>
+
+        <run name="byte_to_string_max" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>byte_to_string_max.cs</value>
+            </arg>
+        </run>
+
+        <run name="char_to_string_20" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>char_to_string_20.cs</value>
+            </arg>
+        </run>
+
+        <run name="char_to_string_21" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>char_to_string_21.cs</value>
+            </arg>
+        </run>
+
+        <run name="char_to_string_30" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>char_to_string_30.cs</value>
+            </arg>
+        </run>
+
+        <run name="char_to_string_5a" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>char_to_string_5a.cs</value>
+            </arg>
+        </run>
+
+        <run name="char_to_string_61" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>char_to_string_61.cs</value>
+            </arg>
+        </run>
+
+        <run name="convert_bin_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>convert_bin_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="convert_hex_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>convert_hex_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="convert_int_to_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>convert_int_to_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="convert_octal_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>convert_octal_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="double_neg_one_half" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>double_neg_one_half.cs</value>
+            </arg>
+        </run>
+
+        <run name="double_one_half" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>double_one_half.cs</value>
+            </arg>
+        </run>
+
+        <run name="double_zero" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>double_zero.cs</value>
+            </arg>
+        </run>
+
+        <run name="enum_to_string_unknown" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>enum_to_string_unknown.cs</value>
+            </arg>
+        </run>
+
+        <run name="enum_to_string_value" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>enum_to_string_value.cs</value>
+            </arg>
+        </run>
+
+        <run name="format_string_format_d5_zero" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>format_string_format_d5_zero.cs</value>
+            </arg>
+        </run>
+
+        <run name="format_string_format_hex_lower_255" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>format_string_format_hex_lower_255.cs</value>
+            </arg>
+        </run>
+
+        <run name="format_string_format_hex_upper_255" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>format_string_format_hex_upper_255.cs</value>
+            </arg>
+        </run>
+
+        <run name="format_string_format_plain1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>format_string_format_plain1.cs</value>
+            </arg>
+        </run>
+
+        <run name="format_string_format_plain42" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>format_string_format_plain42.cs</value>
+            </arg>
+        </run>
+
+        <run name="format_string_format_plainneg7" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>format_string_format_plainneg7.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_lower_0" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_lower_0.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_lower_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_lower_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_lower_15" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_lower_15.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_lower_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_lower_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_lower_255" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_lower_255.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_lower_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_lower_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_lower_65535" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_lower_65535.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_upper_0" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_upper_0.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_upper_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_upper_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_upper_15" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_upper_15.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_upper_16" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_upper_16.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_upper_255" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_upper_255.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_upper_256" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_upper_256.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_hex_upper_65535" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_hex_upper_65535.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d2_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d2_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d2_12" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d2_12.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d2_123" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d2_123.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d2_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d2_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d2_99" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d2_99.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d4_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d4_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d4_12" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d4_12.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d4_123" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d4_123.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d4_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d4_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d4_99" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d4_99.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d6_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d6_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d6_12" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d6_12.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d6_123" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d6_123.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d6_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d6_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_pad_d6_99" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_pad_d6_99.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_max" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_max.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_min" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_min.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_n_0" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_n_0.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_n_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_n_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_n_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_n_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_n_100" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_n_100.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_n_1000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_n_1000.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_n_1234567" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_n_1234567.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_n_neg1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_n_neg1.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_n_neg10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_n_neg10.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_n_neg100" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_n_neg100.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_n_neg1000" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_n_neg1000.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_neg_one" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_neg_one.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_one" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_one.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_to_string_zero" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_to_string_zero.cs</value>
+            </arg>
+        </run>
+
+        <run name="interp_bool" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interp_bool.cs</value>
+            </arg>
+        </run>
+
+        <run name="interp_char" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interp_char.cs</value>
+            </arg>
+        </run>
+
+        <run name="interp_format_spec_d4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interp_format_spec_d4.cs</value>
+            </arg>
+        </run>
+
+        <run name="interp_format_spec_x" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interp_format_spec_x.cs</value>
+            </arg>
+        </run>
+
+        <run name="interp_int_plus" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interp_int_plus.cs</value>
+            </arg>
+        </run>
+
+        <run name="interp_mix_a" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interp_mix_a.cs</value>
+            </arg>
+        </run>
+
+        <run name="interp_single_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interp_single_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="interp_three_vars" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interp_three_vars.cs</value>
+            </arg>
+        </run>
+
+        <run name="interp_two_vars" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interp_two_vars.cs</value>
+            </arg>
+        </run>
+
+        <run name="interp_with_string_var" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interp_with_string_var.cs</value>
+            </arg>
+        </run>
+
+        <run name="join_comma" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>join_comma.cs</value>
+            </arg>
+        </run>
+
+        <run name="join_pipe" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>join_pipe.cs</value>
+            </arg>
+        </run>
+
+        <run name="long_to_string_max" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>long_to_string_max.cs</value>
+            </arg>
+        </run>
+
+        <run name="long_to_string_min" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>long_to_string_min.cs</value>
+            </arg>
+        </run>
+
+        <run name="loop_print_n_1" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>loop_print_n_1.cs</value>
+            </arg>
+        </run>
+
+        <run name="loop_print_n_10" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>loop_print_n_10.cs</value>
+            </arg>
+        </run>
+
+        <run name="loop_print_n_2" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>loop_print_n_2.cs</value>
+            </arg>
+        </run>
+
+        <run name="loop_print_n_3" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>loop_print_n_3.cs</value>
+            </arg>
+        </run>
+
+        <run name="loop_print_n_4" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>loop_print_n_4.cs</value>
+            </arg>
+        </run>
+
+        <run name="loop_print_n_5" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>loop_print_n_5.cs</value>
+            </arg>
+        </run>
+
+        <run name="loop_print_n_6" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>loop_print_n_6.cs</value>
+            </arg>
+        </run>
+
+        <run name="loop_print_n_7" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>loop_print_n_7.cs</value>
+            </arg>
+        </run>
+
+        <run name="loop_print_n_8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>loop_print_n_8.cs</value>
+            </arg>
+        </run>
+
+        <run name="loop_print_n_9" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>loop_print_n_9.cs</value>
+            </arg>
+        </run>
+
+        <run name="multi_step_a" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>multi_step_a.cs</value>
+            </arg>
+        </run>
+
+        <run name="multi_step_b" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>multi_step_b.cs</value>
+            </arg>
+        </run>
+
+        <run name="padleft_3" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>padleft_3.cs</value>
+            </arg>
+        </run>
+
+        <run name="padleft_3_char" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>padleft_3_char.cs</value>
+            </arg>
+        </run>
+
+        <run name="padright_3" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>padright_3.cs</value>
+            </arg>
+        </run>
+
+        <run name="padright_3_char" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>padright_3_char.cs</value>
+            </arg>
+        </run>
+
+        <run name="replace_char" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>replace_char.cs</value>
+            </arg>
+        </run>
+
+        <run name="replace_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>replace_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="sb_append_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sb_append_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="sb_append_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sb_append_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="sb_append_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sb_append_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="sb_appendline" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sb_appendline.cs</value>
+            </arg>
+        </run>
+
+        <run name="sb_clear" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sb_clear.cs</value>
+            </arg>
+        </run>
+
+        <run name="sbyte_to_string_max" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sbyte_to_string_max.cs</value>
+            </arg>
+        </run>
+
+        <run name="sbyte_to_string_min" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sbyte_to_string_min.cs</value>
+            </arg>
+        </run>
+
+        <run name="short_to_string_max" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>short_to_string_max.cs</value>
+            </arg>
+        </run>
+
+        <run name="short_to_string_min" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>short_to_string_min.cs</value>
+            </arg>
+        </run>
+
+        <run name="split_multi" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>split_multi.cs</value>
+            </arg>
+        </run>
+
+        <run name="split_single" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>split_single.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_three" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_three.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_two" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_two.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_with_bool" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_with_bool.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_with_char" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_with_char.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_with_double" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_with_double.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_with_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_with_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_concat_with_long" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_concat_with_long.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_equality_diff" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_equality_diff.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_equality_same" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_equality_same.cs</value>
+            </arg>
+        </run>
+
+        <run name="substring_mid" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>substring_mid.cs</value>
+            </arg>
+        </run>
+
+        <run name="substring_start" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>substring_start.cs</value>
+            </arg>
+        </run>
+
+        <run name="substring_to_end" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>substring_to_end.cs</value>
+            </arg>
+        </run>
+
+        <run name="tolower_invariant" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>tolower_invariant.cs</value>
+            </arg>
+        </run>
+
+        <run name="toupper_invariant" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>toupper_invariant.cs</value>
+            </arg>
+        </run>
+
+        <run name="trim_spaces" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>trim_spaces.cs</value>
+            </arg>
+        </run>
+
+        <run name="trimend_spaces" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>trimend_spaces.cs</value>
+            </arg>
+        </run>
+
+        <run name="trimstart_spaces" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>trimstart_spaces.cs</value>
+            </arg>
+        </run>
+
+        <run name="uint_to_string_max" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>uint_to_string_max.cs</value>
+            </arg>
+        </run>
+
+        <run name="uint_to_string_zero" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>uint_to_string_zero.cs</value>
+            </arg>
+        </run>
+
+        <run name="ulong_to_string_max" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>ulong_to_string_max.cs</value>
+            </arg>
+        </run>
+
+        <run name="ushort_to_string_max" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>ushort_to_string_max.cs</value>
+            </arg>
+        </run>
+
     </session>
 </package>
