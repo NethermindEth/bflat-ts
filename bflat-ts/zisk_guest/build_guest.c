@@ -153,16 +153,32 @@ main(int argc, char **argv)
     /* ------------------------------------------------------------------ */
     TEST_STEP("Update Nethermind repository (git pull + git reset --hard)");
     {
-        char  git_cmd[PATH_MAX + 64];
-        int   git_rc;
+        char        git_cmd[PATH_MAX + 256];
+        int         git_rc;
+        const char *rev = getenv("TS_NETHERMIND_REV");
+
+        if (rev != NULL && *rev == '\0')
+            rev = NULL;
 
         /*
-         * git fetch origin — update all remote-tracking refs without touching
-         * the working tree.  Works regardless of the branch name (main,
-         * master, etc.) and always sets FETCH_HEAD to the fetched tip.
+         * git fetch origin [<rev>] — update remote-tracking refs without
+         * touching the working tree and set FETCH_HEAD to the fetched tip.
+         * When TS_NETHERMIND_REV is set we fetch that specific revision
+         * (branch/tag/SHA); otherwise we fetch the default ref.  Both work
+         * regardless of the local branch name (main, master, etc.).
          */
-        snprintf(git_cmd, sizeof(git_cmd),
-                 "git -C '%s' fetch origin 2>&1", nm_dir_s.ptr);
+        if (rev != NULL)
+        {
+            RING("Building Nethermind at revision '%s'", rev);
+            snprintf(git_cmd, sizeof(git_cmd),
+                     "git -C '%s' fetch origin '%s' 2>&1",
+                     nm_dir_s.ptr, rev);
+        }
+        else
+        {
+            snprintf(git_cmd, sizeof(git_cmd),
+                     "git -C '%s' fetch origin 2>&1", nm_dir_s.ptr);
+        }
         RING("Running: %s", git_cmd);
         git_rc = system(git_cmd);
         if (git_rc != 0)
@@ -171,17 +187,19 @@ main(int argc, char **argv)
 
         /*
          * git reset --hard FETCH_HEAD — reset the working tree to whatever
-         * was just fetched, discarding any local modifications.  FETCH_HEAD
-         * is always valid after a successful fetch and is branch-name
-         * agnostic.
+         * was just fetched, discarding any local modifications.  We always
+         * reset to FETCH_HEAD (not to <rev> by name): after a rev-specific
+         * fetch FETCH_HEAD points at exactly the requested commit, whereas a
+         * bare branch name would resolve to the (possibly stale) local branch
+         * and a fetched tag/SHA may not have a local ref at all.
          */
         snprintf(git_cmd, sizeof(git_cmd),
                  "git -C '%s' reset --hard FETCH_HEAD 2>&1", nm_dir_s.ptr);
         RING("Running: %s", git_cmd);
         git_rc = system(git_cmd);
         if (git_rc != 0)
-            TEST_FAIL("'git reset --hard FETCH_HEAD' failed in '%s' "
-                      "(exit code %d)", nm_dir_s.ptr, git_rc);
+            TEST_FAIL("'git reset --hard' failed in '%s' (exit code %d)",
+                      nm_dir_s.ptr, git_rc);
 
         RING("Nethermind repository updated successfully");
     }
