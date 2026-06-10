@@ -70,6 +70,10 @@
         </run>
 
         <run>
+            <package name="exception_handler" />
+        </run>
+
+        <run>
             <package name="format" />
         </run>
 
