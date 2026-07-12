@@ -6,6 +6,14 @@
  * witness via an @c input.bin file and, optionally, verifying that the
  * emulator outputs the expected block hash.
  *
+ * The guest decodes the payload as a version-prefixed SSZ blob
+ * (@c schema:u16be | @c ssz_bytes, schema 0 = SszExecutionPayloadV3,
+ * 1 = V4).  On top of that, ziskemu expects the file passed via its
+ * @c inputs option to be framed as @c len:u64le | @c bytes[len] |
+ * zero-padding to 8 bytes.  Inputs therefore carry the @c .ssz suffix; the
+ * legacy pre-SSZ @c .bin inputs are rejected by the guest with
+ * "Unsupported schema version".
+ *
  * Both the binary and the input file are copied from the local test machine
  * to a temporary directory on the agent before being mounted into the Zisk
  * Docker container.
@@ -26,9 +34,9 @@
  *                       to the installed test-package directory.
  *                       Default: @c bin/nethermind (produced by
  *                       @c scripts/build_nethermind_guest.sh).
- * @param input_bin      Path to the input.bin file, resolved relative to the
+ * @param input_bin      Path to the input file, resolved relative to the
  *                       installed test-package directory.
- *                       Typically @c inputs/<name>.bin.
+ *                       Typically @c inputs/<block>.ssz.
  * @param expected_hash  Expected block hash as a hex string
  *                       (e.g. @c 0x1a2b…cafe), or @c - to skip hash
  *                       verification.
@@ -176,8 +184,8 @@ main(int argc, char **argv)
                   local_bin.ptr);
 
     if (access(local_input.ptr, F_OK) != 0)
-        TEST_FAIL("Input file not found at '%s'. "
-                  "Run scripts/gen_zisk_input.sh to generate test inputs.",
+        TEST_FAIL("Input file not found at '%s'. Inputs are version-prefixed "
+                  "SSZ blobs framed for ziskemu; see zisk_guest/package.xml.",
                   local_input.ptr);
 
     /* ------------------------------------------------------------------ */

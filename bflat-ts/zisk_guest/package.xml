@@ -18,7 +18,22 @@
 
             input_bin      - path to the serialised block+witness file,
                              relative to the installed package directory.
-                             Produced by scripts/gen_zisk_input.sh.
+
+                             Payload format expected by the guest is a
+                             version-prefixed SSZ blob:
+
+                                 schema: u16be | ssz_bytes
+
+                             where schema 0 selects SszExecutionPayloadV3
+                             (pre-Amsterdam) and 1 selects V4.  The file itself
+                             is additionally framed the way the ziskemu
+                             "inputs" option requires since Zisk v0.16.0:
+
+                                 len: u64le | bytes[len] | zero-padding to 8
+
+                             Inputs live in inputs/<block>.ssz.  The pre-SSZ
+                             *.bin inputs are no longer accepted by the guest
+                             and have been dropped.
 
             expected_hash  - block hash to verify against the emulator output.
                              Use "-" to skip hash verification (smoke test only).
@@ -68,99 +83,110 @@
                 >-</value></arg>
         </prologue>
 
-        <!-- Sepolia block 150026 -->
-        <run name="block_150026" template="zisk_guest_run">
+        <!-- Mainnet block 25252737 -->
+        <run name="block_25252737" template="zisk_guest_run">
             <script name="zisk_guest" />
             <arg name="input_bin">
-                <value>inputs/150026.bin</value>
+                <value>inputs/25252737.ssz</value>
             </arg>
             <arg name="expected_hash">
                 <value>-</value>
             </arg>
         </run>
 
-        <!-- Mainnet block 24721542 -->
-        <run name="block_24721542" template="zisk_guest_run">
+        <!-- Mainnet block 25252778 -->
+        <run name="block_25252778" template="zisk_guest_run">
             <script name="zisk_guest" />
             <arg name="input_bin">
-                <value>inputs/24721542.bin</value>
+                <value>inputs/25252778.ssz</value>
             </arg>
             <arg name="expected_hash">
                 <value>-</value>
             </arg>
         </run>
 
-        <!-- Mainnet block 24723632 -->
-        <run name="block_24723632" template="zisk_guest_run">
+        <!-- Mainnet block 25252780 -->
+        <run name="block_25252780" template="zisk_guest_run">
             <script name="zisk_guest" />
             <arg name="input_bin">
-                <value>inputs/24723632.bin</value>
+                <value>inputs/25252780.ssz</value>
             </arg>
             <arg name="expected_hash">
                 <value>-</value>
             </arg>
         </run>
 
-        <!-- Mainnet block 24723668 -->
-        <run name="block_24723668" template="zisk_guest_run">
+        <!-- Mainnet block 25252794 -->
+        <run name="block_25252794" template="zisk_guest_run">
             <script name="zisk_guest" />
             <arg name="input_bin">
-                <value>inputs/24723668.bin</value>
+                <value>inputs/25252794.ssz</value>
             </arg>
             <arg name="expected_hash">
                 <value>-</value>
             </arg>
         </run>
 
-        <!-- Mainnet block 24772857 -->
-        <run name="block_24772857" template="zisk_guest_run">
+        <!-- Mainnet block 25252835 -->
+        <run name="block_25252835" template="zisk_guest_run">
             <script name="zisk_guest" />
             <arg name="input_bin">
-                <value>inputs/24772857.bin</value>
+                <value>inputs/25252835.ssz</value>
             </arg>
             <arg name="expected_hash">
                 <value>-</value>
             </arg>
         </run>
 
-        <!-- Mainnet block 24777027 -->
-        <run name="block_24777027" template="zisk_guest_run">
+        <!-- Mainnet block 25273697 -->
+        <run name="block_25273697" template="zisk_guest_run">
             <script name="zisk_guest" />
             <arg name="input_bin">
-                <value>inputs/24777027.bin</value>
+                <value>inputs/25273697.ssz</value>
             </arg>
             <arg name="expected_hash">
                 <value>-</value>
             </arg>
         </run>
 
-        <!-- Mainnet block 24777988 -->
-        <run name="block_24777988" template="zisk_guest_run">
+        <!-- Mainnet block 25274052 -->
+        <run name="block_25274052" template="zisk_guest_run">
             <script name="zisk_guest" />
             <arg name="input_bin">
-                <value>inputs/24777988.bin</value>
+                <value>inputs/25274052.ssz</value>
             </arg>
             <arg name="expected_hash">
                 <value>-</value>
             </arg>
         </run>
 
-        <!-- Mainnet block 24835262 -->
-        <run name="block_24835262" template="zisk_guest_run">
+        <!-- Mainnet block 25301641 -->
+        <run name="block_25301641" template="zisk_guest_run">
             <script name="zisk_guest" />
             <arg name="input_bin">
-                <value>inputs/24835262.bin</value>
+                <value>inputs/25301641.ssz</value>
             </arg>
             <arg name="expected_hash">
                 <value>-</value>
             </arg>
         </run>
 
-        <!-- Mainnet block 24835493 -->
-        <run name="block_24835493" template="zisk_guest_run">
+        <!-- Mainnet block 25302208 -->
+        <run name="block_25302208" template="zisk_guest_run">
             <script name="zisk_guest" />
             <arg name="input_bin">
-                <value>inputs/24835493.bin</value>
+                <value>inputs/25302208.ssz</value>
+            </arg>
+            <arg name="expected_hash">
+                <value>-</value>
+            </arg>
+        </run>
+
+        <!-- Mainnet block 25303404 -->
+        <run name="block_25303404" template="zisk_guest_run">
+            <script name="zisk_guest" />
+            <arg name="input_bin">
+                <value>inputs/25303404.ssz</value>
             </arg>
             <arg name="expected_hash">
                 <value>-</value>
