@@ -635,7 +635,7 @@ bflat / Zisk zkVM</objective>
           <test name="suite_broken" type="script">
             <objective>Build a C# program with bflat</objective>
             <notes />
-            <iter result="FAILED">
+            <iter result="PASSED">
               <arg name="bflat_arch" />
               <arg name="bflat_define" />
               <arg name="bflat_extlib" />
@@ -710,7 +710,7 @@ bflat / Zisk zkVM</objective>
           <test name="suite_broken_st" type="script">
             <objective>Build a C# program with bflat</objective>
             <notes />
-            <iter result="FAILED">
+            <iter result="PASSED">
               <arg name="bflat_arch" />
               <arg name="bflat_define" />
               <arg name="bflat_extlib" />
