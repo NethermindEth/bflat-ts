@@ -60,686 +60,882 @@
         </run-template>
 
         <run name="args_clone" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_clone.cs</value>
             </arg>
         </run>
 
         <run name="args_clone_double" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_clone_double.cs</value>
             </arg>
         </run>
 
         <run name="args_concat_first" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_concat_first.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_0" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_0.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_1.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_10.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_2.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_3.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_4.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_5.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_6" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_6.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_7" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_7.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_8" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_8.cs</value>
             </arg>
         </run>
 
         <run name="args_conditional_print_9" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_conditional_print_9.cs</value>
             </arg>
         </run>
 
         <run name="args_contains_foo" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_contains_foo.cs</value>
             </arg>
         </run>
 
         <run name="args_copy_to_local" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_copy_to_local.cs</value>
             </arg>
         </run>
 
         <run name="args_find_long" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_find_long.cs</value>
             </arg>
         </run>
 
         <run name="args_first_or_default" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_first_or_default.cs</value>
             </arg>
         </run>
 
         <run name="args_indexed_access_0" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_indexed_access_0.cs</value>
             </arg>
         </run>
 
         <run name="args_indexed_access_1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_indexed_access_1.cs</value>
             </arg>
         </run>
 
         <run name="args_indexed_access_2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_indexed_access_2.cs</value>
             </arg>
         </run>
 
         <run name="args_indexed_access_3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_indexed_access_3.cs</value>
             </arg>
         </run>
 
         <run name="args_indexed_access_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_indexed_access_4.cs</value>
             </arg>
         </run>
 
         <run name="args_indexed_access_5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_indexed_access_5.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_for_1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_for_1.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_for_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_for_10.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_for_2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_for_2.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_for_3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_for_3.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_for_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_for_4.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_for_5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_for_5.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_for_6" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_for_6.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_for_7" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_for_7.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_for_8" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_for_8.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_for_9" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_for_9.cs</value>
             </arg>
         </run>
 
         <run name="args_iterate_foreach" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_iterate_foreach.cs</value>
             </arg>
         </run>
 
         <run name="args_join_comma" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_join_comma.cs</value>
             </arg>
         </run>
 
         <run name="args_join_empty" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_join_empty.cs</value>
             </arg>
         </run>
 
         <run name="args_join_pipe" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_join_pipe.cs</value>
             </arg>
         </run>
 
         <run name="args_join_space" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_join_space.cs</value>
             </arg>
         </run>
 
         <run name="args_last_or_default" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_last_or_default.cs</value>
             </arg>
         </run>
 
         <run name="args_length_check_eq_neg" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_length_check_eq_neg.cs</value>
             </arg>
         </run>
 
         <run name="args_length_check_gt" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_length_check_gt.cs</value>
             </arg>
         </run>
 
         <run name="args_length_check_lt" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_length_check_lt.cs</value>
             </arg>
         </run>
 
         <run name="args_length_hex" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_length_hex.cs</value>
             </arg>
         </run>
 
         <run name="args_length_padleft" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_length_padleft.cs</value>
             </arg>
         </run>
 
         <run name="args_length_padright" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_length_padright.cs</value>
             </arg>
         </run>
 
         <run name="args_length_to_double" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_length_to_double.cs</value>
             </arg>
         </run>
 
         <run name="args_length_to_long" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_length_to_long.cs</value>
             </arg>
         </run>
 
         <run name="args_length_zero_ok" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_length_zero_ok.cs</value>
             </arg>
         </run>
 
         <run name="args_parse_byte" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_parse_byte.cs</value>
             </arg>
         </run>
 
         <run name="args_parse_double" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_parse_double.cs</value>
             </arg>
         </run>
 
         <run name="args_parse_float" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_parse_float.cs</value>
             </arg>
         </run>
 
         <run name="args_parse_int" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_parse_int.cs</value>
             </arg>
         </run>
 
         <run name="args_parse_long" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_parse_long.cs</value>
             </arg>
         </run>
 
         <run name="args_parse_short" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_parse_short.cs</value>
             </arg>
         </run>
 
         <run name="args_parse_uint" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_parse_uint.cs</value>
             </arg>
         </run>
 
         <run name="args_parse_ulong" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_parse_ulong.cs</value>
             </arg>
         </run>
 
         <run name="args_pass_to_generic_helper" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_pass_to_generic_helper.cs</value>
             </arg>
         </run>
 
         <run name="args_pass_to_helper" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_pass_to_helper.cs</value>
             </arg>
         </run>
 
         <run name="args_print_loop_1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_print_loop_1.cs</value>
             </arg>
         </run>
 
         <run name="args_print_loop_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_print_loop_10.cs</value>
             </arg>
         </run>
 
         <run name="args_print_loop_2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_print_loop_2.cs</value>
             </arg>
         </run>
 
         <run name="args_print_loop_3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_print_loop_3.cs</value>
             </arg>
         </run>
 
         <run name="args_print_loop_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_print_loop_4.cs</value>
             </arg>
         </run>
 
         <run name="args_print_loop_5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_print_loop_5.cs</value>
             </arg>
         </run>
 
         <run name="args_print_loop_6" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_print_loop_6.cs</value>
             </arg>
         </run>
 
         <run name="args_print_loop_7" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_print_loop_7.cs</value>
             </arg>
         </run>
 
         <run name="args_print_loop_8" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_print_loop_8.cs</value>
             </arg>
         </run>
 
         <run name="args_print_loop_9" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_print_loop_9.cs</value>
             </arg>
         </run>
 
         <run name="args_return_0" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_return_0.cs</value>
             </arg>
         </run>
 
         <run name="args_return_1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_return_1.cs</value>
             </arg>
         </run>
 
         <run name="args_return_127" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_return_127.cs</value>
             </arg>
         </run>
 
         <run name="args_return_2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_return_2.cs</value>
             </arg>
         </run>
 
         <run name="args_return_42" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_return_42.cs</value>
             </arg>
         </run>
 
         <run name="args_reverse" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_reverse.cs</value>
             </arg>
         </run>
 
         <run name="args_sort" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_sort.cs</value>
             </arg>
         </run>
 
         <run name="args_sum_ints" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_sum_ints.cs</value>
             </arg>
         </run>
 
         <run name="args_sum_longs" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_sum_longs.cs</value>
             </arg>
         </run>
 
         <run name="args_tryparse_byte" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_tryparse_byte.cs</value>
             </arg>
         </run>
 
         <run name="args_tryparse_double" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_tryparse_double.cs</value>
             </arg>
         </run>
 
         <run name="args_tryparse_float" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_tryparse_float.cs</value>
             </arg>
         </run>
 
         <run name="args_tryparse_int" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_tryparse_int.cs</value>
             </arg>
         </run>
 
         <run name="args_tryparse_long" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_tryparse_long.cs</value>
             </arg>
         </run>
 
         <run name="args_tryparse_short" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_tryparse_short.cs</value>
             </arg>
         </run>
 
         <run name="args_tryparse_uint" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_tryparse_uint.cs</value>
             </arg>
         </run>
 
         <run name="args_tryparse_ulong" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_tryparse_ulong.cs</value>
             </arg>
         </run>
 
         <run name="args_via_env" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>args_via_env.cs</value>
             </arg>
         </run>
 
         <run name="main_async_task_int" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>main_async_task_int.cs</value>
             </arg>
         </run>
 
         <run name="main_async_task_void" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>main_async_task_void.cs</value>
             </arg>
         </run>
 
         <run name="main_internal" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>main_internal.cs</value>
             </arg>
         </run>
 
         <run name="main_public" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>main_public.cs</value>
             </arg>
         </run>
 
         <run name="no_args_int" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>no_args_int.cs</value>
             </arg>
         </run>
 
         <run name="no_args_void" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>no_args_void.cs</value>
             </arg>
         </run>
 
         <run name="params_pass_args" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>params_pass_args.cs</value>
             </arg>
         </run>
 
         <run name="params_two_calls" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>params_two_calls.cs</value>
             </arg>
         </run>
 
         <run name="toplevel_with_args" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>toplevel_with_args.cs</value>
             </arg>
         </run>
 
         <run name="with_args_int" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>with_args_int.cs</value>
             </arg>
         </run>
 
         <run name="with_args_void" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>with_args_void.cs</value>
             </arg>
