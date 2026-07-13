@@ -60,21 +60,27 @@
         </run-template>
 
         <run name="alloc_drop_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_drop_10.cs</value>
             </arg>
         </run>
 
         <run name="alloc_drop_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_drop_100.cs</value>
             </arg>
         </run>
 
         <run name="alloc_drop_1000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_drop_1000.cs</value>
             </arg>
@@ -88,133 +94,171 @@
         </run>
 
         <run name="alloc_many_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_many_10.cs</value>
             </arg>
         </run>
 
         <run name="alloc_many_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_many_100.cs</value>
             </arg>
         </run>
 
         <run name="alloc_many_1000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_many_1000.cs</value>
             </arg>
         </run>
 
         <run name="alloc_many_10000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_many_10000.cs</value>
             </arg>
         </run>
 
         <run name="alloc_many_200" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_many_200.cs</value>
             </arg>
         </run>
 
         <run name="alloc_many_2000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_many_2000.cs</value>
             </arg>
         </run>
 
         <run name="alloc_many_50" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_many_50.cs</value>
             </arg>
         </run>
 
         <run name="alloc_many_500" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_many_500.cs</value>
             </arg>
         </run>
 
         <run name="alloc_many_5000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_many_5000.cs</value>
             </arg>
         </run>
 
         <run name="alloc_size_1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_size_1.cs</value>
             </arg>
         </run>
 
         <run name="alloc_size_1024" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_size_1024.cs</value>
             </arg>
         </run>
 
         <run name="alloc_size_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_size_16.cs</value>
             </arg>
         </run>
 
         <run name="alloc_size_256" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_size_256.cs</value>
             </arg>
         </run>
 
         <run name="alloc_size_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_size_4.cs</value>
             </arg>
         </run>
 
         <run name="alloc_size_64" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>alloc_size_64.cs</value>
             </arg>
         </run>
 
         <run name="bump_clear_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>bump_clear_100.cs</value>
             </arg>
         </run>
 
         <run name="bump_clear_1000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>bump_clear_1000.cs</value>
             </arg>
         </run>
 
         <run name="bump_clear_5000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>bump_clear_5000.cs</value>
             </arg>
         </run>
 
         <run name="current_thread_id" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>current_thread_id.cs</value>
             </arg>
@@ -228,497 +272,639 @@
         </run>
 
         <run name="env_dotnet_system_globalization_invariant" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_dotnet_system_globalization_invariant.cs</value>
             </arg>
         </run>
 
         <run name="env_dotnet_system_globalization_predefined_cultures_only" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_dotnet_system_globalization_predefined_cultures_only.cs</value>
             </arg>
         </run>
 
         <run name="env_get_machinename" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_get_machinename.cs</value>
             </arg>
         </run>
 
         <run name="env_get_newline" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_get_newline.cs</value>
             </arg>
         </run>
 
         <run name="env_get_systemdirectory" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_get_systemdirectory.cs</value>
             </arg>
         </run>
 
         <run name="env_get_workingset" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_get_workingset.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_00" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_00.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_01" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_01.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_02" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_02.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_03" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_03.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_04" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_04.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_05" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_05.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_06" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_06.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_07" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_07.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_08" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_08.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_09" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_09.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_10.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_11" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_11.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_12" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_12.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_13" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_13.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_14" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_14.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_15" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_15.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_16.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_17" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_17.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_18" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_18.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_19" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_19.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_20" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_20.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_21" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_21.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_22" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_22.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_23" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_23.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_24" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_24.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_25" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_25.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_26" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_26.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_27" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_27.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_28" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_28.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_29" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_29.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_30" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_30.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_31" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_31.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_32" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_32.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_33" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_33.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_34" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_34.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_35" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_35.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_36" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_36.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_37" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_37.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_38" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_38.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_39" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_39.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_40" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_40.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_41" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_41.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_42" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_42.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_43" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_43.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_44" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_44.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_45" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_45.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_46" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_46.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_47" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_47.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_48" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_48.cs</value>
             </arg>
         </run>
 
         <run name="env_unk_idx_49" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unk_idx_49.cs</value>
             </arg>
         </run>
 
         <run name="env_unknown_another_unk" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unknown_another_unk.cs</value>
             </arg>
         </run>
 
         <run name="env_unknown_foo_bar" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unknown_foo_bar.cs</value>
             </arg>
         </run>
 
         <run name="env_unknown_not_a_real_env" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unknown_not_a_real_env.cs</value>
             </arg>
         </run>
 
         <run name="env_unknown_random_undefined_var" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unknown_random_undefined_var.cs</value>
             </arg>
         </run>
 
         <run name="env_unknown_something_else" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>env_unknown_something_else.cs</value>
             </arg>
         </run>
 
         <run name="exit_code_set" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>exit_code_set.cs</value>
             </arg>
         </run>
 
         <run name="gc_collect_simple" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gc_collect_simple.cs</value>
             </arg>
         </run>
 
         <run name="lock_basic" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>lock_basic.cs</value>
             </arg>
         </run>
 
         <run name="many_lists_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>many_lists_10.cs</value>
             </arg>
         </run>
 
         <run name="many_lists_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>many_lists_100.cs</value>
             </arg>
         </run>
 
         <run name="many_lists_500" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>many_lists_500.cs</value>
             </arg>
         </run>
 
         <run name="obj_init_ctor" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>obj_init_ctor.cs</value>
             </arg>
         </run>
 
         <run name="obj_init_field" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>obj_init_field.cs</value>
             </arg>
         </run>
 
         <run name="obj_init_init" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>obj_init_init.cs</value>
             </arg>
         </run>
 
         <run name="os_version" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>os_version.cs</value>
             </arg>
@@ -732,49 +918,63 @@
         </run>
 
         <run name="process_id" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>process_id.cs</value>
             </arg>
         </run>
 
         <run name="processor_count" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>processor_count.cs</value>
             </arg>
         </run>
 
         <run name="string_array_alloc_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>string_array_alloc_10.cs</value>
             </arg>
         </run>
 
         <run name="string_array_alloc_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>string_array_alloc_100.cs</value>
             </arg>
         </run>
 
         <run name="string_array_alloc_500" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>string_array_alloc_500.cs</value>
             </arg>
         </run>
 
         <run name="tick_count" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>tick_count.cs</value>
             </arg>
         </run>
 
         <run name="user_name" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>user_name.cs</value>
             </arg>
