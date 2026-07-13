@@ -60,252 +60,324 @@
         </run-template>
 
         <run name="abstract_array_3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>abstract_array_3.cs</value>
             </arg>
         </run>
 
         <run name="abstract_array_5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>abstract_array_5.cs</value>
             </arg>
         </run>
 
         <run name="abstract_array_8" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>abstract_array_8.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_02" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_02.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_03" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_03.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_04" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_04.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_05" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_05.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_06" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_06.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_07" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_07.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_08" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_08.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_09" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_09.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_10.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_11" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_11.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_12" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_12.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_13" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_13.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_14" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_14.cs</value>
             </arg>
         </run>
 
         <run name="deep_chain_15" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>deep_chain_15.cs</value>
             </arg>
         </run>
 
         <run name="gen_dispatch_01" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gen_dispatch_01.cs</value>
             </arg>
         </run>
 
         <run name="gen_dispatch_02" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gen_dispatch_02.cs</value>
             </arg>
         </run>
 
         <run name="gen_dispatch_03" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gen_dispatch_03.cs</value>
             </arg>
         </run>
 
         <run name="gen_dispatch_04" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gen_dispatch_04.cs</value>
             </arg>
         </run>
 
         <run name="gen_dispatch_05" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gen_dispatch_05.cs</value>
             </arg>
         </run>
 
         <run name="gen_dispatch_06" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gen_dispatch_06.cs</value>
             </arg>
         </run>
 
         <run name="gen_dispatch_07" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gen_dispatch_07.cs</value>
             </arg>
         </run>
 
         <run name="gen_dispatch_08" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gen_dispatch_08.cs</value>
             </arg>
         </run>
 
         <run name="gen_dispatch_09" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gen_dispatch_09.cs</value>
             </arg>
         </run>
 
         <run name="gen_dispatch_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>gen_dispatch_10.cs</value>
             </arg>
         </run>
 
         <run name="iface_alias_loop_50" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>iface_alias_loop_50.cs</value>
             </arg>
         </run>
 
         <run name="iface_alias_loop_500" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>iface_alias_loop_500.cs</value>
             </arg>
         </run>
 
         <run name="iface_alias_loop_5000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>iface_alias_loop_5000.cs</value>
             </arg>
         </run>
 
         <run name="iface_loop_04_iter_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>iface_loop_04_iter_100.cs</value>
             </arg>
         </run>
 
         <run name="iface_loop_04_iter_1000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>iface_loop_04_iter_1000.cs</value>
             </arg>
         </run>
 
         <run name="iface_loop_08_iter_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>iface_loop_08_iter_100.cs</value>
             </arg>
         </run>
 
         <run name="iface_loop_08_iter_1000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>iface_loop_08_iter_1000.cs</value>
             </arg>
         </run>
 
         <run name="iface_loop_16_iter_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>iface_loop_16_iter_100.cs</value>
             </arg>
         </run>
 
         <run name="iface_loop_16_iter_1000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>iface_loop_16_iter_1000.cs</value>
             </arg>
@@ -319,462 +391,594 @@
         </run>
 
         <run name="loop_chain_10_iter_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_10_iter_100.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_10_iter_1000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_10_iter_1000.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_10_iter_10000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_10_iter_10000.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_3_iter_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_3_iter_100.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_3_iter_1000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_3_iter_1000.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_3_iter_10000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_3_iter_10000.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_5_iter_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_5_iter_100.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_5_iter_1000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_5_iter_1000.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_5_iter_10000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_5_iter_10000.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_8_iter_100" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_8_iter_100.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_8_iter_1000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_8_iter_1000.cs</value>
             </arg>
         </run>
 
         <run name="loop_chain_8_iter_10000" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>loop_chain_8_iter_10000.cs</value>
             </arg>
         </run>
 
         <run name="mixed_array_03" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_array_03.cs</value>
             </arg>
         </run>
 
         <run name="mixed_array_05" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_array_05.cs</value>
             </arg>
         </run>
 
         <run name="mixed_array_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_array_10.cs</value>
             </arg>
         </run>
 
         <run name="sparse_override_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>sparse_override_4.cs</value>
             </arg>
         </run>
 
         <run name="sparse_override_6" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>sparse_override_6.cs</value>
             </arg>
         </run>
 
         <run name="sparse_override_8" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>sparse_override_8.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth2_step1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth2_step1.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth2_step10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth2_step10.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth2_step2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth2_step2.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth2_step3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth2_step3.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth2_step5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth2_step5.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth3_step1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth3_step1.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth3_step10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth3_step10.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth3_step2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth3_step2.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth3_step3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth3_step3.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth3_step5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth3_step5.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth4_step1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth4_step1.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth4_step10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth4_step10.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth4_step2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth4_step2.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth4_step3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth4_step3.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth4_step5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth4_step5.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth5_step1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth5_step1.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth5_step10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth5_step10.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth5_step2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth5_step2.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth5_step3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth5_step3.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth5_step5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth5_step5.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth6_step1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth6_step1.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth6_step10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth6_step10.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth6_step2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth6_step2.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth6_step3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth6_step3.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth6_step5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth6_step5.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth7_step1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth7_step1.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth7_step10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth7_step10.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth7_step2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth7_step2.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth7_step3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth7_step3.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth7_step5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth7_step5.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth8_step1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth8_step1.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth8_step10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth8_step10.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth8_step2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth8_step2.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth8_step3" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth8_step3.cs</value>
             </arg>
         </run>
 
         <run name="stride_depth8_step5" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>stride_depth8_step5.cs</value>
             </arg>
         </run>
 
         <run name="virtual_returns_double" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>virtual_returns_double.cs</value>
             </arg>
         </run>
 
         <run name="virtual_returns_int" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>virtual_returns_int.cs</value>
             </arg>
         </run>
 
         <run name="virtual_returns_long" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>virtual_returns_long.cs</value>
             </arg>
         </run>
 
         <run name="virtual_returns_string" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>virtual_returns_string.cs</value>
             </arg>
         </run>
 
         <run name="wide_iface_04" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>wide_iface_04.cs</value>
             </arg>
         </run>
 
         <run name="wide_iface_08" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>wide_iface_08.cs</value>
             </arg>
         </run>
 
         <run name="wide_iface_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>wide_iface_16.cs</value>
             </arg>
         </run>
 
         <run name="wide_iface_32" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>wide_iface_32.cs</value>
             </arg>
         </run>
 
         <run name="wide_iface_64" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>wide_iface_64.cs</value>
             </arg>
         </run>
 
         <run name="wide_vtable_04" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>wide_vtable_04.cs</value>
             </arg>
         </run>
 
         <run name="wide_vtable_08" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>wide_vtable_08.cs</value>
             </arg>
         </run>
 
         <run name="wide_vtable_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>wide_vtable_16.cs</value>
             </arg>
         </run>
 
         <run name="wide_vtable_32" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>wide_vtable_32.cs</value>
             </arg>
