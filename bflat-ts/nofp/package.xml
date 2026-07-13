@@ -60,224 +60,288 @@
         </run-template>
 
         <run name="array2d_double_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>array2d_double_16.cs</value>
             </arg>
         </run>
 
         <run name="array2d_double_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>array2d_double_4.cs</value>
             </arg>
         </run>
 
         <run name="array2d_double_64" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>array2d_double_64.cs</value>
             </arg>
         </run>
 
         <run name="array2d_float_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>array2d_float_16.cs</value>
             </arg>
         </run>
 
         <run name="array2d_float_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>array2d_float_4.cs</value>
             </arg>
         </run>
 
         <run name="array2d_float_64" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>array2d_float_64.cs</value>
             </arg>
         </run>
 
         <run name="box_double" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>box_double.cs</value>
             </arg>
         </run>
 
         <run name="box_float" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>box_float.cs</value>
             </arg>
         </run>
 
         <run name="conv_double_to_int_v" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>conv_double_to_int_v.cs</value>
             </arg>
         </run>
 
         <run name="conv_double_to_long_v" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>conv_double_to_long_v.cs</value>
             </arg>
         </run>
 
         <run name="conv_float_to_int_v" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>conv_float_to_int_v.cs</value>
             </arg>
         </run>
 
         <run name="conv_float_to_long_v" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>conv_float_to_long_v.cs</value>
             </arg>
         </run>
 
         <run name="conv_int_to_double_v" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>conv_int_to_double_v.cs</value>
             </arg>
         </run>
 
         <run name="conv_int_to_float_v" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>conv_int_to_float_v.cs</value>
             </arg>
         </run>
 
         <run name="conv_long_to_double_v" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>conv_long_to_double_v.cs</value>
             </arg>
         </run>
 
         <run name="conv_long_to_float_v" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>conv_long_to_float_v.cs</value>
             </arg>
         </run>
 
         <run name="double_add_assign" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_add_assign.cs</value>
             </arg>
         </run>
 
         <run name="double_add_static" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_add_static.cs</value>
             </arg>
         </run>
 
         <run name="double_array_sum_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_array_sum_16.cs</value>
             </arg>
         </run>
 
         <run name="double_array_sum_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_array_sum_4.cs</value>
             </arg>
         </run>
 
         <run name="double_array_sum_64" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_array_sum_64.cs</value>
             </arg>
         </run>
 
         <run name="double_compare_eq" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_compare_eq.cs</value>
             </arg>
         </run>
 
         <run name="double_compare_ge" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_compare_ge.cs</value>
             </arg>
         </run>
 
         <run name="double_compare_gt" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_compare_gt.cs</value>
             </arg>
         </run>
 
         <run name="double_compare_le" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_compare_le.cs</value>
             </arg>
         </run>
 
         <run name="double_compare_lt" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_compare_lt.cs</value>
             </arg>
         </run>
 
         <run name="double_compare_ne" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_compare_ne.cs</value>
             </arg>
         </run>
 
         <run name="double_div_assign" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_div_assign.cs</value>
             </arg>
         </run>
 
         <run name="double_div_static" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_div_static.cs</value>
             </arg>
         </run>
 
         <run name="double_mul_assign" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_mul_assign.cs</value>
             </arg>
         </run>
 
         <run name="double_mul_static" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_mul_static.cs</value>
             </arg>
         </run>
 
         <run name="double_neg" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_neg.cs</value>
             </arg>
@@ -291,266 +355,342 @@
         </run>
 
         <run name="double_static_pile_01" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_static_pile_01.cs</value>
             </arg>
         </run>
 
         <run name="double_static_pile_02" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_static_pile_02.cs</value>
             </arg>
         </run>
 
         <run name="double_static_pile_04" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_static_pile_04.cs</value>
             </arg>
         </run>
 
         <run name="double_static_pile_08" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_static_pile_08.cs</value>
             </arg>
         </run>
 
         <run name="double_static_pile_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_static_pile_16.cs</value>
             </arg>
         </run>
 
         <run name="double_sub_assign" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_sub_assign.cs</value>
             </arg>
         </run>
 
         <run name="double_sub_static" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>double_sub_static.cs</value>
             </arg>
         </run>
 
         <run name="float_add_assign" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_add_assign.cs</value>
             </arg>
         </run>
 
         <run name="float_add_static" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_add_static.cs</value>
             </arg>
         </run>
 
         <run name="float_array_sum_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_array_sum_16.cs</value>
             </arg>
         </run>
 
         <run name="float_array_sum_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_array_sum_4.cs</value>
             </arg>
         </run>
 
         <run name="float_array_sum_64" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_array_sum_64.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_01" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_01.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_02" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_02.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_03" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_03.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_04" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_04.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_05" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_05.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_06" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_06.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_07" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_07.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_08" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_08.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_09" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_09.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_10.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_11" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_11.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_12" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_12.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_13" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_13.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_14" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_14.cs</value>
             </arg>
         </run>
 
         <run name="float_chain_indep_15" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_chain_indep_15.cs</value>
             </arg>
         </run>
 
         <run name="float_compare_eq" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_compare_eq.cs</value>
             </arg>
         </run>
 
         <run name="float_compare_ge" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_compare_ge.cs</value>
             </arg>
         </run>
 
         <run name="float_compare_gt" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_compare_gt.cs</value>
             </arg>
         </run>
 
         <run name="float_compare_le" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_compare_le.cs</value>
             </arg>
         </run>
 
         <run name="float_compare_lt" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_compare_lt.cs</value>
             </arg>
         </run>
 
         <run name="float_compare_ne" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_compare_ne.cs</value>
             </arg>
         </run>
 
         <run name="float_div_assign" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_div_assign.cs</value>
             </arg>
         </run>
 
         <run name="float_div_static" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_div_static.cs</value>
             </arg>
         </run>
 
         <run name="float_mul_assign" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_mul_assign.cs</value>
             </arg>
         </run>
 
         <run name="float_mul_static" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_mul_static.cs</value>
             </arg>
         </run>
 
         <run name="float_neg" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_neg.cs</value>
             </arg>
@@ -564,210 +704,270 @@
         </run>
 
         <run name="float_static_pile_01" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_static_pile_01.cs</value>
             </arg>
         </run>
 
         <run name="float_static_pile_02" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_static_pile_02.cs</value>
             </arg>
         </run>
 
         <run name="float_static_pile_04" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_static_pile_04.cs</value>
             </arg>
         </run>
 
         <run name="float_static_pile_08" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_static_pile_08.cs</value>
             </arg>
         </run>
 
         <run name="float_static_pile_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_static_pile_16.cs</value>
             </arg>
         </run>
 
         <run name="float_sub_assign" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_sub_assign.cs</value>
             </arg>
         </run>
 
         <run name="float_sub_static" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_sub_static.cs</value>
             </arg>
         </run>
 
         <run name="float_sum_chain_1" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_sum_chain_1.cs</value>
             </arg>
         </run>
 
         <run name="float_sum_chain_16" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_sum_chain_16.cs</value>
             </arg>
         </run>
 
         <run name="float_sum_chain_2" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_sum_chain_2.cs</value>
             </arg>
         </run>
 
         <run name="float_sum_chain_4" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_sum_chain_4.cs</value>
             </arg>
         </run>
 
         <run name="float_sum_chain_8" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>float_sum_chain_8.cs</value>
             </arg>
         </run>
 
         <run name="generic_box_double" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>generic_box_double.cs</value>
             </arg>
         </run>
 
         <run name="generic_box_float" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>generic_box_float.cs</value>
             </arg>
         </run>
 
         <run name="int_to_double_then_mul" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>int_to_double_then_mul.cs</value>
             </arg>
         </run>
 
         <run name="int_to_float_then_mul" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>int_to_float_then_mul.cs</value>
             </arg>
         </run>
 
         <run name="math_abs_double" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>math_abs_double.cs</value>
             </arg>
         </run>
 
         <run name="math_sqrt_double" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>math_sqrt_double.cs</value>
             </arg>
         </run>
 
         <run name="method_returns_double" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>method_returns_double.cs</value>
             </arg>
         </run>
 
         <run name="method_returns_float" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>method_returns_float.cs</value>
             </arg>
         </run>
 
         <run name="mixed_fp_chain_01" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_fp_chain_01.cs</value>
             </arg>
         </run>
 
         <run name="mixed_fp_chain_02" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_fp_chain_02.cs</value>
             </arg>
         </run>
 
         <run name="mixed_fp_chain_03" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_fp_chain_03.cs</value>
             </arg>
         </run>
 
         <run name="mixed_fp_chain_04" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_fp_chain_04.cs</value>
             </arg>
         </run>
 
         <run name="mixed_fp_chain_05" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_fp_chain_05.cs</value>
             </arg>
         </run>
 
         <run name="mixed_fp_chain_06" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_fp_chain_06.cs</value>
             </arg>
         </run>
 
         <run name="mixed_fp_chain_07" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_fp_chain_07.cs</value>
             </arg>
         </run>
 
         <run name="mixed_fp_chain_08" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_fp_chain_08.cs</value>
             </arg>
         </run>
 
         <run name="mixed_fp_chain_09" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_fp_chain_09.cs</value>
             </arg>
         </run>
 
         <run name="mixed_fp_chain_10" template="bflat_build">
-            <script name="build" />
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
             <arg name="cs_file">
                 <value>mixed_fp_chain_10.cs</value>
             </arg>
