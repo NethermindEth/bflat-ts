@@ -137,12 +137,18 @@ export TE_TS_SRC="${TS_TOPDIR}/bflat-ts"
 
 eval "${TE_BASE}/dispatcher.sh ${TS_DEFAULT_OPTS} ${TS_OPTS} " \
     "--script=scripts/ta-def"
-if [ "$?" == "0" ] ; then
+TS_RC=$?
+if [ "$TS_RC" == "0" ] ; then
     echo OK
 else
     echo FAIL
 fi
 
+# Best-effort copy of build logs for diagnostics: the glob may match several
+# TE workspaces (parallel/stale runs), and clashes must not affect the
+# script's exit code — that belongs to the dispatcher result.
 mkdir -p ${TS_TOPDIR}/meson-logs
 rm -rf ${TS_TOPDIR}/meson-logs/*
-cp -R /tmp/te_ws*/build/meson-logs/* ${TS_TOPDIR}/meson-logs/
+cp -R /tmp/te_ws*/build/meson-logs/* ${TS_TOPDIR}/meson-logs/ 2>/dev/null || true
+
+exit $TS_RC
