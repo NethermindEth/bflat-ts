@@ -1,0 +1,151 @@
+<?xml version="1.0" ?>
+<!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
+<package version="1.0">
+    <description
+    >GVM TypeLoader tests: Comparer&lt;T&gt;.Default crash patterns in
+bflat / Zisk zkVM — broken (tests compiler fix) and fixed (explicit comparers)
+variants for three reproducer programs</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <run-template name="bflat_build">
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+            <arg name="bflat_image">
+                <value>-</value>
+            </arg>
+            <arg name="bflat_arch">
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+            </arg>
+            <arg name="bflat_stdlib">
+                <value>dotnet</value>
+            </arg>
+            <arg name="verbose">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_globalization">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pthread">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pie">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run_timeout_ms">
+                <value>600000</value>
+            </arg>
+            <arg name="bflat_extlib">
+                <value
+                >https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
+            </arg>
+            <arg name="qemu_path">
+                <value>/usr/bin/qemu-riscv64-static</value>
+            </arg>
+            <arg name="zisk_image">
+                <value>nethermindeth/zisk:latest</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
+            <arg name="bflat_define">
+                <value>-</value>
+            </arg>
+        </run-template>
+
+        <!-- comparer_default: minimal Comparer<T>.Default / TypeLoader crash -->
+
+        <run name="comparer_broken" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>comparer_default.cs</value>
+            </arg>
+        </run>
+
+        <run name="comparer_fixed" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>comparer_default.cs</value>
+            </arg>
+            <arg name="bflat_define">
+                <value>FIXED</value>
+            </arg>
+        </run>
+
+        <!-- gvm_suite: 8-test suite covering SortedList/Dict/Set/Hash/Dict/Mixed/typeof/KVP -->
+        <!-- _st variants include stacktrace data (no_stacktrace_data=FALSE);
+             default variants strip it (no_stacktrace_data=TRUE from template) -->
+
+        <run name="suite_broken" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_suite.cs</value>
+            </arg>
+        </run>
+
+        <run name="suite_fixed" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_suite.cs</value>
+            </arg>
+            <arg name="bflat_define">
+                <value>FIXED</value>
+            </arg>
+        </run>
+
+        <run name="suite_broken_st" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_suite.cs</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>FALSE</value>
+            </arg>
+        </run>
+
+        <run name="suite_fixed_st" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gvm_suite.cs</value>
+            </arg>
+            <arg name="bflat_define">
+                <value>FIXED</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>FALSE</value>
+            </arg>
+        </run>
+
+        <!-- nested_generic: two-level crash with nested generic types -->
+
+        <run name="nested_broken" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>nested_generic.cs</value>
+            </arg>
+        </run>
+
+        <run name="nested_fixed" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>nested_generic.cs</value>
+            </arg>
+            <arg name="bflat_define">
+                <value>FIXED</value>
+            </arg>
+        </run>
+
+    </session>
+</package>

@@ -1,0 +1,4 @@
+--script=dut.localhost
+--script=env.localhost
+
+--opts=run.conf.common

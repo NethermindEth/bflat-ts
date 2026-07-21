@@ -1,0 +1,3 @@
+[submodule "zkvm-tools"]
+	path = zkvm-tools
+	url = https://github.com/NethermindEth/zkvm-tools.git

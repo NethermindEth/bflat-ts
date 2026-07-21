@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025-2026 Demerzel Solutions Limited (Nethermind)
+
+Checks: >
+  bugprone-*,
+  clang-analyzer-*,
+  performance-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-exception-escape
+
+WarningsAsErrors: "*"
+
+HeaderFilterRegex: ""
+
+CheckOptions:
+  - key: bugprone-suspicious-string-compare.WarnOnImplicitComparison
+    value: "true"

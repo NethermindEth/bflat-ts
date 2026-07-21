@@ -1,0 +1,32 @@
+/** @defgroup bflat_ts_build_perf bflat build - Performance baseline
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Build-performance tests that measure the wall-clock time of a
+ *        bflat AOT compilation for a large C# source file.
+ *
+ * The test compiles @c big_refs.cs – a single file that deliberately
+ * exercises a broad cross-section of the .NET BCL:
+ *
+ *   - 40+ @c using directives spanning 20+ assemblies
+ *     (Collections.Generic/Concurrent/Immutable, Linq, Text.Json,
+ *      Text.RegularExpressions, Numerics.BigInteger,
+ *      Security.Cryptography, IO.Compression, IO.Pipelines, Buffers,
+ *      Threading.Channels, Threading.Tasks, Reflection,
+ *      Runtime.Serialization, Formats.Asn1, …)
+ *   - Many generic instantiations forcing the ILC compiler to
+ *     process large portions of the runtime type graph
+ *   - Complex LINQ pipelines, async/await, pattern matching, records
+ *
+ * The compiled binary is @b never executed (@c run=FALSE).  The only
+ * artefact of interest is the build time reported by the test as:
+ *
+ * @code
+ * build_perf: cs=<file> arch=<arch> libc=<libc> build_time_ms=<N>
+ * @endcode
+ *
+ * This message is emitted via @c RING() so it appears in the TE verdict
+ * log and can be scraped by external tooling for trend analysis.
+ *
+ * @}
+ */

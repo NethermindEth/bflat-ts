@@ -1,0 +1,171 @@
+<?xml version="1.0" ?>
+<!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
+<package version="1.0">
+    <description
+    >Nethermind ZiskGuest integration tests - stateless block execution on Zisk</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <!--
+            Common parameters for all ZiskGuest test cases.
+
+            binary         - path to the pre-built nethermind ELF, resolved
+                             relative to the installed package directory, or
+                             the special value "default" which resolves to
+                             ${TS_TOPDIR}/bflat-ts/zisk_guest/bin/nethermind
+                             when TS_TOPDIR is set.
+
+            input_bin      - path to the serialised block+witness file,
+                             relative to the installed package directory.
+                             Produced by scripts/gen_zisk_input.sh.
+
+            expected_hash  - block hash to verify against the emulator output.
+                             Use "-" to skip hash verification (smoke test only).
+
+            expected_stdout - expected stdout string for the run step.
+                             Use "-" to skip stdout verification.
+
+            run_timeout_ms - ziskemu timeout in milliseconds.
+                             30 minutes is generous; adjust per block complexity.
+
+            zisk_image     - Zisk Docker image.  Use "-" for the compiled-in
+                             default (TSAPI_ZISK_DEFAULT_IMAGE).
+
+            zisk_ta        - agent to run the Zisk container on.  If omitted or
+                             equal to "ta", the same agent handles everything.
+        -->
+        <run-template name="zisk_guest_run">
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+            <arg name="binary">
+                <value>default</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
+            <arg name="zisk_image">
+                <value>nethermindeth/zisk:latest</value>
+            </arg>
+            <arg name="run_timeout_ms">
+                <value>1800000</value>
+            </arg>
+            <arg name="zisk_ta">
+                <value>agt_zisk</value>
+            </arg>
+        </run-template>
+
+        <!--
+            Prologue: build the ZiskGuest ELF binary before any test runs.
+            Skipped automatically if the binary already exists at
+            ${TS_TOPDIR}/bflat-ts/zisk_guest/bin/nethermind.
+        -->
+        <prologue>
+            <script name="build_guest" />
+            <arg name="ta"><value>agt_main</value></arg>
+            <arg name="bflat_image"><value
+                >-</value></arg>
+        </prologue>
+
+        <!-- Sepolia block 150026 -->
+        <run name="block_150026" template="zisk_guest_run">
+            <script name="zisk_guest" />
+            <arg name="input_bin">
+                <value>inputs/150026.bin</value>
+            </arg>
+            <arg name="expected_hash">
+                <value>-</value>
+            </arg>
+        </run>
+
+        <!-- Mainnet block 24721542 -->
+        <run name="block_24721542" template="zisk_guest_run">
+            <script name="zisk_guest" />
+            <arg name="input_bin">
+                <value>inputs/24721542.bin</value>
+            </arg>
+            <arg name="expected_hash">
+                <value>-</value>
+            </arg>
+        </run>
+
+        <!-- Mainnet block 24723632 -->
+        <run name="block_24723632" template="zisk_guest_run">
+            <script name="zisk_guest" />
+            <arg name="input_bin">
+                <value>inputs/24723632.bin</value>
+            </arg>
+            <arg name="expected_hash">
+                <value>-</value>
+            </arg>
+        </run>
+
+        <!-- Mainnet block 24723668 -->
+        <run name="block_24723668" template="zisk_guest_run">
+            <script name="zisk_guest" />
+            <arg name="input_bin">
+                <value>inputs/24723668.bin</value>
+            </arg>
+            <arg name="expected_hash">
+                <value>-</value>
+            </arg>
+        </run>
+
+        <!-- Mainnet block 24772857 -->
+        <run name="block_24772857" template="zisk_guest_run">
+            <script name="zisk_guest" />
+            <arg name="input_bin">
+                <value>inputs/24772857.bin</value>
+            </arg>
+            <arg name="expected_hash">
+                <value>-</value>
+            </arg>
+        </run>
+
+        <!-- Mainnet block 24777027 -->
+        <run name="block_24777027" template="zisk_guest_run">
+            <script name="zisk_guest" />
+            <arg name="input_bin">
+                <value>inputs/24777027.bin</value>
+            </arg>
+            <arg name="expected_hash">
+                <value>-</value>
+            </arg>
+        </run>
+
+        <!-- Mainnet block 24777988 -->
+        <run name="block_24777988" template="zisk_guest_run">
+            <script name="zisk_guest" />
+            <arg name="input_bin">
+                <value>inputs/24777988.bin</value>
+            </arg>
+            <arg name="expected_hash">
+                <value>-</value>
+            </arg>
+        </run>
+
+        <!-- Mainnet block 24835262 -->
+        <run name="block_24835262" template="zisk_guest_run">
+            <script name="zisk_guest" />
+            <arg name="input_bin">
+                <value>inputs/24835262.bin</value>
+            </arg>
+            <arg name="expected_hash">
+                <value>-</value>
+            </arg>
+        </run>
+
+        <!-- Mainnet block 24835493 -->
+        <run name="block_24835493" template="zisk_guest_run">
+            <script name="zisk_guest" />
+            <arg name="input_bin">
+                <value>inputs/24835493.bin</value>
+            </arg>
+            <arg name="expected_hash">
+                <value>-</value>
+            </arg>
+        </run>
+
+    </session>
+</package>

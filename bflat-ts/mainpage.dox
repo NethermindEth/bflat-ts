@@ -1,0 +1,13 @@
+/** @mainpage Bflat Test Suite
+
+@defgroup bflat_ts Bflat Test Suite
+@{
+
+@brief Test suite for the bflat compiler targeting riscv64/linux.
+
+Tests verify that the bflat compiler can successfully build C# source files
+inside a Docker container.
+
+@}
+
+*/

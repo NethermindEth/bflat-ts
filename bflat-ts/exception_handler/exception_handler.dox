@@ -1,0 +1,22 @@
+/** @defgroup bflat_ts_exception_handler bflat build - managed exception handler
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests that a managed `throw` is routed into a C# handler instead of a
+ *        blind fail-fast.
+ *
+ *        A managed throw lowers to RhpThrowEx, which bflat redirects with
+ *        --wrap=RhpThrowEx to rhp's __wrap_RhpThrowEx. That wrapper forwards the
+ *        exception object (a0) to a weak symbol `ZkvmThrow` that a program may
+ *        export via [UnmanagedCallersOnly]; the handler receives the live
+ *        Exception and terminates the guest.
+ *
+ *        Exercises the full chain that makes this work in the zkVM:
+ *        - exception object forwarding in __wrap_RhpThrowEx
+ *        - no-op RhpReversePInvoke (so a managed handler can be entered from the
+ *          throw path without trapping on a GC rendezvous)
+ *        - exit() override emitting the Zisk exit ecall (a7=93) so the guest
+ *          terminates cleanly instead of EmulationNoCompleted
+ *
+ * @}
+ */

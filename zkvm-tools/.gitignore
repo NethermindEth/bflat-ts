@@ -1,0 +1,14 @@
+# Build output
+bin/
+
+# CMake build directories
+build/
+**/build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+__pycache__/
+report.htm
+report.html

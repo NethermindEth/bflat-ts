@@ -1,0 +1,17 @@
+/** @defgroup bflat_ts_dispatch bflat build - Interface and virtual dispatch
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests verifying that bflat-compiled C# programs using interface
+ *        calls and virtual method dispatch work correctly.
+ *
+ * Exercises the following runtime stubs:
+ *   - @c __wrap_RhpCidResolve  (rhp_native + rhp modules: non-cached
+ *     interface dispatch resolver)
+ *   - @c __wrap_RhpAssignRefRiscV64 (rhp_native: reference write without
+ *     GC write barrier)
+ *   - @c __wrap_RhpNewFast / @c __wrap_RhpNewObject  (rhp: object
+ *     allocation used when constructing concrete implementors)
+ *
+ * @}
+ */

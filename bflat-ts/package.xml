@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+<package version="1.0">
+    <description>Bflat Test Suite</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <prologue>
+            <script name="prologue" />
+        </prologue>
+
+        <epilogue>
+            <script name="epilogue" />
+        </epilogue>
+
+        <run>
+            <package name="simple" />
+        </run>
+
+        <run>
+            <package name="args" />
+        </run>
+
+        <run>
+            <package name="nofp" />
+        </run>
+
+        <run>
+            <package name="pal" />
+        </run>
+
+        <run>
+            <package name="rhp" />
+        </run>
+
+        <run>
+            <package name="rng" />
+        </run>
+
+        <run>
+            <package name="tls" />
+        </run>
+
+        <run>
+            <package name="dispatch" />
+        </run>
+
+        <run>
+            <package name="build_perf" />
+        </run>
+
+        <run>
+            <package name="run_perf" />
+        </run>
+
+        <run>
+            <package name="memory" />
+        </run>
+
+        <run>
+            <package name="tls_stress" />
+        </run>
+
+        <run>
+            <package name="dispatch_stress" />
+        </run>
+
+        <run>
+            <package name="generics" />
+        </run>
+
+        <run>
+            <package name="exception_handler" />
+        </run>
+
+        <run>
+            <package name="format" />
+        </run>
+
+        <run>
+            <package name="zisk_guest" />
+        </run>
+
+        <run>
+            <package name="gvm" />
+        </run>
+    </session>
+</package>

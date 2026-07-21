@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
+<package version="1.0">
+    <description
+    >bflat build tests - number and string formatting beyond basic cases</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <run-template name="bflat_build">
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+            <arg name="bflat_image">
+                <value>-</value>
+            </arg>
+            <arg name="bflat_arch">
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+            </arg>
+            <arg name="bflat_stdlib">
+                <value>dotnet</value>
+            </arg>
+            <arg name="verbose">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_globalization">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pthread">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pie">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run_timeout_ms">
+                <value>600000</value>
+            </arg>
+            <arg name="bflat_extlib">
+                <value
+                >https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
+            </arg>
+            <arg name="qemu_path">
+                <value>/usr/bin/qemu-riscv64-static</value>
+            </arg>
+            <arg name="zisk_image">
+                <value>nethermindeth/zisk:latest</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
+        </run-template>
+
+        <run name="int_bounds" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_bounds.cs</value>
+            </arg>
+        </run>
+
+        <run name="string_interp" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>string_interp.cs</value>
+            </arg>
+        </run>
+    </session>
+</package>

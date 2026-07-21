@@ -1,0 +1,13 @@
+#! /bin/bash
+#
+# Test Agents configuration.
+
+source "${TE_BASE}"/engine/builder/te_ta_ssh_helper
+
+export TE_TA_SIGNATURE_FIELDS="gcc-target kernel-version-full libc-version header-version"
+
+te_ta_list_detect_type_with_signature TA_MAIN_HOST
+te_ta_list_detect_type_with_signature TA_ZISK_HOST
+
+export TA_MAIN_HOST_TA_NAME="agt_main"
+export TA_ZISK_HOST_TA_NAME="agt_zisk"

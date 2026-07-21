@@ -1,0 +1,8 @@
+/** @defgroup bflat_ts_simple Simple bflat build tests
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Basic tests that verify bflat can compile C# source files.
+ *
+ * @}
+ */
