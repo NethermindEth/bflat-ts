@@ -58,7 +58,13 @@ echo "==> Running 'task publish' in '${BUBLIK_DISTR_PATH}'..."
 [ -d "${BUBLIK_DISTR_PATH}" ] || die "bublik_distr_path directory not found: '${BUBLIK_DISTR_PATH}'"
 
 cd "${BUBLIK_DISTR_PATH}"
-task publish
+if [ -t 0 ]; then
+    task publish
+else
+    # No terminal (CI / webhook): bublik's publish does `docker exec -it`,
+    # which needs a TTY — give it a pseudo one.
+    script -qec "task publish" /dev/null
+fi
 
 echo ""
 echo "Done."
