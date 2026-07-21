@@ -14,6 +14,25 @@
 #include "tapi_test.h"
 #include "tsapi_zisk.h"
 
+#include <stdlib.h>
+#include <string.h>
+
+/* See description in tsapi_zisk.h */
+const char *
+tsapi_zisk_resolve_image(const char *arg)
+{
+    const char *env;
+
+    if (arg != NULL && strcmp(arg, "-") != 0)
+        return arg;
+
+    env = getenv("TS_ZISK_IMAGE");
+    if (env != NULL && *env != '\0')
+        return env;
+
+    return TSAPI_ZISK_DEFAULT_IMAGE;
+}
+
 /* See description in tsapi_zisk.h */
 te_errno
 tsapi_zisk_runner_create(rcf_rpc_server    *rpcs,
@@ -23,8 +42,7 @@ tsapi_zisk_runner_create(rcf_rpc_server    *rpcs,
     ts_container_params_docker dp = TS_CONTAINER_PARAMS_DOCKER;
     te_errno rc;
 
-    dp.params.name     = (zisk_image != NULL) ? zisk_image
-                                               : TSAPI_ZISK_DEFAULT_IMAGE;
+    dp.params.name     = tsapi_zisk_resolve_image(zisk_image);
     dp.params.prebuilt = TRUE;
 
     rc = ts_container_create(rpcs, TS_CONTAINER_TYPE_DOCKER,

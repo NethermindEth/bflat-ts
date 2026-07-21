@@ -47,7 +47,7 @@
                 >https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
             </arg>
             <arg name="zisk_image">
-                <value>nethermindeth/zisk:latest</value>
+                <value>-</value>
             </arg>
             <arg name="run_timeout_ms">
                 <value>1800000</value>

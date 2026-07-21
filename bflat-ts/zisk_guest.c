@@ -267,8 +267,7 @@ main(int argc, char **argv)
 
         /* -------------------------------------------------------------- */
         TEST_STEP("Create Zisk runner (image='%s') on agent '%s'",
-                  zisk_image != NULL ? zisk_image : TSAPI_ZISK_DEFAULT_IMAGE,
-                  run_rpcs->ta);
+                  tsapi_zisk_resolve_image(zisk_image), run_rpcs->ta);
         CHECK_RC(tsapi_zisk_runner_create(run_rpcs, zisk_image, &zisk));
         zisk_created = true;
 
