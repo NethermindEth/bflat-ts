@@ -27,6 +27,10 @@ on:
         description: "Zisk Docker image override (empty = default)"
         required: false
         type: string
+      bflat_image:
+        description: "bflat Docker image override (empty = default)"
+        required: false
+        type: string
 
 jobs:
   compiler-tests:
@@ -42,16 +46,19 @@ jobs:
           FULL: ${{ inputs.full == true && '1' || '' }}
           TEST: ${{ inputs.test || '' }}
           ZISK_IMAGE: ${{ inputs.zisk_image || '' }}
+          BFLAT_IMAGE: ${{ inputs.bflat_image || '' }}
         run: |
           set -euo pipefail
 
           body=$(jq -n --arg ts "$BFLAT_BRANCH" --arg nm "$NETHERMIND_BRANCH" \
-                    --arg full "$FULL" --arg test "$TEST" --arg zisk "$ZISK_IMAGE" \
+                    --arg full "$FULL" --arg test "$TEST" \
+                    --arg zisk "$ZISK_IMAGE" --arg bflat "$BFLAT_IMAGE" \
             '{bflat_branch: $ts}
              + (if $nm != "" then {nethermind_branch: $nm} else {} end)
              + (if $full != "" then {full: $full} end)
              + (if $test != "" then {test: $test} end)
-             + (if $zisk != "" then {zisk_image: $zisk} end)')
+             + (if $zisk != "" then {zisk_image: $zisk} end)
+             + (if $bflat != "" then {bflat_image: $bflat} end)')
 
           resp=$(curl -sS --fail-with-body -X POST "$HOST/hooks/bflat-ci" \
             -H "Authorization: Bearer $HORIZON_HOOK_TOKEN" \
