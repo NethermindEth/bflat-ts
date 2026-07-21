@@ -65,6 +65,9 @@ usage() {
 USAGE: run.sh [run.sh options] [dispatcher.sh options]
 Options:
     --cfg=<CFG>             Configuration to be used
+    --full                  Run the full test suite, including compile-heavy
+                            runs gated behind TEST_SUITE_FULL (skipped by
+                            default)
     --bflat-image=<IMAGE>   Override bflat Docker image (sets TS_BFLAT_IMAGE)
     --nethermind-rev=<REV>  Build Nethermind at the given git revision
                             (branch/tag/SHA; sets TS_NETHERMIND_REV).
@@ -76,6 +79,7 @@ exit 1
 
 TS_OPTS=""
 TS_CFG="localhost"
+TS_FULL="0"
 while test -n "$1" ; do
     case $1 in
         --help)
@@ -83,6 +87,9 @@ while test -n "$1" ; do
             ;;
         --cfg=*)
             TS_CFG=${1#--cfg=}
+            ;;
+        --full)
+            TS_FULL="1"
             ;;
         --bflat-image=*)
             export TS_BFLAT_IMAGE="${1#--bflat-image=}"
@@ -127,6 +134,9 @@ TS_DEFAULT_OPTS=
 
 TS_DEFAULT_OPTS+="--conf-dirs=${TS_CONF_DIRS} "
 TS_DEFAULT_OPTS+="--build-parallel "
+if [ "${TS_FULL}" != "1" ] ; then
+    TS_DEFAULT_OPTS+="--tester-req=!TEST_SUITE_FULL "
+fi
 TS_DEFAULT_OPTS+="--trc-db=\"${TS_TOPDIR}\"/conf/trc.xml "
 TS_DEFAULT_OPTS+="--trc-tag=trc_test1 --trc-tag=trc_test2 "
 
