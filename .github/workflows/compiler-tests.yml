@@ -1,0 +1,78 @@
+name: compiler-tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      nethermind_branch:
+        description: "nethermind branch (empty = default)"
+        required: false
+        type: string
+      bflat_branch:
+        description: "bflat-ts branch (empty = current)"
+        required: false
+        type: string
+      full:
+        description: "run full test suite (--full)"
+        required: false
+        type: boolean
+        default: false
+      test:
+        description: "test path(s), space/comma-separated, e.g. bflat-ts/tls/basic bflat-ts/http/get (empty = all)"
+        required: false
+        type: string
+      zisk_image:
+        description: "Zisk Docker image override (empty = default)"
+        required: false
+        type: string
+
+jobs:
+  compiler-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run suite on zk-testing
+        env:
+          HOST: https://zk-testing.nethermind.dev
+          HORIZON_HOOK_TOKEN: ${{ secrets.HORIZON_HOOK_TOKEN }}
+          HORIZON_API_TOKEN: ${{ secrets.HORIZON_API_TOKEN }}
+          BFLAT_BRANCH: ${{ inputs.bflat_branch || github.head_ref || github.ref_name }}
+          NETHERMIND_BRANCH: ${{ inputs.nethermind_branch || '' }}
+          FULL: ${{ inputs.full == true && '1' || '' }}
+          TEST: ${{ inputs.test || '' }}
+          ZISK_IMAGE: ${{ inputs.zisk_image || '' }}
+        run: |
+          set -euo pipefail
+
+          body=$(jq -n --arg ts "$BFLAT_BRANCH" --arg nm "$NETHERMIND_BRANCH" \
+                    --arg full "$FULL" --arg test "$TEST" --arg zisk "$ZISK_IMAGE" \
+            '{bflat_branch: $ts}
+             + (if $nm != "" then {nethermind_branch: $nm} else {} end)
+             + (if $full != "" then {full: $full} end)
+             + (if $test != "" then {test: $test} end)
+             + (if $zisk != "" then {zisk_image: $zisk} end)')
+
+          resp=$(curl -sS --fail-with-body -X POST "$HOST/hooks/bflat-ci" \
+            -H "Authorization: Bearer $HORIZON_HOOK_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$body")
+          echo "$resp"
+          run_id=${resp#accepted }
+          run_id=${run_id%%[[:space:]]*}
+
+          while :; do
+            status=$(curl -sS "$HOST/api/runs/$run_id" \
+              -H "Authorization: Bearer $HORIZON_API_TOKEN" | jq -r .status)
+            case "$status" in
+              queued|running) sleep 30 ;;
+              *) break ;;
+            esac
+          done
+
+          echo "--- log tail ---"
+          curl -sS "$HOST/api/runs/$run_id/logs?tail=65536" \
+            -H "Authorization: Bearer $HORIZON_API_TOKEN"
+          echo
+          echo "status: $status"
+          [ "$status" = success ]
