@@ -40,7 +40,7 @@ if [ "$is_docker" == "1" ] ; then
     export TE_DOCKER_TAG="bflat-ts-build"
     export TE_DOCKER_MOUNT_PATHS="${TS_TOPDIR}:${TE_BASE}"
     export TE_DOCKER_WORK_DIR="$(pwd)"
-    export TE_DOCKER_ENV="TE_BASE:TS_TOPDIR:TS_BFLAT_IMAGE:TS_NETHERMIND_REV"
+    export TE_DOCKER_ENV="TE_BASE:TS_TOPDIR:TS_BFLAT_IMAGE:TS_ZISK_IMAGE:TS_NETHERMIND_REV"
     ${TS_TOPDIR}/scripts/docker_env.sh ${TS_TOPDIR}/scripts/run.sh $@
     exit $?
 fi
@@ -69,6 +69,7 @@ Options:
                             runs gated behind TEST_SUITE_FULL (skipped by
                             default)
     --bflat-image=<IMAGE>   Override bflat Docker image (sets TS_BFLAT_IMAGE)
+    --zisk-image=<IMAGE>    Override Zisk Docker image (sets TS_ZISK_IMAGE)
     --nethermind-rev=<REV>  Build Nethermind at the given git revision
                             (branch/tag/SHA; sets TS_NETHERMIND_REV).
                             If omitted, the latest commit is used.
@@ -93,6 +94,9 @@ while test -n "$1" ; do
             ;;
         --bflat-image=*)
             export TS_BFLAT_IMAGE="${1#--bflat-image=}"
+            ;;
+        --zisk-image=*)
+            export TS_ZISK_IMAGE="${1#--zisk-image=}"
             ;;
         --nethermind-rev=*)
             export TS_NETHERMIND_REV="${1#--nethermind-rev=}"

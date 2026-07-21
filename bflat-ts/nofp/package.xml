@@ -52,7 +52,7 @@
                 <value>/usr/bin/qemu-riscv64-static</value>
             </arg>
             <arg name="zisk_image">
-                <value>nethermindeth/zisk:latest</value>
+                <value>-</value>
             </arg>
             <arg name="expected_stdout">
                 <value>-</value>

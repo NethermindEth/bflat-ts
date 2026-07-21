@@ -22,12 +22,26 @@ extern "C" {
 #endif
 
 /**
- * Default Zisk Docker image (pinned by digest for reproducibility).
- * Override via the @c zisk_image test parameter.
+ * Default Zisk Docker image. Overridden by the @c zisk_image test parameter
+ * or the @c TS_ZISK_IMAGE environment variable (see tsapi_zisk_resolve_image()).
  */
-#define TSAPI_ZISK_DEFAULT_IMAGE \
-    "nethermindeth/zisk@sha256:" \
-    "1b38e92264c30a4109fdb47f3b175324544085e36b9dde0abf7570c2b1e3312b"
+#define TSAPI_ZISK_DEFAULT_IMAGE "nethermindeth/zisk:latest"
+
+/**
+ * Resolve the Zisk Docker image to use.
+ *
+ * Resolution order:
+ *   1. @p arg, when it is not @c NULL and not the @c "-" sentinel
+ *      (the @c zisk_image test parameter);
+ *   2. the @c TS_ZISK_IMAGE environment variable, when non-empty
+ *      (set by @c run.sh @c --zisk-image=);
+ *   3. #TSAPI_ZISK_DEFAULT_IMAGE.
+ *
+ * @param arg   Image from the test parameter, or @c NULL / @c "-".
+ *
+ * @return The image reference to use (never @c NULL).
+ */
+extern const char *tsapi_zisk_resolve_image(const char *arg);
 
 /** Mount point inside the Zisk container for host binaries */
 #define TSAPI_ZISK_MOUNT_TARGET  "/n"
