@@ -32,8 +32,10 @@ using System.Numerics;
 // ── System.Security.Cryptography ─────────────────────────────────────
 using System.Security.Cryptography;
 // ── System.IO.* ──────────────────────────────────────────────────────
+// NOTE: System.IO.Compression is deliberately NOT used: DeflateStream pulls
+// zlib-ng members from the bflat image's musl/libz.a, which are not part of
+// the soft-float ABI normalization done for zisk targets and fail the link.
 using System.IO;
-using System.IO.Compression;
 using System.IO.Pipelines;
 // ── System.Buffers ───────────────────────────────────────────────────
 using System.Buffers;
@@ -253,7 +255,7 @@ static class CollUtils
 }
 
 // =============================================================================
-// In-memory I/O  (MemoryStream, BinaryWriter/Reader, DeflateStream)
+// In-memory I/O  (MemoryStream, BinaryWriter/Reader, managed RLE codec)
 // =============================================================================
 
 static class IoUtils
@@ -273,19 +275,35 @@ static class IoUtils
         return read(br);
     }
 
-    public static byte[] Deflate(byte[] src)
+    /// <summary>Run-length encode: (count, byte) pairs over a stream.</summary>
+    public static byte[] RleEncode(byte[] src)
     {
         using var dst = new MemoryStream();
-        using (var ds = new DeflateStream(dst, CompressionLevel.Fastest))
-            ds.Write(src, 0, src.Length);
+        using var bw  = new BinaryWriter(dst);
+        int i = 0;
+        while (i < src.Length)
+        {
+            byte b = src[i];
+            int run = 1;
+            while (run < 255 && i + run < src.Length && src[i + run] == b) run++;
+            bw.Write((byte)run);
+            bw.Write(b);
+            i += run;
+        }
         return dst.ToArray();
     }
 
-    public static byte[] Inflate(byte[] src)
+    /// <summary>Inverse of <see cref="RleEncode"/>.</summary>
+    public static byte[] RleDecode(byte[] src)
     {
         using var dst = new MemoryStream();
-        using var ds  = new DeflateStream(new MemoryStream(src), CompressionMode.Decompress);
-        ds.CopyTo(dst);
+        using var br  = new BinaryReader(new MemoryStream(src));
+        while (br.BaseStream.Position < br.BaseStream.Length)
+        {
+            int  run = br.ReadByte();
+            byte b   = br.ReadByte();
+            for (int j = 0; j < run; j++) dst.WriteByte(b);
+        }
         return dst.ToArray();
     }
 }
@@ -541,8 +559,8 @@ class Program
         int deserialized  = IoUtils.FromBytes(serialized, br => br.ReadInt32());
         if (deserialized != 42) return 1;
 
-        byte[] compressed   = IoUtils.Deflate(rawUtf8);
-        byte[] decompressed = IoUtils.Inflate(compressed);
+        byte[] compressed   = IoUtils.RleEncode(rawUtf8);
+        byte[] decompressed = IoUtils.RleDecode(compressed);
         if (decompressed.Length != rawUtf8.Length) return 1;
 
         // ── Cryptography ─────────────────────────────────────────────────────
