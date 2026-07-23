@@ -17,7 +17,7 @@ if fs.is_dir('inputs')
     install_subdir('inputs', install_dir: package_dir)
 endif
 
-# bin/ — pre-built nethermind ZiskGuest ELF (produced by scripts/build_nethermind_guest.sh)
+# bin/ — pre-built nethermind ZiskGuest ELF (produced by the build_guest prologue)
 if fs.is_dir('bin')
     install_subdir('bin', install_dir: package_dir)
 endif

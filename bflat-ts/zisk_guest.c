@@ -24,8 +24,8 @@
  * @param ta             Test Agent name (must have Docker available)
  * @param binary         Path to the pre-built ZiskGuest ELF, resolved relative
  *                       to the installed test-package directory.
- *                       Default: @c bin/nethermind (produced by
- *                       @c scripts/build_nethermind_guest.sh).
+ *                       Default: @c bin/nethermind (produced by the
+ *                       @c build_guest prologue).
  * @param input_bin      Path to the input.bin file, resolved relative to the
  *                       installed test-package directory.
  *                       Typically @c inputs/<name>.bin.
@@ -172,7 +172,7 @@ main(int argc, char **argv)
 
     if (access(local_bin.ptr, F_OK) != 0)
         TEST_FAIL("ZiskGuest binary not found at '%s'. "
-                  "Run scripts/build_nethermind_guest.sh first.",
+                  "The build_guest prologue should have produced it.",
                   local_bin.ptr);
 
     if (access(local_input.ptr, F_OK) != 0)
