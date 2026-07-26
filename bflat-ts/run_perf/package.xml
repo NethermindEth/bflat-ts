@@ -44,7 +44,7 @@
             </arg>
             <arg name="bflat_extlib">
                 <value
-                >https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
+                >https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.5/nethermind.ziskos.runtime.1.0.0-preview.5.nupkg</value>
             </arg>
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:latest</value>

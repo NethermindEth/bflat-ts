@@ -44,7 +44,7 @@
                 <value>TRUE</value>
             </arg>
             <arg name="bflat_extlib">
-                <value>https://github.com/NethermindEth/bflat-libziskos:v1.0.0-preview.27</value>
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.5/nethermind.ziskos.runtime.1.0.0-preview.5.nupkg</value>
             </arg>
             <!-- Threshold: 0 = disabled. Limit 5 min for big_refs.cs compilation -->
             <arg name="max_build_time_ms">
