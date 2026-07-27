@@ -99,7 +99,7 @@ done
 
 source "${TE_BASE}/scripts/lib.meta"
 
-te_meta_test_suite bflat-ts ATS
+te_meta_test_suite bflat-ts BTS
 te_meta_add "CFG" "$TS_CFG"
 
 test -z "${TS_CFG}" || TS_OPTS+="--opts=run.conf.${TS_CFG} "
