@@ -1,9 +1,17 @@
-/** @defgroup bflat_ts_exception_handler bflat build - managed exception handler
+/** @defgroup bflat_ts_exception_handler bflat build - managed exception handling
  * @ingroup bflat_ts
  * @{
  *
- * @brief Tests that a managed `throw` is routed into a C# handler instead of a
- *        blind fail-fast.
+ * @brief Tests managed exception-handling semantics (try/catch/finally,
+ *        filters, rethrow, unwinding) and the routing of an unhandled managed
+ *        `throw` into a C# handler instead of a blind fail-fast.
+ *
+ *        The eh_* tests pin standard .NET EH behavior: catch by exact and
+ *        base type, catch/finally ordering on both paths, multi-frame
+ *        unwinding with intermediate finallys, exception filters, rethrow and
+ *        InnerException, runtime-raised exceptions (divide-by-zero, bounds,
+ *        invalid cast, checked overflow, null dereference), and that a CAUGHT
+ *        exception is never diverted into the ZkvmThrow handler.
  *
  *        A managed throw lowers to RhpThrowEx, which bflat redirects with
  *        --wrap=RhpThrowEx to rhp's __wrap_RhpThrowEx. That wrapper forwards the
