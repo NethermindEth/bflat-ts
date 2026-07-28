@@ -164,6 +164,48 @@
             </arg>
         </run>
 
+        <run name="guid_newguid" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>guid_newguid.cs</value>
+            </arg>
+        </run>
+
+        <run name="thread_processor_id" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>thread_processor_id.cs</value>
+            </arg>
+        </run>
+
+        <run name="threadpool_config_single_proc" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>threadpool_config_single_proc.cs</value>
+            </arg>
+        </run>
+
+        <run name="cdict_growth_primes" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>cdict_growth_primes.cs</value>
+            </arg>
+        </run>
+
+        <run name="bulkmove_struct_refs" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>bulkmove_struct_refs.cs</value>
+            </arg>
+        </run>
+
+        <run name="math_integer_ops" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>math_integer_ops.cs</value>
+            </arg>
+        </run>
+
         <run name="rnd_derived_parameterless_bounds" template="bflat_build">
             <script name="build">
                 <req id="TEST_SUITE_FULL"/>
@@ -314,6 +356,105 @@
             </script>
             <arg name="cs_file">
                 <value>stopwatch_elapsed_ticks.cs</value>
+            </arg>
+        </run>
+
+        <run name="task_sync_completion" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>task_sync_completion.cs</value>
+            </arg>
+        </run>
+
+        <run name="pinvoke_getpid" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>pinvoke_getpid.cs</value>
+            </arg>
+        </run>
+
+        <run name="env_current_directory" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>env_current_directory.cs</value>
+            </arg>
+        </run>
+
+        <run name="env_page_size" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>env_page_size.cs</value>
+            </arg>
+        </run>
+
+        <run name="console_error_write" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>console_error_write.cs</value>
+            </arg>
+        </run>
+
+        <run name="eventsource_noop" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>eventsource_noop.cs</value>
+            </arg>
+        </run>
+
+        <run name="gc_collect_deep_stack" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>gc_collect_deep_stack.cs</value>
+            </arg>
+        </run>
+
+        <run name="tz_custom_zone_roundtrip" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>tz_custom_zone_roundtrip.cs</value>
+            </arg>
+        </run>
+
+        <run name="unifier_resize_makegeneric" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>unifier_resize_makegeneric.cs</value>
+            </arg>
+        </run>
+
+        <run name="reflection_invoke_exact" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>reflection_invoke_exact.cs</value>
+            </arg>
+        </run>
+
+        <run name="reflection_default_param_int" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>reflection_default_param_int.cs</value>
             </arg>
         </run>
     </session>

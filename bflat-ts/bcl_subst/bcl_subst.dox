@@ -21,9 +21,27 @@
  *        - ArrayPool: trim gate stubbed to "memory pressure low"
  *        - Array.Copy/Buffer.BlockCopy fast paths (primitive widening removed)
  *        - Convert integer/string overloads (double overload removed)
- *        - Invariant TimeZoneInfo with stubbed transition math; integer
+ *        - Invariant TimeZoneInfo with stubbed transition math (including the
+ *          IL-patched cctor and the custom-zone API); integer
  *          DateTime/TimeSpan/Stopwatch tick arithmetic over wrapped
  *          clock_gettime
+ *        - PortableThreadPool config surface with the disabled HillClimbing
+ *          tuner and stubbed ProcessorCount=1; synchronously-completing
+ *          Task/async machinery without worker threads
+ *        - ProcessorIdCache with the speed check stubbed to the cached path
+ *        - ConcurrentDictionary growth through the Concurrent assembly's
+ *          HashHelpers copy
+ *        - RhBulkMoveWithWriteBarrier wrapped to plain memmove (ref-carrying
+ *          struct copies)
+ *        - ConcurrentUnifierW.Container.Resize integer load-factor rewrite
+ *          (driven via MakeGenericType)
+ *        - Reflection invoke without the removed primitive-widening path and
+ *          integer default-parameter metadata constants
+ *        - Guid entropy through the rng_stupid getrandom path
+ *        - pal wraps: getcwd, sysconf page size, FP-free vfprintf on stderr,
+ *          getpid over the no-op P/Invoke transitions, GC stack scanning
+ *          within the synthetic stack bounds
+ *        - EventPipe/EventSource registration wrapped to no-ops
  *
  * @}
  */
