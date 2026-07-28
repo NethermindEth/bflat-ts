@@ -1,0 +1,320 @@
+<?xml version="1.0" ?>
+<!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
+<package version="1.0">
+    <description>bflat build tests - CoreLib methods substituted by zisk modules</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <run-template name="bflat_build">
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+            <arg name="bflat_image">
+                <value>-</value>
+            </arg>
+            <arg name="bflat_arch">
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+            </arg>
+            <arg name="bflat_stdlib">
+                <value>dotnet</value>
+            </arg>
+            <arg name="verbose">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_globalization">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pthread">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pie">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run_timeout_ms">
+                <value>600000</value>
+            </arg>
+            <arg name="bflat_extlib">
+                <value
+                >https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.5/nethermind.ziskos.runtime.1.0.0-preview.5.nupkg</value>
+            </arg>
+            <arg name="qemu_path">
+                <value>/usr/bin/qemu-riscv64-static</value>
+            </arg>
+            <arg name="zisk_image">
+                <value>-</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
+        </run-template>
+
+        <run name="rnd_derived_next_max" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rnd_derived_next_max.cs</value>
+            </arg>
+        </run>
+
+        <run name="rnd_derived_next_min_max" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rnd_derived_next_min_max.cs</value>
+            </arg>
+        </run>
+
+        <run name="ht_basic_add_get" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>ht_basic_add_get.cs</value>
+            </arg>
+        </run>
+
+        <run name="ht_growth_rehash" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>ht_growth_rehash.cs</value>
+            </arg>
+        </run>
+
+        <run name="ht_ctor_loadfactor" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>ht_ctor_loadfactor.cs</value>
+            </arg>
+        </run>
+
+        <run name="vt_hash_double_field" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>vt_hash_double_field.cs</value>
+            </arg>
+        </run>
+
+        <run name="vt_hash_dict_key" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>vt_hash_dict_key.cs</value>
+            </arg>
+        </run>
+
+        <run name="frozen_dict_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>frozen_dict_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="frozen_set_string" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>frozen_set_string.cs</value>
+            </arg>
+        </run>
+
+        <run name="arraypool_rent_return" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>arraypool_rent_return.cs</value>
+            </arg>
+        </run>
+
+        <run name="dict_growth_primes" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>dict_growth_primes.cs</value>
+            </arg>
+        </run>
+
+        <run name="array_copy_int" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>array_copy_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="convert_string_int_paths" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>convert_string_int_paths.cs</value>
+            </arg>
+        </run>
+
+        <run name="tz_utc_offset_zero" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>tz_utc_offset_zero.cs</value>
+            </arg>
+        </run>
+
+        <run name="datetime_add_timespan" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>datetime_add_timespan.cs</value>
+            </arg>
+        </run>
+
+        <run name="rnd_derived_parameterless_bounds" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>rnd_derived_parameterless_bounds.cs</value>
+            </arg>
+        </run>
+
+        <run name="rnd_seeded_large_max" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>rnd_seeded_large_max.cs</value>
+            </arg>
+        </run>
+
+        <run name="rnd_seeded_wide_range" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>rnd_seeded_wide_range.cs</value>
+            </arg>
+        </run>
+
+        <run name="ht_ctor_capacity" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>ht_ctor_capacity.cs</value>
+            </arg>
+        </run>
+
+        <run name="ht_comparer_case_insensitive" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>ht_comparer_case_insensitive.cs</value>
+            </arg>
+        </run>
+
+        <run name="ht_iterate_entries" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>ht_iterate_entries.cs</value>
+            </arg>
+        </run>
+
+        <run name="ht_remove_readd" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>ht_remove_readd.cs</value>
+            </arg>
+        </run>
+
+        <run name="vt_hash_float_field" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>vt_hash_float_field.cs</value>
+            </arg>
+        </run>
+
+        <run name="vt_hash_mixed_fields" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>vt_hash_mixed_fields.cs</value>
+            </arg>
+        </run>
+
+        <run name="vt_hash_nested_struct" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>vt_hash_nested_struct.cs</value>
+            </arg>
+        </run>
+
+        <run name="vt_hash_negzero_distinct" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>vt_hash_negzero_distinct.cs</value>
+            </arg>
+        </run>
+
+        <run name="hashset_growth_primes" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>hashset_growth_primes.cs</value>
+            </arg>
+        </run>
+
+        <run name="frozen_dict_int" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>frozen_dict_int.cs</value>
+            </arg>
+        </run>
+
+        <run name="arraypool_reuse_large" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>arraypool_reuse_large.cs</value>
+            </arg>
+        </run>
+
+        <run name="array_copy_string_to_object" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>array_copy_string_to_object.cs</value>
+            </arg>
+        </run>
+
+        <run name="buffer_blockcopy_bytes" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>buffer_blockcopy_bytes.cs</value>
+            </arg>
+        </run>
+
+        <run name="stopwatch_elapsed_ticks" template="bflat_build">
+            <script name="build">
+                <req id="TEST_SUITE_FULL"/>
+            </script>
+            <arg name="cs_file">
+                <value>stopwatch_elapsed_ticks.cs</value>
+            </arg>
+        </run>
+    </session>
+</package>

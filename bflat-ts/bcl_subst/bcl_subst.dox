@@ -1,0 +1,29 @@
+/** @defgroup bflat_ts_bcl_subst bflat build - substituted CoreLib methods
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Behavioral tests for the CoreLib surface that bflat's zisk modules
+ *        replace or divert on the rv64ima (no-FPU) targets.
+ *
+ *        The zisk_subst module substitutes method bodies via
+ *        ILLink.Substitutions and C# snippets (zisk.snippets.cs), and the
+ *        rhp/pal modules divert symbols with --wrap. Each replacement must be
+ *        semantics-preserving for every guest, so each one gets a test pinning
+ *        the observable behavior:
+ *        - System.Random compat impls: integer scaling of Next(max) /
+ *          Next(min, max) for seeded and derived Random
+ *        - System.Collections.Hashtable: integer load-factor ctors and rehash
+ *        - ValueType.GetHashCode over float/double fields: raw bit-pattern
+ *          hashing consistent with byte-wise ValueType.Equals
+ *        - HashHelpers.IsPrime/GetPrime: integer reimplementation driving
+ *          Dictionary/HashSet/Hashtable growth
+ *        - Frozen collections: CalcNumBuckets wrap + LengthBuckets fallback
+ *        - ArrayPool: trim gate stubbed to "memory pressure low"
+ *        - Array.Copy/Buffer.BlockCopy fast paths (primitive widening removed)
+ *        - Convert integer/string overloads (double overload removed)
+ *        - Invariant TimeZoneInfo with stubbed transition math; integer
+ *          DateTime/TimeSpan/Stopwatch tick arithmetic over wrapped
+ *          clock_gettime
+ *
+ * @}
+ */
