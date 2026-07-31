@@ -40,6 +40,14 @@
  *                        (or equal to @p ta) the same agent is used
  * @param bflat_define    Optional C# preprocessor symbol passed as @c -d:SYMBOL
  *                        (e.g. @c FIXED); omit to compile without any define
+ * @param expected_status Expected guest process exit code on the honest qemu
+ *                        leg (@c zisk_sim / @c musl); defaults to 0. Set it
+ *                        nonzero for programs that deliberately fail-fast - a
+ *                        managed @c throw on the zkVM does not unwind, it exits
+ *                        (1 by default, or whatever a ZkvmThrow handler picks).
+ *                        Ignored on the @c zisk (ziskemu) leg, where the guest
+ *                        exit code is masked to a clean halt and cannot be
+ *                        checked.
  *
  * @par Scenario:
  *
@@ -125,6 +133,7 @@ main(int argc, char **argv)
     te_string           agent_binary_path = TE_STRING_INIT;
 
     const char         *expected_stdout   = NULL;
+    int                 expected_status   = 0;
     tapi_job_channel_t *stdout_filter     = NULL;
     tapi_job_buffer_t   stdout_buf        = TAPI_JOB_BUFFER_INIT;
 
@@ -154,6 +163,8 @@ main(int argc, char **argv)
     if (TEST_HAS_PARAM(bflat_define))
         TEST_GET_OPT_STRING_PARAM(bflat_define);
     TEST_GET_OPT_STRING_PARAM(expected_stdout);
+    if (TEST_HAS_PARAM(expected_status))
+        TEST_GET_INT_PARAM(expected_status);
     TEST_GET_TA(zisk, zisk_ta);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
@@ -444,9 +455,21 @@ main(int argc, char **argv)
             if (run_status.type != TAPI_JOB_STATUS_EXITED)
                 TEST_FAIL("Binary was killed by signal (signo=%d)",
                           run_status.value);
-            if (run_status.value != 0)
-                TEST_FAIL("Binary exited with non-zero status %d",
-                          run_status.value);
+            {
+                /* On the honest qemu leg (zisk_sim / musl) the guest's own
+                 * exit code is observable, so check it against expected_status
+                 * (0 for a normal run; nonzero for programs that deliberately
+                 * fail-fast - a managed throw on the zkVM exits rather than
+                 * unwinding). Under ziskemu (libc=zisk) the guest exit code is
+                 * masked to a clean halt, so only a clean halt is verifiable
+                 * there and the specific code is not checked. */
+                int expect = (strcmp(bflat_libc, "zisk") == 0)
+                             ? 0 : expected_status;
+
+                if (run_status.value != expect)
+                    TEST_FAIL("Binary exited with status %d, expected %d",
+                              run_status.value, expect);
+            }
 
             clock_gettime(CLOCK_MONOTONIC, &t_run_end);
             run_elapsed_ms =
