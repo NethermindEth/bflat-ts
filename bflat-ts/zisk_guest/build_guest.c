@@ -9,7 +9,10 @@
  * Steps:
  *
  *  -# Reads @c ${TS_TOPDIR}/.nethermind_path to locate the Nethermind source
- *     tree and resolves it to an absolute path via @c realpath(3).
+ *     tree and resolves it to an absolute path via @c realpath(3).  If no
+ *     checkout exists there (fresh CI workspace), shallow-clones the
+ *     repository first (@c TS_NETHERMIND_REPO env var overrides the URL,
+ *     default #NETHERMIND_REPO_DEFAULT).
  *  -# Updates the repository: @c git @c fetch @c origin followed by
  *     @c git @c reset @c --hard @c FETCH_HEAD.
  *  -# Removes any stale @c nethermind binary so the build always produces a
@@ -61,6 +64,9 @@
 /** Location of the ZiskGuest project inside the Nethermind tree */
 #define GUEST_SUBDIR        "src/Nethermind/Nethermind.Stateless.ZiskGuest"
 
+/** Repository cloned when .nethermind_path points at a missing directory */
+#define NETHERMIND_REPO_DEFAULT "https://github.com/NethermindEth/nethermind.git"
+
 
 int
 main(int argc, char **argv)
@@ -107,6 +113,7 @@ main(int argc, char **argv)
         char  nm_path_abs[PATH_MAX];
         FILE *f;
         char *p;
+        const char *nm_target = NULL;
 
         snprintf(nm_path_file, sizeof(nm_path_file),
                  "%s/.nethermind_path", ts_topdir_s.ptr);
@@ -131,16 +138,44 @@ main(int argc, char **argv)
 
         if (nm_path_raw[0] == '/')
         {
-            if (realpath(nm_path_raw, nm_path_abs) == NULL)
-                TEST_FAIL("realpath('%s') failed", nm_path_raw);
+            nm_target = nm_path_raw;
         }
         else
         {
             snprintf(nm_path_combined, sizeof(nm_path_combined),
                      "%s/%s", ts_topdir_s.ptr, nm_path_raw);
-            if (realpath(nm_path_combined, nm_path_abs) == NULL)
-                TEST_FAIL("realpath('%s') failed", nm_path_combined);
+            nm_target = nm_path_combined;
         }
+
+        /*
+         * Fresh CI workspaces contain no Nethermind checkout next to the
+         * suite: shallow-clone one so the prologue is self-sufficient.
+         * --depth 1 implies --single-branch, so the later plain
+         * 'git fetch origin' still resolves FETCH_HEAD to the default
+         * branch tip, and a rev-specific fetch works as before.
+         */
+        if (access(nm_target, F_OK) != 0)
+        {
+            const char *repo = getenv("TS_NETHERMIND_REPO");
+            char        clone_cmd[PATH_MAX * 3 + 256];
+            int         clone_rc;
+
+            if (repo == NULL || *repo == '\0')
+                repo = NETHERMIND_REPO_DEFAULT;
+
+            TEST_STEP("Clone Nethermind repository (missing checkout)");
+            RING("No checkout at '%s'; cloning from '%s'", nm_target, repo);
+            snprintf(clone_cmd, sizeof(clone_cmd),
+                     "git clone --depth 1 '%s' '%s' 2>&1", repo, nm_target);
+            RING("Running: %s", clone_cmd);
+            clone_rc = system(clone_cmd);
+            if (clone_rc != 0)
+                TEST_FAIL("'git clone %s' into '%s' failed (exit code %d)",
+                          repo, nm_target, clone_rc);
+        }
+
+        if (realpath(nm_target, nm_path_abs) == NULL)
+            TEST_FAIL("realpath('%s') failed", nm_target);
 
         CHECK_RC(te_string_append(&nm_dir_s, "%s", nm_path_abs));
         RING("Nethermind directory: %s", nm_dir_s.ptr);
