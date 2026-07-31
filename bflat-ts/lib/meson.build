@@ -3,6 +3,7 @@
 sources = [
     'tsapi_bflat.c',
     'ts_container.c',
+    'ts_pure.c',
     'tsapi_qemu.c',
     'tsapi_zisk.c',
 ]

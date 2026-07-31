@@ -68,9 +68,9 @@
 #include "tapi_rpc_stdio.h"
 #include "tapi_rpc_signal.h"
 #include "tsapi_zisk.h"
+#include "ts_pure.h"
 
 #include <string.h>
-#include <strings.h>
 #include <unistd.h>
 #include <limits.h>
 
@@ -372,23 +372,12 @@ main(int argc, char **argv)
 
         TEST_STEP("Verify output hash matches expected: '%s'",
                   expected_hash);
-        {
-            /* Compare without "0x" prefix, case-insensitive */
-            const char *actual   = last_hash_line;
-            const char *expected = expected_hash;
-
-            if (actual[0] == '0' && actual[1] == 'x')
-                actual += 2;
-            if (expected[0] == '0' && expected[1] == 'x')
-                expected += 2;
-
-            if (strcasecmp(actual, expected) != 0)
-                TEST_FAIL("Block hash mismatch:\n"
-                          "  expected : %s\n"
-                          "  actual   : %s\n"
-                          "  input    : %s",
-                          expected_hash, last_hash_line, input_bin);
-        }
+        if (!ts_hash_str_equal(last_hash_line, expected_hash))
+            TEST_FAIL("Block hash mismatch:\n"
+                      "  expected : %s\n"
+                      "  actual   : %s\n"
+                      "  input    : %s",
+                      expected_hash, last_hash_line, input_bin);
 
         RING("Hash check passed: %s (input=%s)", last_hash_line, input_bin);
     }
