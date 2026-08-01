@@ -23,6 +23,7 @@
             </arg>
             <arg name="bflat_libc">
                 <value>zisk_sim</value>
+                <value reqs="BFLAT_NATIVE">native</value>
                 <value>zisk</value>
             </arg>
             <arg name="bflat_stdlib">

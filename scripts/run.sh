@@ -68,6 +68,11 @@ Options:
     --full                  Run the full test suite, including compile-heavy
                             runs gated behind TEST_SUITE_FULL (skipped by
                             default)
+    --native                Also run the native parameterization: each test
+                            additionally built for the bflat container's own
+                            architecture (stock NativeAOT, no zisk modules)
+                            and executed inside it (skipped by default;
+                            requires a bflat image with a host-arch layout)
     --bflat-image=<IMAGE>   Override bflat Docker image (sets TS_BFLAT_IMAGE)
     --zisk-image=<IMAGE>    Override Zisk Docker image (sets TS_ZISK_IMAGE)
     --nethermind-rev=<REV>  Build Nethermind at the given git revision
@@ -81,6 +86,7 @@ exit 1
 TS_OPTS=""
 TS_CFG="localhost"
 TS_FULL="0"
+TS_NATIVE="0"
 while test -n "$1" ; do
     case $1 in
         --help)
@@ -91,6 +97,9 @@ while test -n "$1" ; do
             ;;
         --full)
             TS_FULL="1"
+            ;;
+        --native)
+            TS_NATIVE="1"
             ;;
         --bflat-image=*)
             export TS_BFLAT_IMAGE="${1#--bflat-image=}"
@@ -140,6 +149,9 @@ TS_DEFAULT_OPTS+="--conf-dirs=${TS_CONF_DIRS} "
 TS_DEFAULT_OPTS+="--build-parallel "
 if [ "${TS_FULL}" != "1" ] ; then
     TS_DEFAULT_OPTS+="--tester-req=!TEST_SUITE_FULL "
+fi
+if [ "${TS_NATIVE}" != "1" ] ; then
+    TS_DEFAULT_OPTS+="--tester-req=!BFLAT_NATIVE "
 fi
 TS_DEFAULT_OPTS+="--trc-db=\"${TS_TOPDIR}\"/conf/trc.xml "
 TS_DEFAULT_OPTS+="--trc-tag=trc_test1 --trc-tag=trc_test2 "

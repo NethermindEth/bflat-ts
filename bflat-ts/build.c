@@ -20,11 +20,18 @@
  * @param bflat_image   Docker image providing the bflat compiler.  Use @c -
  *                      (or omit) to pick up the @c TS_BFLAT_IMAGE environment
  *                      variable, falling back to #TSAPI_BFLAT_DEFAULT_IMAGE.
- * @param bflat_arch    Target architecture passed to @c --arch
- * @param bflat_libc    Target libc passed to @c --libc
+ * @param bflat_arch    Target architecture passed to @c --arch. Ignored for
+ *                      the @c native leg (the build targets the bflat
+ *                      container's own architecture).
+ * @param bflat_libc    Target libc passed to @c --libc, or the special value
+ *                      @c native: build for the bflat container's host
+ *                      architecture and default libc (no @c --arch /
+ *                      @c --libc flags), i.e. a stock NativeAOT binary with
+ *                      none of the zisk link-time modules
  * @param run             If @c TRUE, run the compiled binary after a successful
  *                        build: under qemu for @c musl, inside the Zisk
- *                        container for @c zisk / @c zisk_sim
+ *                        container for @c zisk / @c zisk_sim, directly inside
+ *                        the build container for @c native
  * @param run_timeout_ms  Timeout in milliseconds for the run step; must be
  *                        large enough to accommodate a Docker image pull on
  *                        first use
@@ -48,6 +55,12 @@
  *                        Ignored on the @c zisk (ziskemu) leg, where the guest
  *                        exit code is masked to a clean halt and cannot be
  *                        checked.
+ * @param expected_status_native Expected exit code on the @c native leg only;
+ *                        falls back to @p expected_status when omitted. Set it
+ *                        where guest and reference semantics legitimately
+ *                        diverge - e.g. a caught managed throw exits 1 on the
+ *                        zkVM (no unwinding) but 0 on a stock NativeAOT
+ *                        binary.
  *
  * @par Scenario:
  *
@@ -134,6 +147,7 @@ main(int argc, char **argv)
 
     const char         *expected_stdout   = NULL;
     int                 expected_status   = 0;
+    int                 expected_status_native = -1;
     tapi_job_channel_t *stdout_filter     = NULL;
     tapi_job_buffer_t   stdout_buf        = TAPI_JOB_BUFFER_INIT;
 
@@ -165,6 +179,8 @@ main(int argc, char **argv)
     TEST_GET_OPT_STRING_PARAM(expected_stdout);
     if (TEST_HAS_PARAM(expected_status))
         TEST_GET_INT_PARAM(expected_status);
+    if (TEST_HAS_PARAM(expected_status_native))
+        TEST_GET_INT_PARAM(expected_status_native);
     TEST_GET_TA(zisk, zisk_ta);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
@@ -250,9 +266,17 @@ main(int argc, char **argv)
         ARGV_ADD("-x");
         if (verbose)
             ARGV_ADD("--verbose");
-        ARGV_ADD("--arch");      ARGV_ADD(bflat_arch);
+        /* The native leg targets the container's own architecture and
+         * default libc: no --arch / --libc flags at all. */
+        if (strcmp(bflat_libc, "native") != 0)
+        {
+            ARGV_ADD("--arch");  ARGV_ADD(bflat_arch);
+        }
         ARGV_ADD("--os");        ARGV_ADD("linux");
-        ARGV_ADD("--libc");      ARGV_ADD(bflat_libc);
+        if (strcmp(bflat_libc, "native") != 0)
+        {
+            ARGV_ADD("--libc");  ARGV_ADD(bflat_libc);
+        }
         if (bflat_stdlib != NULL)
         {
             ARGV_ADD("--stdlib"); ARGV_ADD(bflat_stdlib);
@@ -336,7 +360,21 @@ main(int argc, char **argv)
         /* binary_name = stem after "/src/" inside the container path */
         const char *binary_name = remote_out.ptr + strlen(CONTAINER_SRC_DIR) + 1;
 
-        if (strcmp(bflat_libc, "musl") == 0 ||
+        if (strcmp(bflat_libc, "native") == 0)
+        {
+            /* A stock NativeAOT binary for the container's own architecture:
+             * run it directly inside the build container, the environment
+             * that produced it (glibc and arch guaranteed to match). */
+            const char *native_argv[] = { remote_out.ptr, NULL };
+
+            TEST_STEP("Run '%s' natively inside the build container",
+                      remote_out.ptr);
+            run_job = ts_container_run(&container, native_argv);
+            if (run_job == NULL)
+                TEST_FAIL("Failed to create native run job for '%s'",
+                          remote_out.ptr);
+        }
+        else if (strcmp(bflat_libc, "musl") == 0 ||
             strcmp(bflat_libc, "zisk_sim") == 0)
         {
             /* The container mounts src_dir as CONTAINER_SRC_DIR, so the
@@ -463,8 +501,15 @@ main(int argc, char **argv)
                  * unwinding). Under ziskemu (libc=zisk) the guest exit code is
                  * masked to a clean halt, so only a clean halt is verifiable
                  * there and the specific code is not checked. */
-                int expect = (strcmp(bflat_libc, "zisk") == 0)
-                             ? 0 : expected_status;
+                int expect;
+
+                if (strcmp(bflat_libc, "zisk") == 0)
+                    expect = 0;
+                else if (strcmp(bflat_libc, "native") == 0)
+                    expect = (expected_status_native >= 0)
+                             ? expected_status_native : expected_status;
+                else
+                    expect = expected_status;
 
                 if (run_status.value != expect)
                     TEST_FAIL("Binary exited with status %d, expected %d",

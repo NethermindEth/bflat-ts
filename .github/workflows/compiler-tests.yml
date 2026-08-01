@@ -19,6 +19,11 @@ on:
         required: false
         type: boolean
         default: false
+      native:
+        description: "also run the native parameterization (--native)"
+        required: false
+        type: boolean
+        default: false
       test:
         description: "test path(s), space/comma-separated, e.g. bflat-ts/tls/basic bflat-ts/http/get (empty = all)"
         required: false
@@ -47,6 +52,7 @@ jobs:
           BFLAT_BRANCH: ${{ inputs.bflat_branch || github.head_ref || github.ref_name }}
           NETHERMIND_BRANCH: ${{ inputs.nethermind_branch || '' }}
           FULL: ${{ inputs.full == true && '1' || '' }}
+          NATIVE: ${{ inputs.native == true && '1' || '' }}
           TEST: ${{ inputs.test || '' }}
           ZISK_IMAGE: ${{ inputs.zisk_image || '' }}
           BFLAT_IMAGE: ${{ inputs.bflat_image || '' }}
@@ -54,11 +60,12 @@ jobs:
           set -euo pipefail
 
           body=$(jq -n --arg ts "$BFLAT_BRANCH" --arg nm "$NETHERMIND_BRANCH" \
-                    --arg full "$FULL" --arg test "$TEST" \
+                    --arg full "$FULL" --arg native "$NATIVE" --arg test "$TEST" \
                     --arg zisk "$ZISK_IMAGE" --arg bflat "$BFLAT_IMAGE" \
             '{bflat_branch: $ts}
              + (if $nm != "" then {nethermind_branch: $nm} else {} end)
              + (if $full != "" then {full: $full} end)
+             + (if $native != "" then {native: $native} end)
              + (if $test != "" then {test: $test} end)
              + (if $zisk != "" then {zisk_image: $zisk} end)
              + (if $bflat != "" then {bflat_image: $bflat} end)')

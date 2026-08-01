@@ -19,6 +19,7 @@
             <arg name="bflat_libc">
                 <value>zisk</value>
                 <value>zisk_sim</value>
+                <value reqs="BFLAT_NATIVE">native</value>
             </arg>
             <arg name="bflat_stdlib">
                 <value>dotnet</value>
@@ -67,6 +68,10 @@
             <arg name="cs_file">
                 <value>exhandler.cs</value>
             </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+            </arg>
         </run>
 
         <run name="eh_try_finally_normal" template="bflat_build">
@@ -91,6 +96,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_catch_base_type" template="bflat_build">
@@ -100,6 +108,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -111,6 +122,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_catch_divzero" template="bflat_build">
@@ -120,6 +134,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -131,6 +148,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_catch_invalid_cast" template="bflat_build">
@@ -140,6 +160,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -151,6 +174,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_handler_uncalled_when_caught" template="bflat_build">
@@ -161,6 +187,9 @@
             <arg name="expected_status">
                 <value>3</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_deep_throw_shallow_catch" template="bflat_build">
@@ -170,6 +199,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -192,6 +224,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_catch_inner_exception" template="bflat_build">
@@ -203,6 +238,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -216,6 +254,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_filter_when_false" template="bflat_build">
@@ -227,6 +268,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -240,6 +284,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_nested_rethrow_outer_catch" template="bflat_build">
@@ -251,6 +298,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -264,6 +314,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_two_catch_first_match" template="bflat_build">
@@ -275,6 +328,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -288,6 +344,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_custom_exception" template="bflat_build">
@@ -299,6 +358,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -312,6 +374,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_throw_in_finally" template="bflat_build">
@@ -323,6 +388,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -336,6 +404,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_loop_catch_iterations" template="bflat_build">
@@ -347,6 +418,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
 
@@ -360,6 +434,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_argnull_throwifnull" template="bflat_build">
@@ -372,6 +449,9 @@
             <arg name="expected_status">
                 <value>1</value>
             </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
+            </arg>
         </run>
 
         <run name="eh_multiple_finally_order" template="bflat_build">
@@ -383,6 +463,9 @@
             </arg>
             <arg name="expected_status">
                 <value>1</value>
+            </arg>
+            <arg name="expected_status_native">
+                <value>0</value>
             </arg>
         </run>
     </session>

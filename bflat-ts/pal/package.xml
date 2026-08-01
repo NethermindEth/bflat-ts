@@ -19,6 +19,7 @@
             <arg name="bflat_libc">
                 <value>zisk</value>
                 <value>zisk_sim</value>
+                <value reqs="BFLAT_NATIVE">native</value>
             </arg>
             <arg name="bflat_stdlib">
                 <value>dotnet</value>
@@ -269,6 +270,10 @@
             <arg name="cs_file">
                 <value>env_dotnet.cs</value>
             </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+            </arg>
         </run>
 
         <run name="env_dotnet_system_globalization_invariant" template="bflat_build">
@@ -278,6 +283,10 @@
             <arg name="cs_file">
                 <value>env_dotnet_system_globalization_invariant.cs</value>
             </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+            </arg>
         </run>
 
         <run name="env_dotnet_system_globalization_predefined_cultures_only" template="bflat_build">
@@ -286,6 +295,10 @@
             </script>
             <arg name="cs_file">
                 <value>env_dotnet_system_globalization_predefined_cultures_only.cs</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+                <value>zisk_sim</value>
             </arg>
         </run>
 
@@ -915,6 +928,10 @@
             <arg name="cs_file">
                 <value>proc_count.cs</value>
             </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+            </arg>
         </run>
 
         <run name="process_id" template="bflat_build">
@@ -932,6 +949,10 @@
             </script>
             <arg name="cs_file">
                 <value>processor_count.cs</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+                <value>zisk_sim</value>
             </arg>
         </run>
 
