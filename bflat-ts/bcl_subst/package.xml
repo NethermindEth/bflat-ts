@@ -380,6 +380,10 @@
             <arg name="cs_file">
                 <value>pinvoke_getpid.cs</value>
             </arg>
+            <arg name="bflat_libc">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+            </arg>
         </run>
 
         <run name="env_current_directory" template="bflat_build">

@@ -21,17 +21,20 @@
  *                      (or omit) to pick up the @c TS_BFLAT_IMAGE environment
  *                      variable, falling back to #TSAPI_BFLAT_DEFAULT_IMAGE.
  * @param bflat_arch    Target architecture passed to @c --arch. Ignored for
- *                      the @c native leg (the build targets the bflat
- *                      container's own architecture).
+ *                      the @c native leg.
  * @param bflat_libc    Target libc passed to @c --libc, or the special value
- *                      @c native: build for the bflat container's host
- *                      architecture and default libc (no @c --arch /
- *                      @c --libc flags), i.e. a stock NativeAOT binary with
- *                      none of the zisk link-time modules
+ *                      @c native: compile the same source with the stock
+ *                      dotnet SDK (Roslyn) and execute it on CoreCLR (JIT)
+ *                      inside a dotnet SDK container - the reference leg,
+ *                      with no bflat, NativeAOT or zisk modules involved
+ * @param dotnet_image  Docker image providing the dotnet SDK for the
+ *                      @c native leg. Use @c - (or omit) to pick up the
+ *                      @c TS_DOTNET_IMAGE environment variable, falling back
+ *                      to #TSAPI_DOTNET_DEFAULT_IMAGE
  * @param run             If @c TRUE, run the compiled binary after a successful
  *                        build: under qemu for @c musl, inside the Zisk
- *                        container for @c zisk / @c zisk_sim, directly inside
- *                        the build container for @c native
+ *                        container for @c zisk / @c zisk_sim, on CoreCLR
+ *                        inside the dotnet SDK container for @c native
  * @param run_timeout_ms  Timeout in milliseconds for the run step; must be
  *                        large enough to accommodate a Docker image pull on
  *                        first use
@@ -59,8 +62,7 @@
  *                        falls back to @p expected_status when omitted. Set it
  *                        where guest and reference semantics legitimately
  *                        diverge - e.g. a caught managed throw exits 1 on the
- *                        zkVM (no unwinding) but 0 on a stock NativeAOT
- *                        binary.
+ *                        zkVM (no unwinding) but 0 on CoreCLR with real EH.
  *
  * @par Scenario:
  *
@@ -94,6 +96,30 @@
 
 /** Build timeout: 5 minutes should be enough even on a slow machine */
 #define BUILD_TIMEOUT_MS  (5 * 60 * 1000)
+
+/** Default dotnet SDK image for the native (CoreCLR) leg */
+#define TSAPI_DOTNET_DEFAULT_IMAGE  "mcr.microsoft.com/dotnet/sdk:10.0"
+
+/**
+ * Build recipe for the native (CoreCLR) leg, executed with `sh -ec` inside
+ * the dotnet SDK container. Compiles the test with the SDK's csc.dll
+ * directly (no MSBuild, no NuGet restore) against the shared framework and
+ * writes the runtimeconfig.json that `dotnet <dll>` needs.
+ * te_string_append format arguments: output dll path, source path.
+ */
+#define NATIVE_BUILD_SCRIPT \
+    "OUT='%s'; SRC='%s'; " \
+    "CSC=$(ls /usr/share/dotnet/sdk/*/Roslyn/bincore/csc.dll | head -1); " \
+    "FW=$(ls -d /usr/share/dotnet/shared/Microsoft.NETCore.App/* " \
+        "| sort -V | tail -1); " \
+    "for d in \"$FW\"/*.dll; do echo \"-r:$d\"; done > /tmp/refs.rsp; " \
+    "dotnet \"$CSC\" -nologo -optimize+ -nullable:disable -unsafe " \
+        "@/tmp/refs.rsp -target:exe -out:\"$OUT\" \"$SRC\"; " \
+    "V=$(basename \"$FW\"); M=${V%%%%.*}; " \
+    "printf '{\"runtimeOptions\":{\"tfm\":\"net%%s.0\"," \
+        "\"framework\":{\"name\":\"Microsoft.NETCore.App\"," \
+        "\"version\":\"%%s\"}}}' \"$M\" \"$V\" " \
+        "> \"${OUT%%.dll}.runtimeconfig.json\""
 
 /** Default run timeout: 10 minutes, covers Docker image pull on first use */
 #define RUN_TIMEOUT_MS_DEFAULT  (10 * 60 * 1000)
@@ -148,6 +174,7 @@ main(int argc, char **argv)
     const char         *expected_stdout   = NULL;
     int                 expected_status   = 0;
     int                 expected_status_native = -1;
+    const char         *dotnet_image      = NULL;
     tapi_job_channel_t *stdout_filter     = NULL;
     tapi_job_buffer_t   stdout_buf        = TAPI_JOB_BUFFER_INIT;
 
@@ -181,6 +208,14 @@ main(int argc, char **argv)
         TEST_GET_INT_PARAM(expected_status);
     if (TEST_HAS_PARAM(expected_status_native))
         TEST_GET_INT_PARAM(expected_status_native);
+    if (TEST_HAS_PARAM(dotnet_image))
+        TEST_GET_OPT_STRING_PARAM(dotnet_image);
+    if (dotnet_image == NULL || strcmp(dotnet_image, "-") == 0)
+    {
+        dotnet_image = getenv("TS_DOTNET_IMAGE");
+        if (dotnet_image == NULL || dotnet_image[0] == '\0')
+            dotnet_image = TSAPI_DOTNET_DEFAULT_IMAGE;
+    }
     TEST_GET_TA(zisk, zisk_ta);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
@@ -212,6 +247,9 @@ main(int argc, char **argv)
                                     ? strrchr(cs_file, '.') - cs_file
                                     : (int)strlen(cs_file)),
                               cs_file));
+    /* The native leg produces a framework-dependent CoreCLR assembly */
+    if (strcmp(bflat_libc, "native") == 0)
+        CHECK_RC(te_string_append(&remote_out, ".dll"));
 
     TEST_STEP("Create RPC server on agent '%s'", ta);
     CHECK_RC(rcf_rpc_server_create(ta, "rpcs_build", &rpcs));
@@ -236,9 +274,10 @@ main(int argc, char **argv)
         te_string_free(&agent_cs_path);
     }
 
-    TEST_STEP("Create Docker container backed by bflat image '%s'",
-              bflat_image);
-    dp.params.name     = bflat_image;
+    TEST_STEP("Create Docker container backed by image '%s'",
+              strcmp(bflat_libc, "native") == 0 ? dotnet_image : bflat_image);
+    dp.params.name     = strcmp(bflat_libc, "native") == 0
+                         ? dotnet_image : bflat_image;
     dp.params.prebuilt = TRUE;
     CHECK_RC(ts_container_create(rpcs, TS_CONTAINER_TYPE_DOCKER,
                                  &dp.params, &container));
@@ -249,6 +288,23 @@ main(int argc, char **argv)
     CHECK_RC(ts_container_share_folder(&container,
                                        src_dir, CONTAINER_SRC_DIR));
 
+    if (strcmp(bflat_libc, "native") == 0)
+    {
+        /* Reference leg: compile with the stock dotnet SDK (Roslyn) for
+         * CoreCLR - no bflat involved at all. */
+        te_string   script = TE_STRING_INIT;
+        const char *sh_argv[] = { "sh", "-ec", NULL, NULL };
+
+        CHECK_RC(te_string_append(&script, NATIVE_BUILD_SCRIPT,
+                                  remote_out.ptr, remote_cs_path.ptr));
+        sh_argv[2] = script.ptr;
+
+        TEST_STEP("Create dotnet (CoreCLR) build job: file=%s", cs_file);
+        job = ts_container_run(&container, sh_argv);
+        te_string_free(&script);
+    }
+    else
+    {
     TEST_STEP("Create bflat build job: arch=%s libc=%s stdlib=%s extlib=%s file=%s",
               bflat_arch, bflat_libc,
               bflat_stdlib != NULL ? bflat_stdlib : "(default)",
@@ -266,17 +322,9 @@ main(int argc, char **argv)
         ARGV_ADD("-x");
         if (verbose)
             ARGV_ADD("--verbose");
-        /* The native leg targets the container's own architecture and
-         * default libc: no --arch / --libc flags at all. */
-        if (strcmp(bflat_libc, "native") != 0)
-        {
-            ARGV_ADD("--arch");  ARGV_ADD(bflat_arch);
-        }
+        ARGV_ADD("--arch");      ARGV_ADD(bflat_arch);
         ARGV_ADD("--os");        ARGV_ADD("linux");
-        if (strcmp(bflat_libc, "native") != 0)
-        {
-            ARGV_ADD("--libc");  ARGV_ADD(bflat_libc);
-        }
+        ARGV_ADD("--libc");      ARGV_ADD(bflat_libc);
         if (bflat_stdlib != NULL)
         {
             ARGV_ADD("--stdlib"); ARGV_ADD(bflat_stdlib);
@@ -305,8 +353,9 @@ main(int argc, char **argv)
 
         job = ts_container_run(&container, bflat_argv);
     }
+    }
     if (job == NULL)
-        TEST_FAIL("Failed to create bflat build job");
+        TEST_FAIL("Failed to create build job");
 
     TEST_STEP("Attach output channels for logging");
     CHECK_RC(tapi_job_alloc_output_channels(job, 2, out_channels));
@@ -362,16 +411,22 @@ main(int argc, char **argv)
 
         if (strcmp(bflat_libc, "native") == 0)
         {
-            /* A stock NativeAOT binary for the container's own architecture:
-             * run it directly inside the build container, the environment
-             * that produced it (glibc and arch guaranteed to match). */
-            const char *native_argv[] = { remote_out.ptr, NULL };
+            /* Reference leg: execute the assembly on CoreCLR inside the
+             * dotnet SDK container. The environment mirrors the guest
+             * configuration (invariant globalization, UTC). */
+            const char *native_argv[] = {
+                "env",
+                "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1",
+                "TZ=UTC",
+                "DOTNET_NOLOGO=1",
+                "dotnet", remote_out.ptr, NULL
+            };
 
-            TEST_STEP("Run '%s' natively inside the build container",
+            TEST_STEP("Run '%s' on CoreCLR inside the dotnet SDK container",
                       remote_out.ptr);
             run_job = ts_container_run(&container, native_argv);
             if (run_job == NULL)
-                TEST_FAIL("Failed to create native run job for '%s'",
+                TEST_FAIL("Failed to create CoreCLR run job for '%s'",
                           remote_out.ptr);
         }
         else if (strcmp(bflat_libc, "musl") == 0 ||
