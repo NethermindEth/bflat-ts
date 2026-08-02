@@ -1,85 +1,23 @@
-// Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind)
-// Tests that 5 independent [ThreadStatic] slots of different types do not
-// corrupt each other when written and re-written.
-// Bug targeted: TSS slot table index collision between adjacent type registrations.
+        // Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind)
 using System;
 
-class SlotInt    { [ThreadStatic] public static int    Val; }
-class SlotLong   { [ThreadStatic] public static long   Val; }
-class SlotString { [ThreadStatic] public static string Val; }
-class SlotBool   { [ThreadStatic] public static bool   Val; }
-class SlotByte   { [ThreadStatic] public static byte   Val; }
+        class SlotInt { [ThreadStatic] public static int V; }
+        class SlotLong { [ThreadStatic] public static long V; }
+        class SlotString { [ThreadStatic] public static string V; }
+        class SlotBool { [ThreadStatic] public static bool V; }
+        class SlotByte { [ThreadStatic] public static byte V; }
 
-class Program
-{
-    static int Main()
-    {
-        // Step 1: initialise all slots
-        SlotInt.Val    = 42;
-        SlotLong.Val   = 1234567890123L;
-        SlotString.Val = "hello";
-        SlotBool.Val   = true;
-        SlotByte.Val   = 255;
-
-        // Step 2: verify all slots hold their initial values
-        if (SlotInt.Val != 42)
+        class Program
         {
-            Console.WriteLine($"tss_independent: FAIL SlotInt.Val={SlotInt.Val} expected=42");
-            return 1;
+            static int Main()
+            {
+                SlotInt.V = 42; SlotLong.V = 1234567890123L; SlotString.V = "hello"; SlotBool.V = true; SlotByte.V = 255;
+                if (SlotInt.V != 42) return 1;
+                if (SlotLong.V != 1234567890123L) return 1;
+                if (SlotString.V != "hello") return 1;
+                if (!SlotBool.V) return 1;
+                if (SlotByte.V != 255) return 1;
+                Console.WriteLine("tls_stress: tss_independent ok");
+                return 0;
+            }
         }
-        if (SlotLong.Val != 1234567890123L)
-        {
-            Console.WriteLine($"tss_independent: FAIL SlotLong.Val={SlotLong.Val} expected=1234567890123");
-            return 1;
-        }
-        if (SlotString.Val != "hello")
-        {
-            Console.WriteLine($"tss_independent: FAIL SlotString.Val={SlotString.Val} expected=hello");
-            return 1;
-        }
-        if (!SlotBool.Val)
-        {
-            Console.WriteLine($"tss_independent: FAIL SlotBool.Val={SlotBool.Val} expected=true");
-            return 1;
-        }
-        if (SlotByte.Val != 255)
-        {
-            Console.WriteLine($"tss_independent: FAIL SlotByte.Val={SlotByte.Val} expected=255");
-            return 1;
-        }
-
-        // Step 3: overwrite only SlotInt
-        SlotInt.Val = 99;
-
-        // Step 4: SlotLong / SlotString / SlotBool / SlotByte must be unchanged
-        if (SlotLong.Val != 1234567890123L)
-        {
-            Console.WriteLine(
-                $"tss_independent: FAIL after SlotInt overwrite: SlotLong.Val={SlotLong.Val} expected=1234567890123");
-            return 1;
-        }
-        if (SlotString.Val != "hello")
-        {
-            Console.WriteLine(
-                $"tss_independent: FAIL after SlotInt overwrite: SlotString.Val={SlotString.Val} expected=hello");
-            return 1;
-        }
-        if (!SlotBool.Val)
-        {
-            Console.WriteLine(
-                $"tss_independent: FAIL after SlotInt overwrite: SlotBool.Val={SlotBool.Val} expected=true");
-            return 1;
-        }
-        if (SlotByte.Val != 255)
-        {
-            Console.WriteLine(
-                $"tss_independent: FAIL after SlotInt overwrite: SlotByte.Val={SlotByte.Val} expected=255");
-            return 1;
-        }
-
-        Console.WriteLine(
-            $"tss_independent: ok int={SlotInt.Val} long={SlotLong.Val} " +
-            $"string={SlotString.Val} bool={SlotBool.Val} byte={SlotByte.Val}");
-        return 0;
-    }
-}

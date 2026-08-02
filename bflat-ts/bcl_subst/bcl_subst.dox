@@ -1,0 +1,47 @@
+/** @defgroup bflat_ts_bcl_subst bflat build - substituted CoreLib methods
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Behavioral tests for the CoreLib surface that bflat's zisk modules
+ *        replace or divert on the rv64ima (no-FPU) targets.
+ *
+ *        The zisk_subst module substitutes method bodies via
+ *        ILLink.Substitutions and C# snippets (zisk.snippets.cs), and the
+ *        rhp/pal modules divert symbols with --wrap. Each replacement must be
+ *        semantics-preserving for every guest, so each one gets a test pinning
+ *        the observable behavior:
+ *        - System.Random compat impls: integer scaling of Next(max) /
+ *          Next(min, max) for seeded and derived Random
+ *        - System.Collections.Hashtable: integer load-factor ctors and rehash
+ *        - ValueType.GetHashCode over float/double fields: raw bit-pattern
+ *          hashing consistent with byte-wise ValueType.Equals
+ *        - HashHelpers.IsPrime/GetPrime: integer reimplementation driving
+ *          Dictionary/HashSet/Hashtable growth
+ *        - Frozen collections: CalcNumBuckets wrap + LengthBuckets fallback
+ *        - ArrayPool: trim gate stubbed to "memory pressure low"
+ *        - Array.Copy/Buffer.BlockCopy fast paths (primitive widening removed)
+ *        - Convert integer/string overloads (double overload removed)
+ *        - Invariant TimeZoneInfo with stubbed transition math (including the
+ *          IL-patched cctor and the custom-zone API); integer
+ *          DateTime/TimeSpan/Stopwatch tick arithmetic over wrapped
+ *          clock_gettime
+ *        - PortableThreadPool config surface with the disabled HillClimbing
+ *          tuner and stubbed ProcessorCount=1; synchronously-completing
+ *          Task/async machinery without worker threads
+ *        - ProcessorIdCache with the speed check stubbed to the cached path
+ *        - ConcurrentDictionary growth through the Concurrent assembly's
+ *          HashHelpers copy
+ *        - RhBulkMoveWithWriteBarrier wrapped to plain memmove (ref-carrying
+ *          struct copies)
+ *        - ConcurrentUnifierW.Container.Resize integer load-factor rewrite
+ *          (driven via MakeGenericType)
+ *        - Reflection invoke without the removed primitive-widening path and
+ *          integer default-parameter metadata constants
+ *        - Guid entropy through the rng_stupid getrandom path
+ *        - pal wraps: getcwd, sysconf page size, FP-free vfprintf on stderr,
+ *          getpid over the no-op P/Invoke transitions, GC stack scanning
+ *          within the synthetic stack bounds
+ *        - EventPipe/EventSource registration wrapped to no-ops
+ *
+ * @}
+ */

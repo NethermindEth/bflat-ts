@@ -6,6 +6,14 @@
  * witness via an @c input.bin file and, optionally, verifying that the
  * emulator outputs the expected block hash.
  *
+ * The guest decodes the payload as a version-prefixed SSZ blob
+ * (@c schema:u16be | @c ssz_bytes, schema 0 = SszExecutionPayloadV3,
+ * 1 = V4).  On top of that, ziskemu expects the file passed via its
+ * @c inputs option to be framed as @c len:u64le | @c bytes[len] |
+ * zero-padding to 8 bytes.  Inputs therefore carry the @c .ssz suffix; the
+ * legacy pre-SSZ @c .bin inputs are rejected by the guest with
+ * "Unsupported schema version".
+ *
  * Both the binary and the input file are copied from the local test machine
  * to a temporary directory on the agent before being mounted into the Zisk
  * Docker container.
@@ -26,9 +34,9 @@
  *                       to the installed test-package directory.
  *                       Default: @c bin/nethermind (produced by the
  *                       @c build_guest prologue).
- * @param input_bin      Path to the input.bin file, resolved relative to the
+ * @param input_bin      Path to the input file, resolved relative to the
  *                       installed test-package directory.
- *                       Typically @c inputs/<name>.bin.
+ *                       Typically @c inputs/<block>.ssz.
  * @param expected_hash  Expected block hash as a hex string
  *                       (e.g. @c 0x1a2b…cafe), or @c - to skip hash
  *                       verification.
@@ -60,9 +68,9 @@
 #include "tapi_rpc_stdio.h"
 #include "tapi_rpc_signal.h"
 #include "tsapi_zisk.h"
+#include "ts_pure.h"
 
 #include <string.h>
-#include <strings.h>
 #include <unistd.h>
 #include <limits.h>
 
@@ -176,8 +184,8 @@ main(int argc, char **argv)
                   local_bin.ptr);
 
     if (access(local_input.ptr, F_OK) != 0)
-        TEST_FAIL("Input file not found at '%s'. "
-                  "Run scripts/gen_zisk_input.sh to generate test inputs.",
+        TEST_FAIL("Input file not found at '%s'. Inputs are version-prefixed "
+                  "SSZ blobs framed for ziskemu; see zisk_guest/package.xml.",
                   local_input.ptr);
 
     /* ------------------------------------------------------------------ */
@@ -259,8 +267,7 @@ main(int argc, char **argv)
 
         /* -------------------------------------------------------------- */
         TEST_STEP("Create Zisk runner (image='%s') on agent '%s'",
-                  zisk_image != NULL ? zisk_image : TSAPI_ZISK_DEFAULT_IMAGE,
-                  run_rpcs->ta);
+                  tsapi_zisk_resolve_image(zisk_image), run_rpcs->ta);
         CHECK_RC(tsapi_zisk_runner_create(run_rpcs, zisk_image, &zisk));
         zisk_created = true;
 
@@ -365,23 +372,12 @@ main(int argc, char **argv)
 
         TEST_STEP("Verify output hash matches expected: '%s'",
                   expected_hash);
-        {
-            /* Compare without "0x" prefix, case-insensitive */
-            const char *actual   = last_hash_line;
-            const char *expected = expected_hash;
-
-            if (actual[0] == '0' && actual[1] == 'x')
-                actual += 2;
-            if (expected[0] == '0' && expected[1] == 'x')
-                expected += 2;
-
-            if (strcasecmp(actual, expected) != 0)
-                TEST_FAIL("Block hash mismatch:\n"
-                          "  expected : %s\n"
-                          "  actual   : %s\n"
-                          "  input    : %s",
-                          expected_hash, last_hash_line, input_bin);
-        }
+        if (!ts_hash_str_equal(last_hash_line, expected_hash))
+            TEST_FAIL("Block hash mismatch:\n"
+                      "  expected : %s\n"
+                      "  actual   : %s\n"
+                      "  input    : %s",
+                      expected_hash, last_hash_line, input_bin);
 
         RING("Hash check passed: %s (input=%s)", last_hash_line, input_bin);
     }

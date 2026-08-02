@@ -1,0 +1,74 @@
+name: static-checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  structure:
+    runs-on: ubuntu-latest
+    name: Suite structure (XML consistency)
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Cross-checks package.xml / meson.build / run-list registration,
+      # cs_file references, orphan test sources and TRC staleness.
+      - name: Check bflat-ts structure
+        run: python3 scripts/check_structure.py
+
+  cppcheck:
+    runs-on: ubuntu-latest
+    name: Static analysis (cppcheck)
+    steps:
+      - name: Install cppcheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cppcheck
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run cppcheck on all C sources
+        run: bash scripts/static_analysis.sh
+
+  oracle:
+    runs-on: ubuntu-latest
+    name: Differential oracle (host .NET)
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      # Every test must pass on the reference .NET runtime: the suite
+      # asserts a test exits 0 under bflat + zkVM, this job asserts the
+      # same program exits 0 on stock .NET. Host-environment exceptions
+      # live in scripts/oracle_expectations.txt.
+      - name: Run differential oracle
+        run: bash scripts/differential_oracle.sh
+
+  frama-c:
+    runs-on: ubuntu-latest
+    # debian:bookworm, not ubuntu: frama-c was dropped from Ubuntu's recent
+    # archives; bookworm ships it as frama-c-base (25.0, CLI-only) with z3
+    # as the available WP prover (alt-ergo is not packaged there).
+    container:
+      image: debian:bookworm
+    name: ACSL verification (Frama-C/WP)
+    steps:
+      - name: Install Frama-C and z3
+        run: |
+          apt-get update
+          apt-get install -y frama-c-base z3 git
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Prove ACSL contracts
+        run: bash scripts/frama_c_check.sh

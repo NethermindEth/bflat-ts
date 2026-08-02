@@ -74,6 +74,10 @@
         </run>
 
         <run>
+            <package name="bcl_subst" />
+        </run>
+
+        <run>
             <package name="format" />
         </run>
 

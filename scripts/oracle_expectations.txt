@@ -1,0 +1,18 @@
+# Host-side expectations for scripts/differential_oracle.sh.
+#
+# Every test not listed here must compile and exit 0 on the reference .NET
+# runtime. List a test only when its behavior is inherently tied to the
+# zkVM environment, with the reason after '#'.
+#
+#   <package>/<test> compile-only  # builds on the host but needs the guest to run
+#   <package>/<test> skip          # cannot even compile on the host
+#   <package>/<test> exit=<N>      # the test's contract is a nonzero exit code
+
+exception_handler/exhandler                     compile-only  # DllImport("*") + ZkvmThrow: needs the zisk link-time handler wiring
+exception_handler/eh_handler_uncalled_when_caught compile-only  # DllImport("*"): native exit stub resolves only in the guest link
+bcl_subst/pinvoke_getpid                        compile-only  # DllImport("*"): getpid binds statically only in the guest link
+build_perf/big_refs                             compile-only  # build-performance baseline; the suite never executes it (run=FALSE)
+args/args_return_1                              exit=1        # exit-code propagation test
+args/args_return_2                              exit=2        # exit-code propagation test
+args/args_return_42                             exit=42       # exit-code propagation test
+args/args_return_127                            exit=127      # exit-code propagation test
