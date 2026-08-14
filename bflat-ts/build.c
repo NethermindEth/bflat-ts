@@ -350,10 +350,28 @@ main(int argc, char **argv)
             const char        *run_src_dir = src_dir;
             rcf_rpc_server    *run_rpcs    = rpcs;
 
-            /* bflat post-processes the zisk ELF with patch_elf.py,
-             * producing <binary>.patched — run that instead of the raw ELF. */
-            CHECK_RC(te_string_append(&agent_binary_path,
-                                      "%s.patched", binary_name));
+            /* bflat post-processes the zisk ELF with patch_elf.py. Fixed
+             * toolchains deliver the result at the requested output name;
+             * older ones left it in <binary>.patched with the raw linker
+             * output at the output name. Prefer the plain name, fall back
+             * to .patched for old images. */
+            {
+                te_string probe = TE_STRING_INIT;
+                te_bool   plain_exists = false;
+
+                CHECK_RC(te_string_append(&probe, "%s/%s",
+                                          src_dir, binary_name));
+                RPC_AWAIT_ERROR(rpcs);
+                plain_exists = (rpc_access(rpcs, probe.ptr, RPC_F_OK) == 0);
+                te_string_free(&probe);
+
+                if (plain_exists)
+                    CHECK_RC(te_string_append(&agent_binary_path,
+                                              "%s", binary_name));
+                else
+                    CHECK_RC(te_string_append(&agent_binary_path,
+                                              "%s.patched", binary_name));
+            }
 
             if (zisk_ta != NULL && strcmp(zisk_ta, ta) != 0)
             {
