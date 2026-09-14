@@ -36,12 +36,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -70,12 +72,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -89,12 +93,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -123,12 +129,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -142,12 +150,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -177,12 +187,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -196,12 +208,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -215,12 +229,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -250,12 +266,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -269,12 +287,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -288,12 +308,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -307,12 +329,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -326,12 +350,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -361,12 +387,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -380,12 +408,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -415,12 +445,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -434,12 +466,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -469,12 +503,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -488,12 +524,14 @@
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -562,6 +600,7 @@
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -595,12 +634,14 @@ bflat / Zisk zkVM</objective>
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -621,12 +662,14 @@ bflat / Zisk zkVM</objective>
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -648,12 +691,14 @@ bflat / Zisk zkVM</objective>
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -675,12 +720,14 @@ bflat / Zisk zkVM</objective>
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
             <iter result="PASSED">
@@ -696,12 +743,14 @@ bflat / Zisk zkVM</objective>
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -723,12 +772,14 @@ bflat / Zisk zkVM</objective>
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -750,12 +801,14 @@ bflat / Zisk zkVM</objective>
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -776,12 +829,14 @@ bflat / Zisk zkVM</objective>
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>
@@ -802,12 +857,14 @@ bflat / Zisk zkVM</objective>
               <arg name="no_pie" />
               <arg name="no_pthread" />
               <arg name="no_stacktrace_data" />
+              <arg name="openvm_config" />
               <arg name="qemu_path" />
               <arg name="run" />
               <arg name="run_timeout_ms" />
               <arg name="ta" />
               <arg name="verbose" />
               <arg name="zisk_image" />
+              <arg name="zkvm_image" />
               <notes />
             </iter>
           </test>

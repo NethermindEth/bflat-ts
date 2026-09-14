@@ -30,6 +30,10 @@
  *                        first use
  * @param qemu_path       Path to qemu-riscv64-static on the agent, or empty
  *                        to use the default (#TSAPI_QEMU_DEFAULT_PATH)
+ * @param zkvm_image      SP1/OpenVM harness image, or @c - for the pinned
+ *                        default built from bflat-sp1 / bflat-openvm
+ * @param openvm_config   openvm.toml filename next to the binary, or @c - to
+ *                        use the extension set shipped in the harness image
  * @param zisk_image      Zisk Docker image to use when running @c zisk /
  *                        @c zisk_sim binaries, or empty for
  *                        #TSAPI_ZISK_DEFAULT_IMAGE
@@ -63,6 +67,7 @@
 #include "tsapi_bflat.h"
 #include "tsapi_qemu.h"
 #include "tsapi_zisk.h"
+#include "tsapi_zkvm.h"
 
 #include <time.h>
 #include <unistd.h>
@@ -70,6 +75,10 @@
 
 /** Path inside the container where sources are mounted */
 #define CONTAINER_SRC_DIR  "/src"
+
+/* The SP1 and OpenVM harnesses take an input path positionally; these programs
+ * read nothing, so the test drops an empty file next to the binary. */
+#define ZKVM_EMPTY_INPUT   "zkvm_empty.bin"
 
 /** Build timeout: 5 minutes should be enough even on a slow machine */
 #define BUILD_TIMEOUT_MS  (5 * 60 * 1000)
@@ -95,6 +104,8 @@ main(int argc, char **argv)
     int                 run_timeout_ms;
     const char         *qemu_path;
     const char         *zisk_image;
+    const char         *zkvm_image;
+    const char         *openvm_config;
     const char         *bflat_extlib;
     const char         *bflat_define      = NULL;
 
@@ -114,6 +125,9 @@ main(int argc, char **argv)
     bool                qemu_created      = false;
     tsapi_zisk_runner   zisk              = TSAPI_ZISK_RUNNER_INIT;
     bool                zisk_created      = false;
+    tsapi_zkvm_runner   zkvm              = TSAPI_ZKVM_RUNNER_INIT;
+    bool                zkvm_created      = false;
+    tsapi_zkvm_target   zkvm_target       = TSAPI_ZKVM_TARGET_SP1;
     const char         *zisk_ta           = NULL;
     rcf_rpc_server     *zisk_rpcs         = NULL;
     char               *zisk_src_dir      = NULL;
@@ -150,6 +164,11 @@ main(int argc, char **argv)
     TEST_GET_INT_PARAM(run_timeout_ms);
     TEST_GET_OPT_STRING_PARAM(qemu_path);
     TEST_GET_OPT_STRING_PARAM(zisk_image);
+    TEST_GET_OPT_STRING_PARAM(zkvm_image);
+    TEST_GET_OPT_STRING_PARAM(openvm_config);
+    /* "-" is how a package says "no opinion"; the runner takes NULL for that. */
+    if (zkvm_image != NULL && strcmp(zkvm_image, "-") == 0)
+        zkvm_image = NULL;
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
     if (TEST_HAS_PARAM(bflat_define))
         TEST_GET_OPT_STRING_PARAM(bflat_define);
@@ -254,7 +273,10 @@ main(int argc, char **argv)
             ARGV_ADD("--no-pthread");
         if (no_pie)
             ARGV_ADD("--no-pie");
-        if (bflat_extlib != NULL && bflat_libc != NULL && strcmp(bflat_libc, "zisk") == 0)
+        /* Every zkVM target takes its bindings this way, and the package
+         * differs per target - see bflat_extlib in the package. Without it
+         * even ZisK loses the console, so this is not a zisk-only switch. */
+        if (bflat_extlib != NULL && strcmp(bflat_extlib, "-") != 0)
         {
             ARGV_ADD("--extlib"); ARGV_ADD(bflat_extlib);
         }
@@ -424,6 +446,35 @@ main(int argc, char **argv)
                 TEST_FAIL("Failed to create Zisk run job for '%s'",
                           agent_binary_path.ptr);
         }
+        else if (tsapi_zkvm_target_from_libc(bflat_libc, &zkvm_target))
+        {
+            te_string empty_input = TE_STRING_INIT;
+
+            CHECK_RC(te_string_append(&agent_binary_path, "%s", binary_name));
+
+            /* Both harnesses take the input path positionally and have no way
+             * to say "there is none"; these programs read nothing, so hand
+             * them an empty file. */
+            CHECK_RC(te_string_append(&empty_input, "%s/%s",
+                                      src_dir, ZKVM_EMPTY_INPUT));
+            CHECK_RC(tapi_file_create_ta(ta, empty_input.ptr, "%s", ""));
+            te_string_free(&empty_input);
+
+            TEST_STEP("Create %s runner (image '%s')",
+                      bflat_libc,
+                      zkvm_image != NULL ? zkvm_image : "(default)");
+            CHECK_RC(tsapi_zkvm_runner_create(rpcs, zkvm_target,
+                                              zkvm_image, &zkvm));
+            zkvm_created = true;
+
+            TEST_STEP("Run '%s/%s' in the %s harness container",
+                      src_dir, agent_binary_path.ptr, bflat_libc);
+            run_job = tsapi_zkvm_run(&zkvm, src_dir, agent_binary_path.ptr,
+                                     ZKVM_EMPTY_INPUT, openvm_config);
+            if (run_job == NULL)
+                TEST_FAIL("Failed to create %s run job for '%s'",
+                          bflat_libc, agent_binary_path.ptr);
+        }
         else
         {
             WARN("run=TRUE but no runner defined for bflat_libc='%s', skipping",
@@ -524,6 +575,9 @@ cleanup:
 
     if (zisk_created)
         tsapi_zisk_runner_destroy(&zisk);
+
+    if (zkvm_created)
+        tsapi_zkvm_runner_destroy(&zkvm);
 
     if (zisk_src_created && zisk_rpcs != NULL)
     {
