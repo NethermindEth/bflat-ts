@@ -532,7 +532,7 @@ main(int argc, char **argv)
                 char     *p;
                 size_t    len;
 
-                TEST_STEP("Read stdout and compare with expected: '%s'",
+                TEST_STEP("Read stdout and look for the expected text: '%s'",
                           expected_stdout);
 
                 do {
@@ -551,8 +551,18 @@ main(int argc, char **argv)
                 {
                     const char *actual = (p != NULL) ? p : "";
 
-                    if (strcmp(actual, expected_stdout) != 0)
-                        TEST_FAIL("stdout mismatch:\n"
+                    /*
+                     * Containment, not equality: on the zkVM targets the
+                     * program's output is not the only thing on this channel.
+                     * The harness prefixes each guest line ("stdout: ALL
+                     * PASS") and adds its own report - cycle count, exit
+                     * code, public values - none of which the test is about.
+                     * A guest that fails does not print the expected text at
+                     * all, so this still catches it, and the exit status is
+                     * checked separately above.
+                     */
+                    if (strstr(actual, expected_stdout) == NULL)
+                        TEST_FAIL("stdout does not contain the expected text:\n"
                                   "  expected: '%s'\n"
                                   "  actual:   '%s'",
                                   expected_stdout, actual);
