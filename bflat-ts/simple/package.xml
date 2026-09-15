@@ -54,7 +54,7 @@
                 <value>600000</value>
             </arg>
             <arg name="bflat_extlib" list="target">
-                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.5/nethermind.ziskos.runtime.1.0.0-preview.5.nupkg</value>
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.9/nethermind.ziskos.runtime.1.0.0-preview.9.nupkg</value>
                 <value>-</value>
                 <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.sp1.runtime/1.0.0-preview.1/nethermind.sp1.runtime.1.0.0-preview.1.nupkg</value>
                 <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.openvm.runtime/1.0.0-preview.1/nethermind.openvm.runtime.1.0.0-preview.1.nupkg</value>
