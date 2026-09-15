@@ -32,6 +32,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">hello.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -68,6 +69,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">with_args.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -89,6 +91,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">no_args.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -125,6 +128,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">float_noop.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -146,6 +150,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">double_noop.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -183,6 +188,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">alloc_many.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -204,6 +210,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">proc_count.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -225,6 +232,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">env_dotnet.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -262,6 +270,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">objects.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -283,6 +292,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">arrays.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -304,6 +314,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">strings.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -325,6 +336,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">type_cast.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -346,6 +358,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">number_fmt.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -383,6 +396,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">random_next.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -404,6 +418,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">random_bytes.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -441,6 +456,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">thread_static.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -462,6 +478,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">thread_static_multiple.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -499,6 +516,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">interface_call.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -520,6 +538,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">virtual_call.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
               <arg name="no_pthread" />
@@ -557,6 +576,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">big_refs.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="max_build_time_ms" />
               <arg name="no_globalization" />
               <arg name="no_pie" />
@@ -590,6 +610,7 @@
               <arg name="bflat_libc" />
               <arg name="bflat_stdlib" />
               <arg name="cs_file">startup.cs</arg>
+              <arg name="expected_stdout" />
               <arg name="max_run_time_ms" />
               <arg name="max_startup_steps" />
               <arg name="no_globalization" />
