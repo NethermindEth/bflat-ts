@@ -82,7 +82,7 @@ tsapi_zkvm_run(tsapi_zkvm_runner *runner,
                const char        *input_bin,
                const char        *openvm_config)
 {
-    te_errno    rc = 0;
+    te_errno    rc;
     te_string   bin_path    = TE_STRING_INIT;
     te_string   input_path  = TE_STRING_INIT;
     te_string   config_path = TE_STRING_INIT;
@@ -106,15 +106,10 @@ tsapi_zkvm_run(tsapi_zkvm_runner *runner,
         return NULL;
     }
 
-    rc = te_string_append(&bin_path, "%s/%s",
-                          TSAPI_ZKVM_MOUNT_TARGET, binary_name);
-    if (rc != 0)
-        goto out;
-
-    rc = te_string_append(&input_path, "%s/%s",
-                          TSAPI_ZKVM_MOUNT_TARGET, input_bin);
-    if (rc != 0)
-        goto out;
+    te_string_append(&bin_path, "%s/%s",
+                     TSAPI_ZKVM_MOUNT_TARGET, binary_name);
+    te_string_append(&input_path, "%s/%s",
+                     TSAPI_ZKVM_MOUNT_TARGET, input_bin);
 
     /*
      * Both images have the harness as their ENTRYPOINT, so the arguments are
@@ -133,11 +128,8 @@ tsapi_zkvm_run(tsapi_zkvm_runner *runner,
         }
         else
         {
-            rc = te_string_append(&config_path, "%s/%s",
-                                  TSAPI_ZKVM_MOUNT_TARGET, openvm_config);
-            if (rc != 0)
-                goto out;
-
+            te_string_append(&config_path, "%s/%s",
+                             TSAPI_ZKVM_MOUNT_TARGET, openvm_config);
             zkvm_argv[zkvm_argc++] = config_path.ptr;
         }
     }
@@ -149,13 +141,9 @@ tsapi_zkvm_run(tsapi_zkvm_runner *runner,
     if (job == NULL)
         ERROR("Failed to create zkVM harness job for binary '%s'", binary_name);
 
-out:
     te_string_free(&bin_path);
     te_string_free(&input_path);
     te_string_free(&config_path);
-
-    if (rc != 0)
-        return NULL;
 
     return job;
 }

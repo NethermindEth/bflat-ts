@@ -71,7 +71,7 @@ tsapi_zisk_run(tsapi_zisk_runner *runner,
         return NULL;
     }
 
-    rc = te_string_append(&bin_path, "%s/%s",
+    te_string_append(&bin_path, "%s/%s",
                           TSAPI_ZISK_MOUNT_TARGET, binary_name);
     if (rc != 0)
         goto out;
@@ -84,7 +84,7 @@ tsapi_zisk_run(tsapi_zisk_runner *runner,
 
     if (input_bin != NULL)
     {
-        rc = te_string_append(&input_path, "%s/%s",
+        te_string_append(&input_path, "%s/%s",
                               TSAPI_ZISK_MOUNT_TARGET, input_bin);
         if (rc != 0)
             goto out;

@@ -195,15 +195,15 @@ main(int argc, char **argv)
     if (test_dir == NULL)
         TEST_FAIL("Failed to determine test binary directory");
 
-    CHECK_RC(te_string_append(&local_cs_path, "%s/cs/%s", test_dir, cs_file));
-    CHECK_RC(te_string_append(&remote_cs_path,
-                              CONTAINER_SRC_DIR "/%s", cs_file));
-    CHECK_RC(te_string_append(&remote_out,
+    te_string_append(&local_cs_path, "%s/cs/%s", test_dir, cs_file);
+    te_string_append(&remote_cs_path,
+                              CONTAINER_SRC_DIR "/%s", cs_file);
+    te_string_append(&remote_out,
                               CONTAINER_SRC_DIR "/%.*s",
                               (int)(strrchr(cs_file, '.') != NULL
                                     ? strrchr(cs_file, '.') - cs_file
                                     : (int)strlen(cs_file)),
-                              cs_file));
+                              cs_file);
 
     TEST_STEP("Create RPC server on agent '%s'", ta);
     CHECK_RC(rcf_rpc_server_create(ta, "rpcs_build", &rpcs));
@@ -222,7 +222,7 @@ main(int argc, char **argv)
     {
         te_string agent_cs_path = TE_STRING_INIT;
 
-        CHECK_RC(te_string_append(&agent_cs_path, "%s/%s", src_dir, cs_file));
+        te_string_append(&agent_cs_path, "%s/%s", src_dir, cs_file);
         CHECK_RC(tapi_file_copy_ta(NULL, local_cs_path.ptr,
                                    ta, agent_cs_path.ptr));
         te_string_free(&agent_cs_path);
@@ -329,8 +329,8 @@ main(int argc, char **argv)
         te_string   agent_raw_bin = TE_STRING_INIT;
         rpc_stat    st;
 
-        CHECK_RC(te_string_append(&agent_raw_bin, "%s/%s",
-                                  src_dir, binary_stem));
+        te_string_append(&agent_raw_bin, "%s/%s",
+                                  src_dir, binary_stem);
         RPC_AWAIT_ERROR(rpcs);
         if (rpc_stat_func(rpcs, agent_raw_bin.ptr, &st) == 0)
             TEST_ARTIFACT("Binary size: %llu bytes (cs=%s arch=%s libc=%s)",
@@ -352,8 +352,8 @@ main(int argc, char **argv)
         {
             /* The container mounts src_dir as CONTAINER_SRC_DIR, so the
              * binary path on the agent is src_dir + suffix. */
-            CHECK_RC(te_string_append(&agent_binary_path, "%s/%s",
-                                      src_dir, binary_name));
+            te_string_append(&agent_binary_path, "%s/%s",
+                                      src_dir, binary_name);
 
             TEST_STEP("Create qemu runner (qemu='%s')",
                       qemu_path != NULL ? qemu_path : TSAPI_QEMU_DEFAULT_PATH);
@@ -381,18 +381,18 @@ main(int argc, char **argv)
                 te_string probe = TE_STRING_INIT;
                 te_bool   plain_exists = false;
 
-                CHECK_RC(te_string_append(&probe, "%s/%s",
-                                          src_dir, binary_name));
+                te_string_append(&probe, "%s/%s",
+                                          src_dir, binary_name);
                 RPC_AWAIT_ERROR(rpcs);
                 plain_exists = (rpc_access(rpcs, probe.ptr, RPC_F_OK) == 0);
                 te_string_free(&probe);
 
                 if (plain_exists)
-                    CHECK_RC(te_string_append(&agent_binary_path,
-                                              "%s", binary_name));
+                    te_string_append(&agent_binary_path,
+                                              "%s", binary_name);
                 else
-                    CHECK_RC(te_string_append(&agent_binary_path,
-                                              "%s.patched", binary_name));
+                    te_string_append(&agent_binary_path,
+                                              "%s.patched", binary_name);
             }
 
             if (zisk_ta != NULL && strcmp(zisk_ta, ta) != 0)
@@ -419,10 +419,10 @@ main(int argc, char **argv)
 
                 TEST_STEP("Copy '%s' from '%s' to '%s'",
                           agent_binary_path.ptr, ta, zisk_ta);
-                CHECK_RC(te_string_append(&agent_src, "%s/%s",
-                                          src_dir, agent_binary_path.ptr));
-                CHECK_RC(te_string_append(&agent_dst, "%s/%s",
-                                          zisk_src_dir, agent_binary_path.ptr));
+                te_string_append(&agent_src, "%s/%s",
+                                          src_dir, agent_binary_path.ptr);
+                te_string_append(&agent_dst, "%s/%s",
+                                          zisk_src_dir, agent_binary_path.ptr);
                 CHECK_RC(tapi_file_copy_ta(ta, agent_src.ptr,
                                            zisk_ta, agent_dst.ptr));
                 te_string_free(&agent_src);
@@ -450,13 +450,13 @@ main(int argc, char **argv)
         {
             te_string empty_input = TE_STRING_INIT;
 
-            CHECK_RC(te_string_append(&agent_binary_path, "%s", binary_name));
+            te_string_append(&agent_binary_path, "%s", binary_name);
 
             /* Both harnesses take the input path positionally and have no way
              * to say "there is none"; these programs read nothing, so hand
              * them an empty file. */
-            CHECK_RC(te_string_append(&empty_input, "%s/%s",
-                                      src_dir, ZKVM_EMPTY_INPUT));
+            te_string_append(&empty_input, "%s/%s",
+                                      src_dir, ZKVM_EMPTY_INPUT);
             CHECK_RC(tapi_file_create_ta(ta, empty_input.ptr, "%s", ""));
             te_string_free(&empty_input);
 
