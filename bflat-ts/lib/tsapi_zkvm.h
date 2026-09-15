@@ -34,11 +34,13 @@ extern "C" {
  * here, where the programs are tiny and their output is the thing under test.
  */
 #define TSAPI_ZKVM_SP1_DEFAULT_IMAGE \
-    "nethermindeth/sp1-runner:v6.5.0-portable"
+    "nethermindeth/sp1-runner:v6.5.0-portable@sha256:" \
+    "0aa246d5be3bce639ec5013b5a286faf5ddd8ec3ccc328dbe31f8d0ef47064db"
 
 /** OpenVM execution harness, pinned by digest. */
 #define TSAPI_ZKVM_OPENVM_DEFAULT_IMAGE \
-    "nethermindeth/openvm-runner:v2.1.0-rv64"
+    "nethermindeth/openvm-runner:v2.1.0-rv64@sha256:" \
+    "7172d3f5f7541e3112c05659dbe65a88321bed2c44ee61f938c15c24a2bd91e9"
 
 /** Mount point inside the harness container for host binaries */
 #define TSAPI_ZKVM_MOUNT_TARGET  "/n"
