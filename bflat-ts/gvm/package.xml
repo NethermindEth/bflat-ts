@@ -64,6 +64,15 @@ variants for three reproducer programs</description>
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:latest</value>
             </arg>
+            <!-- Harness images and the OpenVM extension set: "-" takes the
+                 defaults pinned in tsapi_zkvm.h and the config shipped in the
+                 OpenVM image. -->
+            <arg name="zkvm_image">
+                <value>-</value>
+            </arg>
+            <arg name="openvm_config">
+                <value>-</value>
+            </arg>
             <arg name="expected_stdout">
                 <value>-</value>
             </arg>
