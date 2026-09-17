@@ -21,13 +21,14 @@
             <arg name="bflat_arch">
                 <value>riscv64</value>
             </arg>
-            <!-- The four targets iterate in lockstep with bflat_extlib below:
-                 each zkVM takes its bindings from its own package, and without
-                 them the guest has no console and no accelerators. -->
-            <arg name="bflat_libc" list="target">
+            <!-- ZisK only. This test is not "run the guest and time it": it
+                 runs ziskemu with tracing and turns the trace into a per-symbol
+                 instruction profile, which needs both the emulator and the
+                 separate .patched ELF that only the ZisK path produces (SP1 is
+                 patched in place, OpenVM not at all). The other two targets
+                 report their own cycle counts through their runners. -->
+            <arg name="bflat_libc">
                 <value>zisk</value>
-                <value>sp1</value>
-                <value>openvm</value>
             </arg>
             <arg name="bflat_stdlib">
                 <value>dotnet</value>
@@ -47,10 +48,8 @@
             <arg name="no_pie">
                 <value>TRUE</value>
             </arg>
-            <arg name="bflat_extlib" list="target">
+            <arg name="bflat_extlib">
                 <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.9/nethermind.ziskos.runtime.1.0.0-preview.9.nupkg</value>
-                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.sp1.runtime/1.0.0-preview.1/nethermind.sp1.runtime.1.0.0-preview.1.nupkg</value>
-                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.openvm.runtime/1.0.0-preview.1/nethermind.openvm.runtime.1.0.0-preview.1.nupkg</value>
             </arg>
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:latest</value>
