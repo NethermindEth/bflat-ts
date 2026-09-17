@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description>bflat build tests - managed exception handler (ZkvmThrow)</description>
+    <description>bflat build tests - exception handling, both policies</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -73,12 +73,96 @@
             <arg name="expected_stdout">
                 <value>-</value>
             </arg>
+            <arg name="remove_eh">
+                <value>FALSE</value>
+            </arg>
+            <arg name="expected_status">
+                <value>0</value>
+            </arg>
         </run-template>
 
+        <!--
+            Exception handling is a build-time policy and the two settings are
+            different mechanisms, so each is tested where it applies.
+
+            Default: the image keeps its unwind tables and a throw is
+            dispatched in two passes, so managed code can catch it.
+        -->
+        <run name="eh_caught" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eh_caught.cs</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>[caught] System.InvalidOperationException: boom from managed code</value>
+            </arg>
+        </run>
+
+        <!--
+            With the tables removed, RhpThrowEx is diverted to the guest's own
+            ZkvmThrow, which receives the live exception object.
+        -->
         <run name="exhandler" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
                 <value>exhandler.cs</value>
+            </arg>
+            <arg name="remove_eh">
+                <value>TRUE</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>[ZkvmThrow] System.InvalidOperationException: boom from managed code</value>
+            </arg>
+        </run>
+
+        <!--
+            And what each policy does with an exception nobody handles. Only on
+            SP1: its harness prints the guest's own status, while ziskemu
+            reports its own and OpenVM's TERMINATE takes an immediate, so every
+            non-zero status reaches that host as 1. The harness itself exits 1
+            for any failed guest, which is why the status expected here is 1 in
+            both cases and the distinction is read off its report.
+        -->
+        <run name="eh_uncaught_failfast" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eh_uncaught.cs</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>sp1</value>
+            </arg>
+            <arg name="bflat_extlib">
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.sp1.runtime/1.0.0-preview.1/nethermind.sp1.runtime.1.0.0-preview.1.nupkg</value>
+            </arg>
+            <arg name="expected_status">
+                <value>1</value>
+            </arg>
+            <!-- abort(): 128 + SIGABRT, the runtime's fail-fast -->
+            <arg name="expected_stdout">
+                <value>exit_code 134</value>
+            </arg>
+        </run>
+
+        <run name="eh_uncaught_zkvmthrow" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eh_uncaught.cs</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>sp1</value>
+            </arg>
+            <arg name="bflat_extlib">
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.sp1.runtime/1.0.0-preview.1/nethermind.sp1.runtime.1.0.0-preview.1.nupkg</value>
+            </arg>
+            <arg name="remove_eh">
+                <value>TRUE</value>
+            </arg>
+            <arg name="expected_status">
+                <value>1</value>
+            </arg>
+            <!-- __wrap_RhpThrowEx with no ZkvmThrow bound: exit(1) -->
+            <arg name="expected_stdout">
+                <value>exit_code 1</value>
             </arg>
         </run>
     </session>

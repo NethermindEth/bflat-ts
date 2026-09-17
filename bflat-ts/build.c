@@ -139,6 +139,8 @@ main(int argc, char **argv)
     te_string           agent_binary_path = TE_STRING_INIT;
 
     const char         *expected_stdout   = NULL;
+    te_bool             remove_eh         = FALSE;
+    int                 expected_status   = 0;
     tapi_job_channel_t *stdout_filter     = NULL;
     tapi_job_buffer_t   stdout_buf        = TAPI_JOB_BUFFER_INIT;
 
@@ -173,6 +175,20 @@ main(int argc, char **argv)
     if (TEST_HAS_PARAM(bflat_define))
         TEST_GET_OPT_STRING_PARAM(bflat_define);
     TEST_GET_OPT_STRING_PARAM(expected_stdout);
+    /* Same "-" convention as the image parameters above: no opinion. */
+    if (expected_stdout != NULL && strcmp(expected_stdout, "-") == 0)
+        expected_stdout = NULL;
+    /*
+     * Exception handling is a build-time policy, and the two settings behave
+     * differently enough that a test has to say which one it means: with the
+     * unwind tables the runtime dispatches a throw in two passes and a guest
+     * can catch it, and without them RhpThrowEx is diverted to the guest's
+     * own ZkvmThrow. Packages that do not care leave both alone.
+     */
+    if (TEST_HAS_PARAM(remove_eh))
+        TEST_GET_BOOL_PARAM(remove_eh);
+    if (TEST_HAS_PARAM(expected_status))
+        TEST_GET_INT_PARAM(expected_status);
     TEST_GET_TA(zisk, zisk_ta);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
@@ -273,6 +289,8 @@ main(int argc, char **argv)
             ARGV_ADD("--no-pthread");
         if (no_pie)
             ARGV_ADD("--no-pie");
+        if (remove_eh)
+            ARGV_ADD("--remove-eh");
         /* Every zkVM target takes its bindings this way, and the package
          * differs per target - see bflat_extlib in the package. Without it
          * even ZisK loses the console, so this is not a zisk-only switch. */
@@ -514,9 +532,16 @@ main(int argc, char **argv)
             if (run_status.type != TAPI_JOB_STATUS_EXITED)
                 TEST_FAIL("Binary was killed by signal (signo=%d)",
                           run_status.value);
-            if (run_status.value != 0)
-                TEST_FAIL("Binary exited with non-zero status %d",
-                          run_status.value);
+            /*
+             * A guest that must die says so: the exception tests pin the exit
+             * status the EH policy produces. Only the targets whose runner
+             * reports the guest's status can assert one - ziskemu returns its
+             * own, and OpenVM's TERMINATE takes an immediate, so every
+             * non-zero status reaches the host as 1.
+             */
+            if (run_status.value != expected_status)
+                TEST_FAIL("Binary exited with status %d, expected %d",
+                          run_status.value, expected_status);
 
             clock_gettime(CLOCK_MONOTONIC, &t_run_end);
             run_elapsed_ms =

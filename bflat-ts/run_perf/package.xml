@@ -23,10 +23,8 @@
             </arg>
             <!-- ZisK only. This test is not "run the guest and time it": it
                  runs ziskemu with tracing and turns the trace into a per-symbol
-                 instruction profile, which needs both the emulator and the
-                 separate .patched ELF that only the ZisK path produces (SP1 is
-                 patched in place, OpenVM not at all). The other two targets
-                 report their own cycle counts through their runners. -->
+                 instruction profile, which no other runner here produces. SP1
+                 and OpenVM report their own cycle counts on every run. -->
             <arg name="bflat_libc">
                 <value>zisk</value>
             </arg>

@@ -308,9 +308,9 @@ main(int argc, char **argv)
                 te_string src_p = TE_STRING_INIT;
                 te_string dst_p = TE_STRING_INIT;
 
-                te_string_append(&src_p, "%s/%.*s.patched",
+                te_string_append(&src_p, "%s/%.*s",
                                           src_dir, stem_len, cs_file);
-                te_string_append(&dst_p, "%s/%.*s.patched",
+                te_string_append(&dst_p, "%s/%.*s",
                                           zisk_src_dir, stem_len, cs_file);
                 CHECK_RC(tapi_file_copy_ta(ta, src_p.ptr,
                                            zisk_ta, dst_p.ptr));
@@ -336,32 +336,31 @@ main(int argc, char **argv)
                                    : (int)strlen(cs_file);
 
             /*
-             * bflat post-processes the zisk ELF with patch_elf.py,
-             * producing <stem>.patched — that is the file ziskemu must run.
-             * The raw <stem> ELF is an intermediate artifact and will cause
-             * ziskemu to exit with status 101 if used directly.
+             * bflat post-processes the zisk ELF with patch_elf.py in place,
+             * so the build output IS the file ziskemu runs. It used to be
+             * left beside it as <stem>.patched, with the raw linker output
+             * under the plain name; running that one makes ziskemu exit 101.
              */
 
             /* Trace file ends up in run_src on the agent */
             te_string_append(&trace_path_agent,
-                                      "%s/%.*s.patched.trace",
+                                      "%s/%.*s.trace",
                                       run_src, stem_len, cs_file);
             te_string_append(&results_path_agent,
-                                      "%s/%.*s.patched.startup",
+                                      "%s/%.*s.startup",
                                       run_src, stem_len, cs_file);
 
             /*
              * Run command inside Zisk container:
-             *   sh -c 'ziskemu -v -e /n/<stem>.patched \
-             *             > /n/<stem>.patched.trace 2>&1'
+             *   sh -c 'ziskemu -v -e /n/<stem> > /n/<stem>.trace 2>&1'
              *
              * The shared mount point is CONTAINER_BIN_DIR (/n).
              * Using sh -c lets us redirect output to the shared volume.
              */
             te_string_append(&run_cmd,
                                       "ziskemu -v -e " CONTAINER_BIN_DIR
-                                      "/%.*s.patched > " CONTAINER_BIN_DIR
-                                      "/%.*s.patched.trace 2>&1",
+                                      "/%.*s > " CONTAINER_BIN_DIR
+                                      "/%.*s.trace 2>&1",
                                       stem_len, cs_file,
                                       stem_len, cs_file);
         }
@@ -431,9 +430,9 @@ main(int argc, char **argv)
             te_string   elf_path = TE_STRING_INIT;
             tarpc_pid_t pid;
 
-            /* Use .patched ELF for symbol resolution — it retains the
-             * full .symtab and is the binary that actually ran. */
-            te_string_append(&elf_path, "%s/%.*s.patched",
+            /* The binary that actually ran, and the one that retains the
+             * full .symtab. */
+            te_string_append(&elf_path, "%s/%.*s",
                                       run_src, stem_len, cs_file);
 
             RPC_AWAIT_ERROR(run_rpcs);
