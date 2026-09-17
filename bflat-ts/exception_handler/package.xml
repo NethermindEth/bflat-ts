@@ -93,7 +93,14 @@
             <arg name="cs_file">
                 <value>eh_caught.cs</value>
             </arg>
-            <arg name="expected_stdout">
+            <!-- In lockstep with bflat_libc: Console output is swallowed on
+                 ZisK, whose console binding belongs to ziskos rather than to
+                 the runtime's write path, so there the guest is only required
+                 to reach the handler and exit cleanly. -->
+            <arg name="expected_stdout" list="target">
+                <value>-</value>
+                <value>[caught] System.InvalidOperationException: boom from managed code</value>
+                <value>[caught] System.InvalidOperationException: boom from managed code</value>
                 <value>[caught] System.InvalidOperationException: boom from managed code</value>
             </arg>
         </run>
@@ -110,7 +117,10 @@
             <arg name="remove_eh">
                 <value>TRUE</value>
             </arg>
-            <arg name="expected_stdout">
+            <arg name="expected_stdout" list="target">
+                <value>-</value>
+                <value>[ZkvmThrow] System.InvalidOperationException: boom from managed code</value>
+                <value>[ZkvmThrow] System.InvalidOperationException: boom from managed code</value>
                 <value>[ZkvmThrow] System.InvalidOperationException: boom from managed code</value>
             </arg>
         </run>
