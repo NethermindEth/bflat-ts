@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
 <package version="1.0">
-    <description>bflat build tests - managed exception handler (ZkvmThrow)</description>
+    <description>bflat build tests - exception handling, both policies</description>
 
     <author mailto="maksim.menshikov@nethermind.io" />
 
@@ -16,9 +16,14 @@
             <arg name="bflat_arch">
                 <value>riscv64</value>
             </arg>
-            <arg name="bflat_libc">
+            <!-- The four targets iterate in lockstep with bflat_extlib below:
+                 each zkVM takes its bindings from its own package, and without
+                 them the guest has no console and no accelerators. -->
+            <arg name="bflat_libc" list="target">
                 <value>zisk</value>
                 <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
             </arg>
             <arg name="bflat_stdlib">
                 <value>dotnet</value>
@@ -44,9 +49,11 @@
             <arg name="run_timeout_ms">
                 <value>600000</value>
             </arg>
-            <arg name="bflat_extlib">
-                <value
-                >https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.5/nethermind.ziskos.runtime.1.0.0-preview.5.nupkg</value>
+            <arg name="bflat_extlib" list="target">
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.9/nethermind.ziskos.runtime.1.0.0-preview.9.nupkg</value>
+                <value>-</value>
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.sp1.runtime/1.0.0-preview.1/nethermind.sp1.runtime.1.0.0-preview.1.nupkg</value>
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.openvm.runtime/1.0.0-preview.1/nethermind.openvm.runtime.1.0.0-preview.1.nupkg</value>
             </arg>
             <arg name="qemu_path">
                 <value>/usr/bin/qemu-riscv64-static</value>
@@ -54,15 +61,118 @@
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:latest</value>
             </arg>
+            <!-- Harness images and the OpenVM extension set: "-" takes the
+                 defaults pinned in tsapi_zkvm.h and the config shipped in the
+                 OpenVM image. -->
+            <arg name="zkvm_image">
+                <value>-</value>
+            </arg>
+            <arg name="openvm_config">
+                <value>-</value>
+            </arg>
             <arg name="expected_stdout">
                 <value>-</value>
             </arg>
+            <arg name="remove_eh">
+                <value>FALSE</value>
+            </arg>
+            <arg name="expected_status">
+                <value>0</value>
+            </arg>
         </run-template>
 
+        <!--
+            Exception handling is a build-time policy and the two settings are
+            different mechanisms, so each is tested where it applies.
+
+            Default: the image keeps its unwind tables and a throw is
+            dispatched in two passes, so managed code can catch it.
+        -->
+        <run name="eh_caught" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eh_caught.cs</value>
+            </arg>
+            <!-- In lockstep with bflat_libc: Console output is swallowed on
+                 ZisK, whose console binding belongs to ziskos rather than to
+                 the runtime's write path, so there the guest is only required
+                 to reach the handler and exit cleanly. -->
+            <arg name="expected_stdout" list="target">
+                <value>-</value>
+                <value>[caught] System.InvalidOperationException: boom from managed code</value>
+                <value>[caught] System.InvalidOperationException: boom from managed code</value>
+                <value>[caught] System.InvalidOperationException: boom from managed code</value>
+            </arg>
+        </run>
+
+        <!--
+            With the tables removed, RhpThrowEx is diverted to the guest's own
+            ZkvmThrow, which receives the live exception object.
+        -->
         <run name="exhandler" template="bflat_build">
             <script name="build" />
             <arg name="cs_file">
                 <value>exhandler.cs</value>
+            </arg>
+            <arg name="remove_eh">
+                <value>TRUE</value>
+            </arg>
+            <arg name="expected_stdout" list="target">
+                <value>-</value>
+                <value>[ZkvmThrow] System.InvalidOperationException: boom from managed code</value>
+                <value>[ZkvmThrow] System.InvalidOperationException: boom from managed code</value>
+                <value>[ZkvmThrow] System.InvalidOperationException: boom from managed code</value>
+            </arg>
+        </run>
+
+        <!--
+            And what each policy does with an exception nobody handles. Only on
+            SP1: its harness prints the guest's own status, while ziskemu
+            reports its own and OpenVM's TERMINATE takes an immediate, so every
+            non-zero status reaches that host as 1. The harness itself exits 1
+            for any failed guest, which is why the status expected here is 1 in
+            both cases and the distinction is read off its report.
+        -->
+        <run name="eh_uncaught_failfast" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eh_uncaught.cs</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>sp1</value>
+            </arg>
+            <arg name="bflat_extlib">
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.sp1.runtime/1.0.0-preview.1/nethermind.sp1.runtime.1.0.0-preview.1.nupkg</value>
+            </arg>
+            <arg name="expected_status">
+                <value>1</value>
+            </arg>
+            <!-- abort(): 128 + SIGABRT, the runtime's fail-fast -->
+            <arg name="expected_stdout">
+                <value>exit_code 134</value>
+            </arg>
+        </run>
+
+        <run name="eh_uncaught_zkvmthrow" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eh_uncaught.cs</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>sp1</value>
+            </arg>
+            <arg name="bflat_extlib">
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.sp1.runtime/1.0.0-preview.1/nethermind.sp1.runtime.1.0.0-preview.1.nupkg</value>
+            </arg>
+            <arg name="remove_eh">
+                <value>TRUE</value>
+            </arg>
+            <arg name="expected_status">
+                <value>1</value>
+            </arg>
+            <!-- __wrap_RhpThrowEx with no ZkvmThrow bound: exit(1) -->
+            <arg name="expected_stdout">
+                <value>exit_code 1</value>
             </arg>
         </run>
     </session>

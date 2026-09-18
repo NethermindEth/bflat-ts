@@ -171,15 +171,15 @@ main(int argc, char **argv)
     if (test_dir == NULL)
         TEST_FAIL("Failed to determine test binary directory");
 
-    CHECK_RC(te_string_append(&local_cs_path, "%s/cs/%s", test_dir, cs_file));
-    CHECK_RC(te_string_append(&remote_cs_path,
-                              CONTAINER_SRC_DIR "/%s", cs_file));
-    CHECK_RC(te_string_append(&remote_out,
+    te_string_append(&local_cs_path, "%s/cs/%s", test_dir, cs_file);
+    te_string_append(&remote_cs_path,
+                              CONTAINER_SRC_DIR "/%s", cs_file);
+    te_string_append(&remote_out,
                               CONTAINER_SRC_DIR "/%.*s",
                               (int)(strrchr(cs_file, '.') != NULL
                                     ? strrchr(cs_file, '.') - cs_file
                                     : (int)strlen(cs_file)),
-                              cs_file));
+                              cs_file);
 
     /* ------------------------------------------------------------------ */
     TEST_STEP("Create RPC server on agent '%s'", ta);
@@ -198,7 +198,7 @@ main(int argc, char **argv)
     {
         te_string agent_cs_path = TE_STRING_INIT;
 
-        CHECK_RC(te_string_append(&agent_cs_path, "%s/%s", src_dir, cs_file));
+        te_string_append(&agent_cs_path, "%s/%s", src_dir, cs_file);
         CHECK_RC(tapi_file_copy_ta(NULL, local_cs_path.ptr,
                                    ta, agent_cs_path.ptr));
         te_string_free(&agent_cs_path);
@@ -308,10 +308,10 @@ main(int argc, char **argv)
                 te_string src_p = TE_STRING_INIT;
                 te_string dst_p = TE_STRING_INIT;
 
-                CHECK_RC(te_string_append(&src_p, "%s/%.*s.patched",
-                                          src_dir, stem_len, cs_file));
-                CHECK_RC(te_string_append(&dst_p, "%s/%.*s.patched",
-                                          zisk_src_dir, stem_len, cs_file));
+                te_string_append(&src_p, "%s/%.*s",
+                                          src_dir, stem_len, cs_file);
+                te_string_append(&dst_p, "%s/%.*s",
+                                          zisk_src_dir, stem_len, cs_file);
                 CHECK_RC(tapi_file_copy_ta(ta, src_p.ptr,
                                            zisk_ta, dst_p.ptr));
                 te_string_free(&src_p);
@@ -336,34 +336,33 @@ main(int argc, char **argv)
                                    : (int)strlen(cs_file);
 
             /*
-             * bflat post-processes the zisk ELF with patch_elf.py,
-             * producing <stem>.patched — that is the file ziskemu must run.
-             * The raw <stem> ELF is an intermediate artifact and will cause
-             * ziskemu to exit with status 101 if used directly.
+             * bflat post-processes the zisk ELF with patch_elf.py in place,
+             * so the build output IS the file ziskemu runs. It used to be
+             * left beside it as <stem>.patched, with the raw linker output
+             * under the plain name; running that one makes ziskemu exit 101.
              */
 
             /* Trace file ends up in run_src on the agent */
-            CHECK_RC(te_string_append(&trace_path_agent,
-                                      "%s/%.*s.patched.trace",
-                                      run_src, stem_len, cs_file));
-            CHECK_RC(te_string_append(&results_path_agent,
-                                      "%s/%.*s.patched.startup",
-                                      run_src, stem_len, cs_file));
+            te_string_append(&trace_path_agent,
+                                      "%s/%.*s.trace",
+                                      run_src, stem_len, cs_file);
+            te_string_append(&results_path_agent,
+                                      "%s/%.*s.startup",
+                                      run_src, stem_len, cs_file);
 
             /*
              * Run command inside Zisk container:
-             *   sh -c 'ziskemu -v -e /n/<stem>.patched \
-             *             > /n/<stem>.patched.trace 2>&1'
+             *   sh -c 'ziskemu -v -e /n/<stem> > /n/<stem>.trace 2>&1'
              *
              * The shared mount point is CONTAINER_BIN_DIR (/n).
              * Using sh -c lets us redirect output to the shared volume.
              */
-            CHECK_RC(te_string_append(&run_cmd,
+            te_string_append(&run_cmd,
                                       "ziskemu -v -e " CONTAINER_BIN_DIR
-                                      "/%.*s.patched > " CONTAINER_BIN_DIR
-                                      "/%.*s.patched.trace 2>&1",
+                                      "/%.*s > " CONTAINER_BIN_DIR
+                                      "/%.*s.trace 2>&1",
                                       stem_len, cs_file,
-                                      stem_len, cs_file));
+                                      stem_len, cs_file);
         }
 
         TEST_STEP("Create Zisk run job (verbose trace -> '%s')",
@@ -431,10 +430,10 @@ main(int argc, char **argv)
             te_string   elf_path = TE_STRING_INIT;
             tarpc_pid_t pid;
 
-            /* Use .patched ELF for symbol resolution — it retains the
-             * full .symtab and is the binary that actually ran. */
-            CHECK_RC(te_string_append(&elf_path, "%s/%.*s.patched",
-                                      run_src, stem_len, cs_file));
+            /* The binary that actually ran, and the one that retains the
+             * full .symtab. */
+            te_string_append(&elf_path, "%s/%.*s",
+                                      run_src, stem_len, cs_file);
 
             RPC_AWAIT_ERROR(run_rpcs);
             pid = rpc_te_shell_cmd(
@@ -460,13 +459,13 @@ main(int argc, char **argv)
             char *local_tmp = tapi_file_make_custom_pathname(NULL, "/tmp", NULL);
             if (local_tmp != NULL)
             {
-                CHECK_RC(te_string_append(&results_path_local, "%s", local_tmp));
+                te_string_append(&results_path_local, "%s", local_tmp);
                 free(local_tmp);
             }
             else
             {
-                CHECK_RC(te_string_append(&results_path_local,
-                                          "/tmp/run_perf_startup.txt"));
+                te_string_append(&results_path_local,
+                                          "/tmp/run_perf_startup.txt");
             }
 
             if (tapi_file_copy_ta(run_rpcs->ta, results_path_agent.ptr,

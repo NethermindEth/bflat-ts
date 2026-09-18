@@ -119,22 +119,9 @@ ts_container_run_docker(ts_container *container,
     {
         paths[i] = (te_string)TE_STRING_INIT;
 
-        rc = te_string_append(&paths[i], "%s:%s",
+        te_string_append(&paths[i], "%s:%s",
             container->shared_folders[i].host_path,
             container->shared_folders[i].container_path);
-        if (rc != 0)
-        {
-            size_t j;
-
-            for (j = 0; j < i; ++j)
-            {
-                te_string_free(&paths[j]);
-            }
-            free(new_argv);
-            free(paths);
-
-            return NULL;
-        }
 
         new_argv[cur_elem++] = "-v";
         new_argv[cur_elem++] = paths[i].ptr;

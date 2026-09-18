@@ -21,6 +21,10 @@
             <arg name="bflat_arch">
                 <value>riscv64</value>
             </arg>
+            <!-- ZisK only. This test is not "run the guest and time it": it
+                 runs ziskemu with tracing and turns the trace into a per-symbol
+                 instruction profile, which no other runner here produces. SP1
+                 and OpenVM report their own cycle counts on every run. -->
             <arg name="bflat_libc">
                 <value>zisk</value>
             </arg>
@@ -43,11 +47,19 @@
                 <value>TRUE</value>
             </arg>
             <arg name="bflat_extlib">
-                <value
-                >https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.5/nethermind.ziskos.runtime.1.0.0-preview.5.nupkg</value>
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.9/nethermind.ziskos.runtime.1.0.0-preview.9.nupkg</value>
             </arg>
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:latest</value>
+            </arg>
+            <!-- Harness images and the OpenVM extension set: "-" takes the
+                 defaults pinned in tsapi_zkvm.h and the config shipped in the
+                 OpenVM image. -->
+            <arg name="zkvm_image">
+                <value>-</value>
+            </arg>
+            <arg name="openvm_config">
+                <value>-</value>
             </arg>
             <arg name="run_timeout_ms">
                 <value>1800000</value>

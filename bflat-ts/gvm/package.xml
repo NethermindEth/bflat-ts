@@ -19,9 +19,14 @@ variants for three reproducer programs</description>
             <arg name="bflat_arch">
                 <value>riscv64</value>
             </arg>
-            <arg name="bflat_libc">
+            <!-- The four targets iterate in lockstep with bflat_extlib below:
+                 each zkVM takes its bindings from its own package, and without
+                 them the guest has no console and no accelerators. -->
+            <arg name="bflat_libc" list="target">
                 <value>zisk</value>
                 <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
             </arg>
             <arg name="bflat_stdlib">
                 <value>dotnet</value>
@@ -47,15 +52,26 @@ variants for three reproducer programs</description>
             <arg name="run_timeout_ms">
                 <value>600000</value>
             </arg>
-            <arg name="bflat_extlib">
-                <value
-                >https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.5/nethermind.ziskos.runtime.1.0.0-preview.5.nupkg</value>
+            <arg name="bflat_extlib" list="target">
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.9/nethermind.ziskos.runtime.1.0.0-preview.9.nupkg</value>
+                <value>-</value>
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.sp1.runtime/1.0.0-preview.1/nethermind.sp1.runtime.1.0.0-preview.1.nupkg</value>
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.openvm.runtime/1.0.0-preview.1/nethermind.openvm.runtime.1.0.0-preview.1.nupkg</value>
             </arg>
             <arg name="qemu_path">
                 <value>/usr/bin/qemu-riscv64-static</value>
             </arg>
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:latest</value>
+            </arg>
+            <!-- Harness images and the OpenVM extension set: "-" takes the
+                 defaults pinned in tsapi_zkvm.h and the config shipped in the
+                 OpenVM image. -->
+            <arg name="zkvm_image">
+                <value>-</value>
+            </arg>
+            <arg name="openvm_config">
+                <value>-</value>
             </arg>
             <arg name="expected_stdout">
                 <value>-</value>

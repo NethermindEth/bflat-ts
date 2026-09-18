@@ -147,7 +147,7 @@ main(int argc, char **argv)
         dir = te_dirname(exe_buf);
         if (dir == NULL)
             TEST_FAIL("Failed to determine test binary directory");
-        CHECK_RC(te_string_append(&test_dir, "%s", dir));
+        te_string_append(&test_dir, "%s", dir);
         free(dir);
     }
 
@@ -157,14 +157,14 @@ main(int argc, char **argv)
         const char *pkg_rel   = (ts_topdir != NULL) ? "bflat-ts/zisk_guest" : ".";
 
         if (strcmp(binary, "default") == 0)
-            CHECK_RC(te_string_append(&local_bin, "%s/%s/bin/nethermind",
-                                      pkg_base, pkg_rel));
+            te_string_append(&local_bin, "%s/%s/bin/nethermind",
+                                      pkg_base, pkg_rel);
         else
-            CHECK_RC(te_string_append(&local_bin, "%s/%s/%s",
-                                      pkg_base, pkg_rel, binary));
+            te_string_append(&local_bin, "%s/%s/%s",
+                                      pkg_base, pkg_rel, binary);
 
-        CHECK_RC(te_string_append(&local_input, "%s/%s/%s",
-                                  pkg_base, pkg_rel, input_bin));
+        te_string_append(&local_input, "%s/%s/%s",
+                                  pkg_base, pkg_rel, input_bin);
     }
 
     RING("nethermind binary : %s", local_bin.ptr);
@@ -197,11 +197,11 @@ main(int argc, char **argv)
 
     /* ------------------------------------------------------------------ */
     TEST_STEP("Copy ZiskGuest binary to agent");
-    CHECK_RC(te_string_append(&remote_bin, "%s/%s", work_dir, GUEST_BINARY_NAME));
+    te_string_append(&remote_bin, "%s/%s", work_dir, GUEST_BINARY_NAME);
     CHECK_RC(tapi_file_copy_ta(NULL, local_bin.ptr, ta, remote_bin.ptr));
 
     TEST_STEP("Copy input.bin to agent");
-    CHECK_RC(te_string_append(&remote_input, "%s/%s", work_dir, INPUT_BIN_NAME));
+    te_string_append(&remote_input, "%s/%s", work_dir, INPUT_BIN_NAME);
     CHECK_RC(tapi_file_copy_ta(NULL, local_input.ptr, ta, remote_input.ptr));
 
     /* ------------------------------------------------------------------ */
@@ -231,14 +231,14 @@ main(int argc, char **argv)
         zisk_work_created = true;
 
         TEST_STEP("Copy files from '%s' to Zisk agent '%s'", ta, zisk_ta);
-        CHECK_RC(te_string_append(&src_bin_path,
-                                  "%s/%s", work_dir, GUEST_BINARY_NAME));
-        CHECK_RC(te_string_append(&src_input_path,
-                                  "%s/%s", work_dir, INPUT_BIN_NAME));
-        CHECK_RC(te_string_append(&dst_bin_path,
-                                  "%s/%s", zisk_work_dir, GUEST_BINARY_NAME));
-        CHECK_RC(te_string_append(&dst_input_path,
-                                  "%s/%s", zisk_work_dir, INPUT_BIN_NAME));
+        te_string_append(&src_bin_path,
+                                  "%s/%s", work_dir, GUEST_BINARY_NAME);
+        te_string_append(&src_input_path,
+                                  "%s/%s", work_dir, INPUT_BIN_NAME);
+        te_string_append(&dst_bin_path,
+                                  "%s/%s", zisk_work_dir, GUEST_BINARY_NAME);
+        te_string_append(&dst_input_path,
+                                  "%s/%s", zisk_work_dir, INPUT_BIN_NAME);
 
         CHECK_RC(tapi_file_copy_ta(ta,   src_bin_path.ptr,
                                    zisk_ta, dst_bin_path.ptr));

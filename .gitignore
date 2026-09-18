@@ -70,3 +70,9 @@ dkms.conf
 
 /.bublik_path
 /.bublik_distr_path
+
+# Guest binaries left in a package's cs/ directory by a by-hand bflat run.
+# The suite itself builds in a temp dir on the agent and never writes here, so
+# anything in cs/ that is not a C# source is stray build output.
+bflat-ts/*/cs/*
+!bflat-ts/*/cs/*.cs

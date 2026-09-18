@@ -129,15 +129,15 @@ main(int argc, char **argv)
     if (test_dir == NULL)
         TEST_FAIL("Failed to determine test binary directory");
 
-    CHECK_RC(te_string_append(&local_cs_path, "%s/cs/%s", test_dir, cs_file));
-    CHECK_RC(te_string_append(&remote_cs_path,
-                              CONTAINER_SRC_DIR "/%s", cs_file));
-    CHECK_RC(te_string_append(&remote_out,
+    te_string_append(&local_cs_path, "%s/cs/%s", test_dir, cs_file);
+    te_string_append(&remote_cs_path,
+                              CONTAINER_SRC_DIR "/%s", cs_file);
+    te_string_append(&remote_out,
                               CONTAINER_SRC_DIR "/%.*s",
                               (int)(strrchr(cs_file, '.') != NULL
                                     ? strrchr(cs_file, '.') - cs_file
                                     : (int)strlen(cs_file)),
-                              cs_file));
+                              cs_file);
 
     TEST_STEP("Create RPC server on agent '%s'", ta);
     CHECK_RC(rcf_rpc_server_create(ta, "rpcs_build_perf", &rpcs));
@@ -156,7 +156,7 @@ main(int argc, char **argv)
     {
         te_string agent_cs_path = TE_STRING_INIT;
 
-        CHECK_RC(te_string_append(&agent_cs_path, "%s/%s", src_dir, cs_file));
+        te_string_append(&agent_cs_path, "%s/%s", src_dir, cs_file);
         CHECK_RC(tapi_file_copy_ta(NULL, local_cs_path.ptr,
                                    ta, agent_cs_path.ptr));
         te_string_free(&agent_cs_path);

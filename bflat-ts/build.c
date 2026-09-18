@@ -30,6 +30,10 @@
  *                        first use
  * @param qemu_path       Path to qemu-riscv64-static on the agent, or empty
  *                        to use the default (#TSAPI_QEMU_DEFAULT_PATH)
+ * @param zkvm_image      SP1/OpenVM harness image, or @c - for the pinned
+ *                        default built from bflat-sp1 / bflat-openvm
+ * @param openvm_config   openvm.toml filename next to the binary, or @c - to
+ *                        use the extension set shipped in the harness image
  * @param zisk_image      Zisk Docker image to use when running @c zisk /
  *                        @c zisk_sim binaries, or empty for
  *                        #TSAPI_ZISK_DEFAULT_IMAGE
@@ -63,6 +67,7 @@
 #include "tsapi_bflat.h"
 #include "tsapi_qemu.h"
 #include "tsapi_zisk.h"
+#include "tsapi_zkvm.h"
 
 #include <time.h>
 #include <unistd.h>
@@ -70,6 +75,10 @@
 
 /** Path inside the container where sources are mounted */
 #define CONTAINER_SRC_DIR  "/src"
+
+/* The SP1 and OpenVM harnesses take an input path positionally; these programs
+ * read nothing, so the test drops an empty file next to the binary. */
+#define ZKVM_EMPTY_INPUT   "zkvm_empty.bin"
 
 /** Build timeout: 5 minutes should be enough even on a slow machine */
 #define BUILD_TIMEOUT_MS  (5 * 60 * 1000)
@@ -95,6 +104,8 @@ main(int argc, char **argv)
     int                 run_timeout_ms;
     const char         *qemu_path;
     const char         *zisk_image;
+    const char         *zkvm_image;
+    const char         *openvm_config;
     const char         *bflat_extlib;
     const char         *bflat_define      = NULL;
 
@@ -114,6 +125,9 @@ main(int argc, char **argv)
     bool                qemu_created      = false;
     tsapi_zisk_runner   zisk              = TSAPI_ZISK_RUNNER_INIT;
     bool                zisk_created      = false;
+    tsapi_zkvm_runner   zkvm              = TSAPI_ZKVM_RUNNER_INIT;
+    bool                zkvm_created      = false;
+    tsapi_zkvm_target   zkvm_target       = TSAPI_ZKVM_TARGET_SP1;
     const char         *zisk_ta           = NULL;
     rcf_rpc_server     *zisk_rpcs         = NULL;
     char               *zisk_src_dir      = NULL;
@@ -125,6 +139,8 @@ main(int argc, char **argv)
     te_string           agent_binary_path = TE_STRING_INIT;
 
     const char         *expected_stdout   = NULL;
+    te_bool             remove_eh         = FALSE;
+    int                 expected_status   = 0;
     tapi_job_channel_t *stdout_filter     = NULL;
     tapi_job_buffer_t   stdout_buf        = TAPI_JOB_BUFFER_INIT;
 
@@ -150,10 +166,29 @@ main(int argc, char **argv)
     TEST_GET_INT_PARAM(run_timeout_ms);
     TEST_GET_OPT_STRING_PARAM(qemu_path);
     TEST_GET_OPT_STRING_PARAM(zisk_image);
+    TEST_GET_OPT_STRING_PARAM(zkvm_image);
+    TEST_GET_OPT_STRING_PARAM(openvm_config);
+    /* "-" is how a package says "no opinion"; the runner takes NULL for that. */
+    if (zkvm_image != NULL && strcmp(zkvm_image, "-") == 0)
+        zkvm_image = NULL;
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
     if (TEST_HAS_PARAM(bflat_define))
         TEST_GET_OPT_STRING_PARAM(bflat_define);
     TEST_GET_OPT_STRING_PARAM(expected_stdout);
+    /* Same "-" convention as the image parameters above: no opinion. */
+    if (expected_stdout != NULL && strcmp(expected_stdout, "-") == 0)
+        expected_stdout = NULL;
+    /*
+     * Exception handling is a build-time policy, and the two settings behave
+     * differently enough that a test has to say which one it means: with the
+     * unwind tables the runtime dispatches a throw in two passes and a guest
+     * can catch it, and without them RhpThrowEx is diverted to the guest's
+     * own ZkvmThrow. Packages that do not care leave both alone.
+     */
+    if (TEST_HAS_PARAM(remove_eh))
+        TEST_GET_BOOL_PARAM(remove_eh);
+    if (TEST_HAS_PARAM(expected_status))
+        TEST_GET_INT_PARAM(expected_status);
     TEST_GET_TA(zisk, zisk_ta);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
@@ -176,15 +211,15 @@ main(int argc, char **argv)
     if (test_dir == NULL)
         TEST_FAIL("Failed to determine test binary directory");
 
-    CHECK_RC(te_string_append(&local_cs_path, "%s/cs/%s", test_dir, cs_file));
-    CHECK_RC(te_string_append(&remote_cs_path,
-                              CONTAINER_SRC_DIR "/%s", cs_file));
-    CHECK_RC(te_string_append(&remote_out,
+    te_string_append(&local_cs_path, "%s/cs/%s", test_dir, cs_file);
+    te_string_append(&remote_cs_path,
+                              CONTAINER_SRC_DIR "/%s", cs_file);
+    te_string_append(&remote_out,
                               CONTAINER_SRC_DIR "/%.*s",
                               (int)(strrchr(cs_file, '.') != NULL
                                     ? strrchr(cs_file, '.') - cs_file
                                     : (int)strlen(cs_file)),
-                              cs_file));
+                              cs_file);
 
     TEST_STEP("Create RPC server on agent '%s'", ta);
     CHECK_RC(rcf_rpc_server_create(ta, "rpcs_build", &rpcs));
@@ -203,7 +238,7 @@ main(int argc, char **argv)
     {
         te_string agent_cs_path = TE_STRING_INIT;
 
-        CHECK_RC(te_string_append(&agent_cs_path, "%s/%s", src_dir, cs_file));
+        te_string_append(&agent_cs_path, "%s/%s", src_dir, cs_file);
         CHECK_RC(tapi_file_copy_ta(NULL, local_cs_path.ptr,
                                    ta, agent_cs_path.ptr));
         te_string_free(&agent_cs_path);
@@ -254,7 +289,12 @@ main(int argc, char **argv)
             ARGV_ADD("--no-pthread");
         if (no_pie)
             ARGV_ADD("--no-pie");
-        if (bflat_extlib != NULL && bflat_libc != NULL && strcmp(bflat_libc, "zisk") == 0)
+        if (remove_eh)
+            ARGV_ADD("--remove-eh");
+        /* Every zkVM target takes its bindings this way, and the package
+         * differs per target - see bflat_extlib in the package. Without it
+         * even ZisK loses the console, so this is not a zisk-only switch. */
+        if (bflat_extlib != NULL && strcmp(bflat_extlib, "-") != 0)
         {
             ARGV_ADD("--extlib"); ARGV_ADD(bflat_extlib);
         }
@@ -307,8 +347,8 @@ main(int argc, char **argv)
         te_string   agent_raw_bin = TE_STRING_INIT;
         rpc_stat    st;
 
-        CHECK_RC(te_string_append(&agent_raw_bin, "%s/%s",
-                                  src_dir, binary_stem));
+        te_string_append(&agent_raw_bin, "%s/%s",
+                                  src_dir, binary_stem);
         RPC_AWAIT_ERROR(rpcs);
         if (rpc_stat_func(rpcs, agent_raw_bin.ptr, &st) == 0)
             TEST_ARTIFACT("Binary size: %llu bytes (cs=%s arch=%s libc=%s)",
@@ -330,8 +370,8 @@ main(int argc, char **argv)
         {
             /* The container mounts src_dir as CONTAINER_SRC_DIR, so the
              * binary path on the agent is src_dir + suffix. */
-            CHECK_RC(te_string_append(&agent_binary_path, "%s/%s",
-                                      src_dir, binary_name));
+            te_string_append(&agent_binary_path, "%s/%s",
+                                      src_dir, binary_name);
 
             TEST_STEP("Create qemu runner (qemu='%s')",
                       qemu_path != NULL ? qemu_path : TSAPI_QEMU_DEFAULT_PATH);
@@ -350,10 +390,28 @@ main(int argc, char **argv)
             const char        *run_src_dir = src_dir;
             rcf_rpc_server    *run_rpcs    = rpcs;
 
-            /* bflat post-processes the zisk ELF with patch_elf.py,
-             * producing <binary>.patched — run that instead of the raw ELF. */
-            CHECK_RC(te_string_append(&agent_binary_path,
-                                      "%s.patched", binary_name));
+            /* bflat post-processes the zisk ELF with patch_elf.py. Fixed
+             * toolchains deliver the result at the requested output name;
+             * older ones left it in <binary>.patched with the raw linker
+             * output at the output name. Prefer the plain name, fall back
+             * to .patched for old images. */
+            {
+                te_string probe = TE_STRING_INIT;
+                te_bool   plain_exists = false;
+
+                te_string_append(&probe, "%s/%s",
+                                          src_dir, binary_name);
+                RPC_AWAIT_ERROR(rpcs);
+                plain_exists = (rpc_access(rpcs, probe.ptr, RPC_F_OK) == 0);
+                te_string_free(&probe);
+
+                if (plain_exists)
+                    te_string_append(&agent_binary_path,
+                                              "%s", binary_name);
+                else
+                    te_string_append(&agent_binary_path,
+                                              "%s.patched", binary_name);
+            }
 
             if (zisk_ta != NULL && strcmp(zisk_ta, ta) != 0)
             {
@@ -379,10 +437,10 @@ main(int argc, char **argv)
 
                 TEST_STEP("Copy '%s' from '%s' to '%s'",
                           agent_binary_path.ptr, ta, zisk_ta);
-                CHECK_RC(te_string_append(&agent_src, "%s/%s",
-                                          src_dir, agent_binary_path.ptr));
-                CHECK_RC(te_string_append(&agent_dst, "%s/%s",
-                                          zisk_src_dir, agent_binary_path.ptr));
+                te_string_append(&agent_src, "%s/%s",
+                                          src_dir, agent_binary_path.ptr);
+                te_string_append(&agent_dst, "%s/%s",
+                                          zisk_src_dir, agent_binary_path.ptr);
                 CHECK_RC(tapi_file_copy_ta(ta, agent_src.ptr,
                                            zisk_ta, agent_dst.ptr));
                 te_string_free(&agent_src);
@@ -405,6 +463,35 @@ main(int argc, char **argv)
             if (run_job == NULL)
                 TEST_FAIL("Failed to create Zisk run job for '%s'",
                           agent_binary_path.ptr);
+        }
+        else if (tsapi_zkvm_target_from_libc(bflat_libc, &zkvm_target))
+        {
+            te_string empty_input = TE_STRING_INIT;
+
+            te_string_append(&agent_binary_path, "%s", binary_name);
+
+            /* Both harnesses take the input path positionally and have no way
+             * to say "there is none"; these programs read nothing, so hand
+             * them an empty file. */
+            te_string_append(&empty_input, "%s/%s",
+                                      src_dir, ZKVM_EMPTY_INPUT);
+            CHECK_RC(tapi_file_create_ta(ta, empty_input.ptr, "%s", ""));
+            te_string_free(&empty_input);
+
+            TEST_STEP("Create %s runner (image '%s')",
+                      bflat_libc,
+                      zkvm_image != NULL ? zkvm_image : "(default)");
+            CHECK_RC(tsapi_zkvm_runner_create(rpcs, zkvm_target,
+                                              zkvm_image, &zkvm));
+            zkvm_created = true;
+
+            TEST_STEP("Run '%s/%s' in the %s harness container",
+                      src_dir, agent_binary_path.ptr, bflat_libc);
+            run_job = tsapi_zkvm_run(&zkvm, src_dir, agent_binary_path.ptr,
+                                     ZKVM_EMPTY_INPUT, openvm_config);
+            if (run_job == NULL)
+                TEST_FAIL("Failed to create %s run job for '%s'",
+                          bflat_libc, agent_binary_path.ptr);
         }
         else
         {
@@ -445,9 +532,16 @@ main(int argc, char **argv)
             if (run_status.type != TAPI_JOB_STATUS_EXITED)
                 TEST_FAIL("Binary was killed by signal (signo=%d)",
                           run_status.value);
-            if (run_status.value != 0)
-                TEST_FAIL("Binary exited with non-zero status %d",
-                          run_status.value);
+            /*
+             * A guest that must die says so: the exception tests pin the exit
+             * status the EH policy produces. Only the targets whose runner
+             * reports the guest's status can assert one - ziskemu returns its
+             * own, and OpenVM's TERMINATE takes an immediate, so every
+             * non-zero status reaches the host as 1.
+             */
+            if (run_status.value != expected_status)
+                TEST_FAIL("Binary exited with status %d, expected %d",
+                          run_status.value, expected_status);
 
             clock_gettime(CLOCK_MONOTONIC, &t_run_end);
             run_elapsed_ms =
@@ -463,7 +557,7 @@ main(int argc, char **argv)
                 char     *p;
                 size_t    len;
 
-                TEST_STEP("Read stdout and compare with expected: '%s'",
+                TEST_STEP("Read stdout and look for the expected text: '%s'",
                           expected_stdout);
 
                 do {
@@ -482,8 +576,18 @@ main(int argc, char **argv)
                 {
                     const char *actual = (p != NULL) ? p : "";
 
-                    if (strcmp(actual, expected_stdout) != 0)
-                        TEST_FAIL("stdout mismatch:\n"
+                    /*
+                     * Containment, not equality: on the zkVM targets the
+                     * program's output is not the only thing on this channel.
+                     * The harness prefixes each guest line ("stdout: ALL
+                     * PASS") and adds its own report - cycle count, exit
+                     * code, public values - none of which the test is about.
+                     * A guest that fails does not print the expected text at
+                     * all, so this still catches it, and the exit status is
+                     * checked separately above.
+                     */
+                    if (strstr(actual, expected_stdout) == NULL)
+                        TEST_FAIL("stdout does not contain the expected text:\n"
                                   "  expected: '%s'\n"
                                   "  actual:   '%s'",
                                   expected_stdout, actual);
@@ -506,6 +610,9 @@ cleanup:
 
     if (zisk_created)
         tsapi_zisk_runner_destroy(&zisk);
+
+    if (zkvm_created)
+        tsapi_zkvm_runner_destroy(&zkvm);
 
     if (zisk_src_created && zisk_rpcs != NULL)
     {

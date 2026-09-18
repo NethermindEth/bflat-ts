@@ -18,6 +18,10 @@
         </run>
 
         <run>
+            <package name="softfloat" />
+        </run>
+
+        <run>
             <package name="args" />
         </run>
 

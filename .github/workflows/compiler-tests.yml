@@ -71,12 +71,35 @@ jobs:
           run_id=${resp#accepted }
           run_id=${run_id%%[[:space:]]*}
 
+          # The service answers with plain text when it is unwell - a database
+          # pool timeout, say - and jq exits non-zero on it, which under
+          # `set -o pipefail` used to kill this step while the suite carried on
+          # running on the host. A hiccup is not a verdict: keep polling, and
+          # only give up once the run has been unreachable for long enough that
+          # it is not coming back.
+          unreachable=0
           while :; do
-            status=$(curl -sS "$HOST/horizon-api/runs/$run_id" \
-              -H "Authorization: Bearer $HORIZON_API_TOKEN" | jq -r .status)
+            body=$(curl -sS --max-time 30 "$HOST/horizon-api/runs/$run_id" \
+              -H "Authorization: Bearer $HORIZON_API_TOKEN") || body=''
+            status=$(printf '%s' "$body" | jq -er .status 2>/dev/null) || status=''
+
             case "$status" in
-              queued|running) sleep 30 ;;
-              *) break ;;
+              queued|running)
+                unreachable=0
+                sleep 30
+                ;;
+              '')
+                unreachable=$((unreachable + 1))
+                if [ "$unreachable" -ge 20 ]; then
+                  echo "::error::run $run_id unreachable for 10 minutes; last reply: ${body:-<empty>}"
+                  exit 1
+                fi
+                echo "status unavailable (attempt $unreachable/20): ${body:-<empty>}"
+                sleep 30
+                ;;
+              *)
+                break
+                ;;
             esac
           done
 

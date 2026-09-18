@@ -94,7 +94,7 @@ main(int argc, char **argv)
 
         if (env == NULL)
             TEST_FAIL("TS_TOPDIR environment variable is not set");
-        CHECK_RC(te_string_append(&ts_topdir_s, "%s", env));
+        te_string_append(&ts_topdir_s, "%s", env);
         RING("TS_TOPDIR = %s", ts_topdir_s.ptr);
     }
 
@@ -142,7 +142,7 @@ main(int argc, char **argv)
                 TEST_FAIL("realpath('%s') failed", nm_path_combined);
         }
 
-        CHECK_RC(te_string_append(&nm_dir_s, "%s", nm_path_abs));
+        te_string_append(&nm_dir_s, "%s", nm_path_abs);
         RING("Nethermind directory: %s", nm_dir_s.ptr);
     }
 
@@ -202,9 +202,9 @@ main(int argc, char **argv)
 
     /* ------------------------------------------------------------------ */
     TEST_STEP("Remove stale binary so a fresh build is always performed");
-    CHECK_RC(te_string_append(&bin_path_s,
+    te_string_append(&bin_path_s,
                               "%s/bflat-ts/zisk_guest/bin/nethermind",
-                              ts_topdir_s.ptr));
+                              ts_topdir_s.ptr);
 
     if (access(bin_path_s.ptr, F_OK) == 0)
     {
@@ -221,7 +221,7 @@ main(int argc, char **argv)
     TEST_STEP("Create RPC server on agent '%s'", ta);
     CHECK_RC(rcf_rpc_server_create(ta, "rpcs_build_guest", &rpcs));
 
-    CHECK_RC(te_string_append(&guest_s, "%s/" GUEST_SUBDIR, nm_dir_s.ptr));
+    te_string_append(&guest_s, "%s/" GUEST_SUBDIR, nm_dir_s.ptr);
 
     /* ------------------------------------------------------------------ */
     TEST_STEP("Build ZiskGuest via Nethermind's Makefile (image='%s')",
@@ -229,8 +229,8 @@ main(int argc, char **argv)
     {
         const char *make_argv[6];
 
-        CHECK_RC(te_string_append(&image_var_s,
-                                  "BFLAT_IMAGE=%s", bflat_image));
+        te_string_append(&image_var_s,
+                                  "BFLAT_IMAGE=%s", bflat_image);
 
         make_argv[0] = "make";
         make_argv[1] = "-C";
@@ -271,10 +271,10 @@ main(int argc, char **argv)
         tarpc_pid_t     cp_pid;
         rpc_wait_status cp_ws;
 
-        CHECK_RC(te_string_append(&cmd_s,
+        te_string_append(&cmd_s,
             "mkdir -p '%s/bflat-ts/zisk_guest/bin'"
             " && cp -f '%s/bin/nethermind' '%s'",
-            ts_topdir_s.ptr, guest_s.ptr, bin_path_s.ptr));
+            ts_topdir_s.ptr, guest_s.ptr, bin_path_s.ptr);
 
         RPC_AWAIT_ERROR(rpcs);
         cp_pid = rpc_te_shell_cmd(rpcs, "%s", -1, NULL, NULL, NULL,

@@ -21,9 +21,14 @@
             <arg name="bflat_arch">
                 <value>riscv64</value>
             </arg>
-            <arg name="bflat_libc">
+            <!-- The four targets iterate in lockstep with bflat_extlib below:
+                 each zkVM takes its bindings from its own package, and without
+                 them the guest has no console and no accelerators. -->
+            <arg name="bflat_libc" list="target">
                 <value>zisk_sim</value>
                 <value>zisk</value>
+                <value>sp1</value>
+                <value>openvm</value>
             </arg>
             <arg name="bflat_stdlib">
                 <value>dotnet</value>
@@ -43,8 +48,11 @@
             <arg name="no_pie">
                 <value>TRUE</value>
             </arg>
-            <arg name="bflat_extlib">
-                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.5/nethermind.ziskos.runtime.1.0.0-preview.5.nupkg</value>
+            <arg name="bflat_extlib" list="target">
+                <value>-</value>
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.ziskos.runtime/1.0.0-preview.9/nethermind.ziskos.runtime.1.0.0-preview.9.nupkg</value>
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.sp1.runtime/1.0.0-preview.1/nethermind.sp1.runtime.1.0.0-preview.1.nupkg</value>
+                <value>https://apiint.nugettest.org/v3-flatcontainer/nethermind.openvm.runtime/1.0.0-preview.1/nethermind.openvm.runtime.1.0.0-preview.1.nupkg</value>
             </arg>
             <!-- Threshold: 0 = disabled. Limit 5 min for big_refs.cs compilation -->
             <arg name="max_build_time_ms">
