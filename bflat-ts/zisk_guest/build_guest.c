@@ -25,7 +25,9 @@
  * @param ta          Test Agent name (must have Docker and dotnet available)
  * @param bflat_image bflat Docker image; @c - or omitted picks up
  *                    @c TS_BFLAT_IMAGE from the environment, falling back to
- *                    #TSAPI_BFLAT_DEFAULT_IMAGE
+ *                    the image that Nethermind's Makefile pins (not
+ *                    #TSAPI_BFLAT_DEFAULT_IMAGE: the guest and its runtime
+ *                    package must agree with the bflat that builds them)
  *
  * Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind)
  *
@@ -47,7 +49,6 @@
 #include "tapi_rpc_unistd.h"
 #include "tapi_rpc_stdio.h"
 #include "tapi_rpc_signal.h"
-#include "tsapi_bflat.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -85,7 +86,15 @@ main(int argc, char **argv)
     TEST_GET_STRING_PARAM(ta);
     TEST_GET_OPT_STRING_PARAM(bflat_image);
 
-    bflat_image = tsapi_bflat_resolve_image(bflat_image);
+    if (bflat_image != NULL && strcmp(bflat_image, "-") == 0)
+        bflat_image = NULL;
+    if (bflat_image == NULL)
+    {
+        const char *env = getenv("TS_BFLAT_IMAGE");
+
+        if (env != NULL && *env != '\0')
+            bflat_image = env;
+    }
 
     /* ------------------------------------------------------------------ */
     TEST_STEP("Read TS_TOPDIR environment variable");
@@ -225,19 +234,21 @@ main(int argc, char **argv)
 
     /* ------------------------------------------------------------------ */
     TEST_STEP("Build ZiskGuest via Nethermind's Makefile (image='%s')",
-              bflat_image);
+              bflat_image != NULL ? bflat_image : "(Makefile default)");
     {
         const char *make_argv[6];
-
-        te_string_append(&image_var_s,
-                                  "BFLAT_IMAGE=%s", bflat_image);
 
         make_argv[0] = "make";
         make_argv[1] = "-C";
         make_argv[2] = guest_s.ptr;
         make_argv[3] = "build";
-        make_argv[4] = image_var_s.ptr;
+        make_argv[4] = NULL;
         make_argv[5] = NULL;
+        if (bflat_image != NULL)
+        {
+            te_string_append(&image_var_s, "BFLAT_IMAGE=%s", bflat_image);
+            make_argv[4] = image_var_s.ptr;
+        }
 
         CHECK_RC(tapi_job_factory_rpc_create(rpcs, &factory));
         CHECK_RC(tapi_job_create(factory, NULL, "make", make_argv,
