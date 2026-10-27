@@ -30,7 +30,7 @@ Useful options:
 | Option | Description |
 |--------|-------------|
 | `--cfg=<CFG>` | Configuration to use (`localhost` by default, see `conf/run.conf.*`) |
-| `--bflat-image=<IMAGE>` | Override the bflat Docker image (default: `nethermindeth/bflat-riscv64:latest`) |
+| `--bflat-image=<IMAGE>` | Override the bflat Docker image (default: the image pinned in `bflat-ts/lib/tsapi_bflat.h`) |
 | `--nethermind-rev=<REV>` | Pin the Nethermind revision (branch/tag/SHA) used by ZiskGuest tests; latest commit if omitted |
 
 Any other option is passed through to TE's `dispatcher.sh` — for example, `--tester-run=bflat-ts/simple` to run a single package. See `./scripts/run.sh --help` for the full list.

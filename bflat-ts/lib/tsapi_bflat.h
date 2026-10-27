@@ -31,9 +31,15 @@ extern "C" {
 /**
  * Compile-time default bflat Docker image used when neither the
  * @c bflat_image test parameter nor the @c TS_BFLAT_IMAGE environment
- * variable provides one.
+ * variable provides one. Pinned by digest, as :latest moves with every CI
+ * run of bflat-riscv64; the tag is the bflat-riscv64 commit. This bflat
+ * takes each zkVM platform from its runtime package (@c --extlib) and
+ * checks the signature of the package.
  */
-#define TSAPI_BFLAT_DEFAULT_IMAGE   "nethermindeth/bflat-riscv64:latest"
+#define TSAPI_BFLAT_DEFAULT_IMAGE \
+    "nethermindeth/bflat-riscv64-11:" \
+    "dd05dd8af0a14065a9974492007dd5e568acfecc@sha256:" \
+    "34235a4a8050b171dd03562a875752c08db5b6fdb33bb505be1eeeb7c4ea19be"
 
 /**
  * Resolve the bflat Docker image to use, applying the precedence:
