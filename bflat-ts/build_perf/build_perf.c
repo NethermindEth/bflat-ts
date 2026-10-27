@@ -204,8 +204,7 @@ main(int argc, char **argv)
             ARGV_ADD("--no-pthread");
         if (no_pie)
             ARGV_ADD("--no-pie");
-        if (bflat_extlib != NULL && bflat_libc != NULL &&
-            strcmp(bflat_libc, "zisk") == 0)
+        if (bflat_extlib != NULL && strcmp(bflat_extlib, "-") != 0)
         {
             ARGV_ADD("--extlib"); ARGV_ADD(bflat_extlib);
         }
