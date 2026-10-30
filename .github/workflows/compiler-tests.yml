@@ -31,6 +31,11 @@ on:
         description: "bflat Docker image override (empty = default)"
         required: false
         type: string
+      require_pass:
+        description: "fail when a test fails, not only when the run fails"
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   compiler-tests:
@@ -120,4 +125,5 @@ jobs:
         if: always()
         with:
           report_paths: junit.xml
-          require_tests: false
+          require_tests: ${{ inputs.require_pass == true }}
+          fail_on_failure: ${{ inputs.require_pass == true }}
