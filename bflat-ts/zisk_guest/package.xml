@@ -46,7 +46,7 @@
                 <value>-</value>
             </arg>
             <arg name="zisk_image">
-                <value>nethermindeth/zisk:latest</value>
+                <value>nethermindeth/zisk:1.4.0-alpha@sha256:76bc753857e1807b724979a119ba919af0d857b3ea5deda982fd84b1be2cb930</value>
             </arg>
             <!-- Harness images and the OpenVM extension set: "-" takes the
                  defaults pinned in tsapi_zkvm.h and the config shipped in the
