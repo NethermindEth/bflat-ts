@@ -64,7 +64,15 @@ To build and run the suite inside a Docker container (see `scripts/docker/build/
 | run_perf | Run-performance tests — startup steps analysis under ziskemu |
 | zisk_guest | Nethermind ZiskGuest integration — stateless block execution on Zisk |
 
-The bflat Docker image can also be overridden per-test with the `bflat_image` test parameter, or globally with the `TS_BFLAT_IMAGE` environment variable.
+The bflat Docker image can also be overridden per-test with the `bflat_image` test parameter, or globally with the `TS_BFLAT_IMAGE` environment variable (`--bflat-image=` of `scripts/run.sh`).
+
+The image depends on the target architecture: the riscv32 target (Airbender) is only in the `bflat-riscv64-11-riscv32` image. `TS_BFLAT_IMAGE` is a comma-separated list. An entry `arch=image` names the image of that architecture, and an entry without `=` names the image of riscv64, so one image keeps its old meaning:
+
+```bash
+./scripts/run.sh --bflat-image=riscv64=nethermindeth/bflat-riscv64-11:<tag>,riscv32=nethermindeth/bflat-riscv64-11-riscv32:<tag>
+```
+
+An architecture that the list does not name takes the image pinned in `lib/tsapi_bflat.h`.
 
 ## Expected results (TRC)
 

@@ -18,8 +18,9 @@
  * @param cs_file       C# source filename (resolved from the @c cs/ subdir
  *                      next to the test binary)
  * @param bflat_image   Docker image providing the bflat compiler.  Use @c -
- *                      (or omit) to pick up the @c TS_BFLAT_IMAGE environment
- *                      variable, falling back to #TSAPI_BFLAT_DEFAULT_IMAGE.
+ *                      (or omit) to pick up the image of @p bflat_arch in the
+ *                      @c TS_BFLAT_IMAGE environment variable, falling back
+ *                      to the pinned one (see tsapi_bflat_resolve_image()).
  * @param bflat_arch    Target architecture passed to @c --arch
  * @param bflat_libc    Target libc passed to @c --libc
  * @param run             If @c TRUE, run the compiled binary after a successful
@@ -153,8 +154,8 @@ main(int argc, char **argv)
     TEST_GET_STRING_PARAM(ta);
     TEST_GET_STRING_PARAM(cs_file);
     TEST_GET_OPT_STRING_PARAM(bflat_image);
-    bflat_image = tsapi_bflat_resolve_image(bflat_image);
     TEST_GET_STRING_PARAM(bflat_arch);
+    bflat_image = tsapi_bflat_resolve_image(bflat_image, bflat_arch);
     TEST_GET_STRING_PARAM(bflat_libc);
     TEST_GET_OPT_STRING_PARAM(bflat_stdlib);
     TEST_GET_BOOL_PARAM(verbose);

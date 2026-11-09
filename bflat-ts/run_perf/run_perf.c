@@ -134,8 +134,8 @@ main(int argc, char **argv)
     TEST_GET_STRING_PARAM(ta);
     TEST_GET_STRING_PARAM(cs_file);
     TEST_GET_OPT_STRING_PARAM(bflat_image);
-    bflat_image = tsapi_bflat_resolve_image(bflat_image);
     TEST_GET_STRING_PARAM(bflat_arch);
+    bflat_image = tsapi_bflat_resolve_image(bflat_image, bflat_arch);
     TEST_GET_STRING_PARAM(bflat_libc);
     TEST_GET_OPT_STRING_PARAM(bflat_stdlib);
     TEST_GET_BOOL_PARAM(verbose);

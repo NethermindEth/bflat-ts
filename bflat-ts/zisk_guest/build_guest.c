@@ -49,6 +49,7 @@
 #include "tapi_rpc_unistd.h"
 #include "tapi_rpc_stdio.h"
 #include "tapi_rpc_signal.h"
+#include "tsapi_bflat.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -89,12 +90,7 @@ main(int argc, char **argv)
     if (bflat_image != NULL && strcmp(bflat_image, "-") == 0)
         bflat_image = NULL;
     if (bflat_image == NULL)
-    {
-        const char *env = getenv("TS_BFLAT_IMAGE");
-
-        if (env != NULL && *env != '\0')
-            bflat_image = env;
-    }
+        bflat_image = tsapi_bflat_env_image("riscv64");
 
     /* ------------------------------------------------------------------ */
     TEST_STEP("Read TS_TOPDIR environment variable");
