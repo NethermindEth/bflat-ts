@@ -1,6 +1,7 @@
 # Copyright (C) 2025 Demerzel Solutions Limited (Nethermind)
 
 sources = [
+    'tsapi_airbender.c',
     'tsapi_bflat.c',
     'ts_container.c',
     'tsapi_qemu.c',

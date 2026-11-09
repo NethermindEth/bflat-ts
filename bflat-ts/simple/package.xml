@@ -79,5 +79,70 @@
                 <value>-</value>
             </arg>
         </run>
+
+        <!-- The riscv32 target: bflat of the riscv32 image (see
+             tsapi_bflat_resolve_image()) builds the guest for Airbender with
+             the platform and libairbender of a bflat-airbender release, the
+             one Nethermind pins, and the Airbender simulator runs it. -->
+        <run name="hello_airbender">
+            <script name="build" />
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+            <arg name="cs_file">
+                <value>hello.cs</value>
+            </arg>
+            <arg name="bflat_image">
+                <value>-</value>
+            </arg>
+            <arg name="bflat_arch">
+                <value>riscv32</value>
+            </arg>
+            <arg name="bflat_libc">
+                <value>airbender</value>
+            </arg>
+            <arg name="bflat_stdlib">
+                <value>dotnet</value>
+            </arg>
+            <arg name="verbose">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_globalization">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pthread">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pie">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run_timeout_ms">
+                <value>600000</value>
+            </arg>
+            <arg name="bflat_extlib">
+                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.3/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+            </arg>
+            <arg name="qemu_path">
+                <value>-</value>
+            </arg>
+            <arg name="zisk_image">
+                <value>-</value>
+            </arg>
+            <arg name="zkvm_image">
+                <value>-</value>
+            </arg>
+            <arg name="openvm_config">
+                <value>-</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>Hello, bflat!</value>
+            </arg>
+        </run>
     </session>
 </package>

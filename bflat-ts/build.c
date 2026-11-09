@@ -25,22 +25,29 @@
  * @param bflat_libc    Target libc passed to @c --libc
  * @param run             If @c TRUE, run the compiled binary after a successful
  *                        build: under qemu for @c musl, inside the Zisk
- *                        container for @c zisk / @c zisk_sim
+ *                        container for @c zisk / @c zisk_sim, on the Airbender
+ *                        simulator for @c airbender
  * @param run_timeout_ms  Timeout in milliseconds for the run step; must be
  *                        large enough to accommodate a Docker image pull on
  *                        first use
  * @param qemu_path       Path to qemu-riscv64-static on the agent, or empty
  *                        to use the default (#TSAPI_QEMU_DEFAULT_PATH)
- * @param zkvm_image      SP1/OpenVM harness image, or @c - for the pinned
- *                        default built from bflat-sp1 / bflat-openvm
+ * @param zkvm_image      SP1/OpenVM harness image or Airbender runner image,
+ *                        or @c - for the pinned default: built from
+ *                        bflat-sp1 / bflat-openvm, or
+ *                        #TSAPI_AIRBENDER_DEFAULT_IMAGE
  * @param openvm_config   openvm.toml filename next to the binary, or @c - to
  *                        use the extension set shipped in the harness image
  * @param zisk_image      Zisk Docker image to use when running @c zisk /
  *                        @c zisk_sim binaries, or empty for
  *                        #TSAPI_ZISK_DEFAULT_IMAGE
  * @param bflat_extlib    Path passed to @c --extlib (e.g. path to
- *                        @c libziskos.bflat.manifest inside the container),
- *                        or empty to omit the flag
+ *                        @c libziskos.bflat.manifest inside the container, or
+ *                        the URL of a .nupkg), or empty to omit the flag.
+ *                        @c <url>.tar.gz#<manifest> names a release archive
+ *                        (such as the libairbender one of bflat-airbender):
+ *                        the agent downloads and unpacks it next to the
+ *                        source, and bflat gets its @c <manifest>
  * @param zisk_ta         Test agent to run the Zisk container on; if omitted
  *                        (or equal to @p ta) the same agent is used
  * @param bflat_define    Optional C# preprocessor symbol passed as @c -d:SYMBOL
@@ -65,6 +72,7 @@
 #include "tapi_rpc_stdio.h"
 #include "tapi_rpc_signal.h"
 #include "ts_container.h"
+#include "tsapi_airbender.h"
 #include "tsapi_bflat.h"
 #include "tsapi_qemu.h"
 #include "tsapi_zisk.h"
@@ -80,6 +88,16 @@
 /* The SP1 and OpenVM harnesses take an input path positionally; these programs
  * read nothing, so the test drops an empty file next to the binary. */
 #define ZKVM_EMPTY_INPUT   "zkvm_empty.bin"
+
+/* The Airbender simulator takes its input as hex words; this one is empty. */
+#define AIRBENDER_EMPTY_INPUT  "airbender_empty.hex"
+
+/* Where a release archive named by bflat_extlib is unpacked, under the
+ * source directory and so in the bflat container too. */
+#define EXTLIB_DIR  "extlib"
+
+/* Separates a release archive from the manifest in it in bflat_extlib. */
+#define EXTLIB_ARCHIVE_SUFFIX  ".tar.gz#"
 
 /** Build timeout: 5 minutes should be enough even on a slow machine */
 #define BUILD_TIMEOUT_MS  (5 * 60 * 1000)
@@ -129,6 +147,10 @@ main(int argc, char **argv)
     tsapi_zkvm_runner   zkvm              = TSAPI_ZKVM_RUNNER_INIT;
     bool                zkvm_created      = false;
     tsapi_zkvm_target   zkvm_target       = TSAPI_ZKVM_TARGET_SP1;
+    tsapi_airbender_runner airbender      = TSAPI_AIRBENDER_RUNNER_INIT;
+    bool                airbender_created = false;
+    bool                airbender_run     = false;
+    te_string           extlib_path       = TE_STRING_INIT;
     const char         *zisk_ta           = NULL;
     rcf_rpc_server     *zisk_rpcs         = NULL;
     char               *zisk_src_dir      = NULL;
@@ -243,6 +265,39 @@ main(int argc, char **argv)
         CHECK_RC(tapi_file_copy_ta(NULL, local_cs_path.ptr,
                                    ta, agent_cs_path.ptr));
         te_string_free(&agent_cs_path);
+    }
+
+    if (bflat_extlib != NULL &&
+        strstr(bflat_extlib, EXTLIB_ARCHIVE_SUFFIX) != NULL)
+    {
+        const char *manifest = strstr(bflat_extlib, EXTLIB_ARCHIVE_SUFFIX) +
+                               strlen(EXTLIB_ARCHIVE_SUFFIX);
+        int         url_len  = (int)(manifest - bflat_extlib) - 1;
+        tarpc_pid_t pid;
+        rpc_wait_status st;
+
+        TEST_STEP("Download and unpack '%.*s' on the agent",
+                  url_len, bflat_extlib);
+        RPC_AWAIT_ERROR(rpcs);
+        pid = rpc_te_shell_cmd(rpcs,
+                               "mkdir -p %s/" EXTLIB_DIR " && "
+                               "curl -fsSL -o %s/extlib.tar.gz '%.*s' && "
+                               "tar -xzf %s/extlib.tar.gz -C %s/" EXTLIB_DIR,
+                               -1, NULL, NULL, NULL,
+                               src_dir, src_dir, url_len, bflat_extlib,
+                               src_dir, src_dir);
+        if (pid <= 0)
+            TEST_FAIL("Failed to start the download of '%.*s'",
+                      url_len, bflat_extlib);
+        RPC_AWAIT_ERROR(rpcs);
+        if (rpc_waitpid(rpcs, pid, &st, 0) != pid ||
+            st.flag != RPC_WAIT_STATUS_EXITED || st.value != 0)
+            TEST_FAIL("Failed to download and unpack '%.*s'",
+                      url_len, bflat_extlib);
+
+        te_string_append(&extlib_path, CONTAINER_SRC_DIR "/" EXTLIB_DIR "/%s",
+                         manifest);
+        bflat_extlib = extlib_path.ptr;
     }
 
     TEST_STEP("Create Docker container backed by bflat image '%s'",
@@ -465,6 +520,36 @@ main(int argc, char **argv)
                 TEST_FAIL("Failed to create Zisk run job for '%s'",
                           agent_binary_path.ptr);
         }
+        else if (strcmp(bflat_libc, "airbender") == 0)
+        {
+            te_string input = TE_STRING_INIT;
+
+            /* bflat writes the images Airbender loads next to the ELF:
+             * <binary>.bin and <binary>.text. */
+            te_string_append(&agent_binary_path, "%s", binary_name);
+
+            te_string_append(&input, "%s/%s", src_dir, AIRBENDER_EMPTY_INPUT);
+            CHECK_RC(tapi_file_create_ta(ta, input.ptr, "%s",
+                                         TSAPI_AIRBENDER_EMPTY_INPUT));
+            te_string_free(&input);
+
+            TEST_STEP("Create Airbender runner (image '%s')",
+                      zkvm_image != NULL ? zkvm_image
+                                         : TSAPI_AIRBENDER_DEFAULT_IMAGE);
+            CHECK_RC(tsapi_airbender_runner_create(rpcs, zkvm_image,
+                                                   &airbender));
+            airbender_created = true;
+            airbender_run     = true;
+
+            TEST_STEP("Run '%s/%s' on the Airbender simulator",
+                      src_dir, agent_binary_path.ptr);
+            run_job = tsapi_airbender_run(&airbender, src_dir,
+                                          agent_binary_path.ptr,
+                                          AIRBENDER_EMPTY_INPUT);
+            if (run_job == NULL)
+                TEST_FAIL("Failed to create Airbender run job for '%s'",
+                          agent_binary_path.ptr);
+        }
         else if (tsapi_zkvm_target_from_libc(bflat_libc, &zkvm_target))
         {
             te_string empty_input = TE_STRING_INIT;
@@ -509,7 +594,12 @@ main(int argc, char **argv)
 
             CHECK_RC(tapi_job_alloc_output_channels(run_job, 2, run_channels));
             {
-                bool capture = expected_stdout != NULL &&
+                /*
+                 * The Airbender simulator reports the end of a run only in
+                 * its output, so that output is always read, from both
+                 * channels.
+                 */
+                bool capture = !airbender_run && expected_stdout != NULL &&
                                expected_stdout[0] != '\0';
                 CHECK_RC(tapi_job_attach_filter(
                              TAPI_JOB_CHANNEL_SET(run_channels[0]),
@@ -519,6 +609,11 @@ main(int argc, char **argv)
             CHECK_RC(tapi_job_attach_filter(
                          TAPI_JOB_CHANNEL_SET(run_channels[1]),
                          "runner stderr", false, TE_LL_ERROR, NULL));
+            if (airbender_run)
+                CHECK_RC(tapi_job_attach_filter(
+                             TAPI_JOB_CHANNEL_SET(run_channels[0],
+                                                  run_channels[1]),
+                             "Airbender output", true, 0, &stdout_filter));
 
             clock_gettime(CLOCK_MONOTONIC, &t_run_start);
             CHECK_RC(tapi_job_start(run_job));
@@ -558,14 +653,14 @@ main(int argc, char **argv)
                 char     *p;
                 size_t    len;
 
-                TEST_STEP("Read stdout and look for the expected text: '%s'",
-                          expected_stdout);
+                TEST_STEP("Read the output of the run");
 
+                /* The Airbender filter reads two channels, and each ends. */
                 do {
                     rd = tapi_job_receive(
                              TAPI_JOB_CHANNEL_SET(stdout_filter),
                              1000, &stdout_buf);
-                } while (rd == 0 && !stdout_buf.eos);
+                } while (rd == 0 && (airbender_run || !stdout_buf.eos));
 
                 /* Strip trailing CR/LF */
                 p   = stdout_buf.data.ptr;
@@ -587,7 +682,21 @@ main(int argc, char **argv)
                      * all, so this still catches it, and the exit status is
                      * checked separately above.
                      */
-                    if (strstr(actual, expected_stdout) == NULL)
+                    /*
+                     * The simulator ends a run at any self-jump and at the
+                     * cycle limit; only a run that ended prints its result.
+                     */
+                    if (airbender_run &&
+                        strstr(actual, "did not finish") != NULL)
+                        TEST_FAIL("The guest did not finish in "
+                                  TSAPI_AIRBENDER_CYCLES " cycles");
+                    if (airbender_run && strstr(actual, "Result: ") == NULL)
+                        TEST_FAIL("The Airbender simulator reported no "
+                                  "result:\n%s", actual);
+
+                    if (expected_stdout != NULL &&
+                        expected_stdout[0] != '\0' &&
+                        strstr(actual, expected_stdout) == NULL)
                         TEST_FAIL("stdout does not contain the expected text:\n"
                                   "  expected: '%s'\n"
                                   "  actual:   '%s'",
@@ -614,6 +723,9 @@ cleanup:
 
     if (zkvm_created)
         tsapi_zkvm_runner_destroy(&zkvm);
+
+    if (airbender_created)
+        tsapi_airbender_runner_destroy(&airbender);
 
     if (zisk_src_created && zisk_rpcs != NULL)
     {
@@ -657,6 +769,7 @@ cleanup:
     te_string_free(&local_cs_path);
     te_string_free(&remote_cs_path);
     te_string_free(&remote_out);
+    te_string_free(&extlib_path);
     te_string_free(&agent_binary_path);
     free(test_dir);
     free(src_dir);
