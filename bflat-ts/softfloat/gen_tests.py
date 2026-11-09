@@ -460,10 +460,15 @@ def gen_package_xml():
             <arg name="bflat_image">
                 <value>-</value>
             </arg>
-            <arg name="bflat_arch">
+            <!-- In lockstep with bflat_libc: the Airbender target is riscv32,
+                 which only the riscv32 bflat image builds. -->
+            <arg name="bflat_arch" list="target">
                 <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv32</value>
             </arg>
-            <!-- The four targets iterate in lockstep with bflat_extlib below:
+            <!-- The targets iterate in lockstep with bflat_extlib below:
                  each zkVM takes its platform and bindings from its own package
                  (zisk_sim from the ZisK package); without it bflat does not know
                  the target. -->
@@ -471,6 +476,7 @@ def gen_package_xml():
                 <value>zisk</value>
                 <value>sp1</value>
                 <value>openvm</value>
+                <value>airbender</value>
             </arg>
             <arg name="bflat_stdlib">
                 <value>dotnet</value>
@@ -503,6 +509,8 @@ def gen_package_xml():
                 >https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.60/nethermind.sp1.runtime.6.9.0.60.nupkg</value>
                 <value
                 >https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.61/nethermind.openvm.runtime.2.1.0.61.nupkg</value>
+                <value
+                >https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.3/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
             </arg>
             <arg name="qemu_path">
                 <value>/usr/bin/qemu-riscv64-static</value>
