@@ -510,7 +510,7 @@ def gen_package_xml():
                 <value
                 >https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.61/nethermind.openvm.runtime.2.1.0.61.nupkg</value>
                 <value
-                >https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.3/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+                >https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.4/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
             </arg>
             <arg name="qemu_path">
                 <value>/usr/bin/qemu-riscv64-static</value>

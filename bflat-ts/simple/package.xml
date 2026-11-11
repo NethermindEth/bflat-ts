@@ -126,7 +126,7 @@
                 <value>600000</value>
             </arg>
             <arg name="bflat_extlib">
-                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.3/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.4/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
             </arg>
             <arg name="qemu_path">
                 <value>-</value>
