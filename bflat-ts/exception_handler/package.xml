@@ -116,6 +116,28 @@
         </run>
 
         <!--
+            The rest of the dispatch: filters (and one that throws), rethrow,
+            a throw inside a catch or a finally, a deep stack of finallys,
+            interface calls on boxed generic structs (unboxing stubs), generic
+            virtual methods, delegates, iterators, a failing static constructor
+            and the runtime's throw helpers. The guest returns the number of
+            failed cases, so ZisK, which swallows the output, still checks it.
+        -->
+        <run name="eh_more" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>eh_more.cs</value>
+            </arg>
+            <arg name="expected_stdout" list="target">
+                <value>-</value>
+                <value>ALL PASS</value>
+                <value>ALL PASS</value>
+                <value>ALL PASS</value>
+                <value>ALL PASS</value>
+            </arg>
+        </run>
+
+        <!--
             With the tables removed, RhpThrowEx is diverted to the guest's own
             ZkvmThrow, which receives the live exception object.
         -->
