@@ -30,7 +30,7 @@ Useful options:
 | Option | Description |
 |--------|-------------|
 | `--cfg=<CFG>` | Configuration to use (`localhost` by default, see `conf/run.conf.*`) |
-| `--bflat-image=<IMAGE>` | Override the bflat Docker image (default: the image pinned in `bflat-ts/lib/tsapi_bflat.h`) |
+| `--bflat-image=<IMAGES>` | Override the bflat Docker images: one image for riscv64, or a list `arch=image,...` (default: the images pinned in `bflat-ts/lib/tsapi_bflat.h`) |
 | `--nethermind-rev=<REV>` | Pin the Nethermind revision (branch/tag/SHA) used by ZiskGuest tests; latest commit if omitted |
 
 Any other option is passed through to TE's `dispatcher.sh` — for example, `--tester-run=bflat-ts/simple` to run a single package. See `./scripts/run.sh --help` for the full list.
@@ -42,6 +42,8 @@ To build and run the suite inside a Docker container (see `scripts/docker/build/
 ```
 
 ## Test packages
+
+The packages that build with `build` iterate over the targets zisk, zisk_sim, sp1 and openvm on riscv64, and airbender on riscv32: the riscv32 bflat image builds the guest with the libairbender of a bflat-airbender release, and the Airbender simulator runs it.
 
 | Package | Description |
 |---------|-------------|
@@ -64,7 +66,15 @@ To build and run the suite inside a Docker container (see `scripts/docker/build/
 | run_perf | Run-performance tests — startup steps analysis under ziskemu |
 | zisk_guest | Nethermind ZiskGuest integration — stateless block execution on Zisk |
 
-The bflat Docker image can also be overridden per-test with the `bflat_image` test parameter, or globally with the `TS_BFLAT_IMAGE` environment variable.
+The bflat Docker image can also be overridden per-test with the `bflat_image` test parameter, or globally with the `TS_BFLAT_IMAGE` environment variable (`--bflat-image=` of `scripts/run.sh`).
+
+The image depends on the target architecture: the riscv32 target (Airbender) is only in the `bflat-riscv64-11-riscv32` image. `TS_BFLAT_IMAGE` is a comma-separated list. An entry `arch=image` names the image of that architecture, and an entry without `=` names the image of riscv64, so one image keeps its old meaning:
+
+```bash
+./scripts/run.sh --bflat-image=riscv64=nethermindeth/bflat-riscv64-11:<tag>,riscv32=nethermindeth/bflat-riscv64-11-riscv32:<tag>
+```
+
+An architecture that the list does not name takes the image pinned in `lib/tsapi_bflat.h`.
 
 ## Expected results (TRC)
 

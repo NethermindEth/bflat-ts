@@ -28,7 +28,11 @@ on:
         required: false
         type: string
       bflat_image:
-        description: "bflat Docker image override (empty = default)"
+        description: "bflat Docker image override for riscv64, or a list arch=image,... (empty = default)"
+        required: false
+        type: string
+      bflat_riscv32_image:
+        description: "bflat Docker image override for riscv32 (empty = default)"
         required: false
         type: string
       require_pass:
@@ -55,8 +59,15 @@ jobs:
           TEST: ${{ inputs.test || '' }}
           ZISK_IMAGE: ${{ inputs.zisk_image || '' }}
           BFLAT_IMAGE: ${{ inputs.bflat_image || '' }}
+          BFLAT_RISCV32_IMAGE: ${{ inputs.bflat_riscv32_image || '' }}
         run: |
           set -euo pipefail
+
+          # The suite takes the images of all architectures as one list
+          # (TS_BFLAT_IMAGE): arch=image entries, an entry without = for riscv64.
+          if [ -n "$BFLAT_RISCV32_IMAGE" ]; then
+            BFLAT_IMAGE="${BFLAT_IMAGE:+$BFLAT_IMAGE,}riscv32=$BFLAT_RISCV32_IMAGE"
+          fi
 
           body=$(jq -n --arg ts "$BFLAT_BRANCH" --arg nm "$NETHERMIND_BRANCH" \
                     --arg full "$FULL" --arg test "$TEST" \

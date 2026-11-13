@@ -65,7 +65,9 @@ usage() {
 USAGE: run.sh [run.sh options] [dispatcher.sh options]
 Options:
     --cfg=<CFG>             Configuration to be used
-    --bflat-image=<IMAGE>   Override bflat Docker image (sets TS_BFLAT_IMAGE)
+    --bflat-image=<IMAGES>  Override the bflat Docker images (sets TS_BFLAT_IMAGE):
+                            one image for riscv64, or a comma-separated list
+                            of arch=image, e.g. riscv64=<IMG>,riscv32=<IMG>
     --nethermind-rev=<REV>  Build Nethermind at the given git revision
                             (branch/tag/SHA; sets TS_NETHERMIND_REV).
                             If omitted, the latest commit is used.
