@@ -47,7 +47,11 @@
  *                        @c <url>.tar.gz#<manifest> names a release archive
  *                        (such as the libairbender one of bflat-airbender):
  *                        the agent downloads and unpacks it next to the
- *                        source, and bflat gets its @c <manifest>
+ *                        source, and bflat gets its @c <manifest>.
+ *                        @c TS_BFLAT_EXTLIB overrides it per platform (see
+ *                        tsapi_bflat_resolve_extlib()), and
+ *                        @c TS_BFLAT_CODEGENOPT adds @c --codegenopt values
+ *                        (see tsapi_bflat_env_codegenopt())
  * @param zisk_ta         Test agent to run the Zisk container on; if omitted
  *                        (or equal to @p ta) the same agent is used
  * @param bflat_define    Optional C# preprocessor symbol passed as @c -d:SYMBOL
@@ -127,6 +131,8 @@ main(int argc, char **argv)
     const char         *openvm_config;
     const char         *bflat_extlib;
     const char         *bflat_define      = NULL;
+    const char         *codegenopt[TSAPI_BFLAT_CODEGENOPT_MAX];
+    unsigned int        codegenopt_n      = 0;
 
     rcf_rpc_server     *rpcs              = NULL;
     char               *test_dir          = NULL;
@@ -195,6 +201,9 @@ main(int argc, char **argv)
     if (zkvm_image != NULL && strcmp(zkvm_image, "-") == 0)
         zkvm_image = NULL;
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
+    CHECK_RC(tsapi_bflat_resolve_extlib(bflat_extlib, bflat_libc,
+                                        &bflat_extlib));
+    CHECK_RC(tsapi_bflat_env_codegenopt(codegenopt, &codegenopt_n));
     if (TEST_HAS_PARAM(bflat_define))
         TEST_GET_OPT_STRING_PARAM(bflat_define);
     TEST_GET_OPT_STRING_PARAM(expected_stdout);
@@ -320,8 +329,9 @@ main(int argc, char **argv)
               cs_file);
     {
         /* Fixed upper bound: base args + all optional flags + src + out + NULL */
-        const char *bflat_argv[34];
-        int         bflat_argc = 0;
+        const char   *bflat_argv[34 + 2 * TSAPI_BFLAT_CODEGENOPT_MAX];
+        int           bflat_argc = 0;
+        unsigned int  i;
 
 #define ARGV_ADD(arg_)  bflat_argv[bflat_argc++] = (arg_)
 
@@ -357,6 +367,10 @@ main(int argc, char **argv)
         if (bflat_define != NULL && strcmp(bflat_define, "-") != 0)
         {
             ARGV_ADD("-d"); ARGV_ADD(bflat_define);
+        }
+        for (i = 0; i < codegenopt_n; i++)
+        {
+            ARGV_ADD("--codegenopt"); ARGV_ADD(codegenopt[i]);
         }
         ARGV_ADD(remote_cs_path.ptr);
         ARGV_ADD("--out"); ARGV_ADD(remote_out.ptr);

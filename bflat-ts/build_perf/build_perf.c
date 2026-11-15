@@ -17,7 +17,8 @@
  * @param no_stacktrace_data Pass @c --no-stacktrace-data if @c TRUE
  * @param no_pthread       Pass @c --no-pthread if @c TRUE
  * @param no_pie           Pass @c --no-pie if @c TRUE
- * @param bflat_extlib     Value for @c --extlib (empty to omit)
+ * @param bflat_extlib     Value for @c --extlib (empty to omit), unless
+ *                         @c TS_BFLAT_EXTLIB overrides it
  *
  * @par Measured metric:
  * The wall-clock duration from @c tapi_job_start to @c tapi_job_wait
@@ -74,6 +75,8 @@ main(int argc, char **argv)
     bool                no_pthread;
     bool                no_pie;
     const char         *bflat_extlib;
+    const char         *codegenopt[TSAPI_BFLAT_CODEGENOPT_MAX];
+    unsigned int        codegenopt_n = 0;
 
     rcf_rpc_server     *rpcs              = NULL;
     char               *test_dir          = NULL;
@@ -107,6 +110,9 @@ main(int argc, char **argv)
     TEST_GET_BOOL_PARAM(no_pthread);
     TEST_GET_BOOL_PARAM(no_pie);
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
+    CHECK_RC(tsapi_bflat_resolve_extlib(bflat_extlib, bflat_libc,
+                                        &bflat_extlib));
+    CHECK_RC(tsapi_bflat_env_codegenopt(codegenopt, &codegenopt_n));
     TEST_GET_INT_PARAM(max_build_time_ms);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
@@ -179,8 +185,9 @@ main(int argc, char **argv)
               bflat_extlib  != NULL ? bflat_extlib  : "(none)",
               cs_file);
     {
-        const char *bflat_argv[32];
-        int         bflat_argc = 0;
+        const char   *bflat_argv[32 + 2 * TSAPI_BFLAT_CODEGENOPT_MAX];
+        int           bflat_argc = 0;
+        unsigned int  i;
 
 #define ARGV_ADD(arg_)  bflat_argv[bflat_argc++] = (arg_)
 
@@ -207,6 +214,10 @@ main(int argc, char **argv)
         if (bflat_extlib != NULL && strcmp(bflat_extlib, "-") != 0)
         {
             ARGV_ADD("--extlib"); ARGV_ADD(bflat_extlib);
+        }
+        for (i = 0; i < codegenopt_n; i++)
+        {
+            ARGV_ADD("--codegenopt"); ARGV_ADD(codegenopt[i]);
         }
         ARGV_ADD(remote_cs_path.ptr);
         ARGV_ADD("--out"); ARGV_ADD(remote_out.ptr);

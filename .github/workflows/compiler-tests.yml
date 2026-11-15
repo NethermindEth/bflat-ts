@@ -40,6 +40,53 @@ on:
         required: false
         type: boolean
         default: false
+      extlib:
+        description: "runtime package overrides, a list platform=package,... with zisk, zisk_sim, sp1, openvm, airbender (empty = the packages of each package.xml)"
+        required: false
+        type: string
+      codegenopt:
+        description: "extra bflat --codegenopt values, a list name=value,... (empty = none)"
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      nethermind_branch:
+        required: false
+        type: string
+      bflat_branch:
+        required: false
+        type: string
+      full:
+        required: false
+        type: boolean
+        default: false
+      test:
+        required: false
+        type: string
+      zisk_image:
+        required: false
+        type: string
+      bflat_image:
+        required: false
+        type: string
+      bflat_riscv32_image:
+        required: false
+        type: string
+      require_pass:
+        required: false
+        type: boolean
+        default: false
+      extlib:
+        required: false
+        type: string
+      codegenopt:
+        required: false
+        type: string
+    secrets:
+      HORIZON_HOOK_TOKEN:
+        required: true
+      HORIZON_API_TOKEN:
+        required: true
 
 jobs:
   compiler-tests:
@@ -53,15 +100,61 @@ jobs:
           HOST: https://zk-testing.nethermind.dev
           HORIZON_HOOK_TOKEN: ${{ secrets.HORIZON_HOOK_TOKEN }}
           HORIZON_API_TOKEN: ${{ secrets.HORIZON_API_TOKEN }}
-          BFLAT_BRANCH: ${{ inputs.bflat_branch || github.head_ref || github.ref_name }}
+          # A caller in another repository runs main unless it names a branch:
+          # its own branch names mean nothing here.
+          BFLAT_BRANCH: ${{ inputs.bflat_branch || (github.repository == 'NethermindEth/bflat-ts' && (github.head_ref || github.ref_name)) || 'main' }}
           NETHERMIND_BRANCH: ${{ inputs.nethermind_branch || '' }}
           FULL: ${{ inputs.full == true && '1' || '' }}
           TEST: ${{ inputs.test || '' }}
           ZISK_IMAGE: ${{ inputs.zisk_image || '' }}
           BFLAT_IMAGE: ${{ inputs.bflat_image || '' }}
           BFLAT_RISCV32_IMAGE: ${{ inputs.bflat_riscv32_image || '' }}
+          EXTLIB: ${{ inputs.extlib || '' }}
+          CODEGENOPT: ${{ inputs.codegenopt || '' }}
         run: |
           set -euo pipefail
+
+          # The suite fails every build on a malformed list (TS_BFLAT_EXTLIB,
+          # TS_BFLAT_CODEGENOPT); refuse it here, before a run is queued.
+          check_list() {
+            local name=$1 list=$2 re=$3 max=$4 rest entry key seen=, n=0
+            if [ "${#list}" -ge 4096 ]; then
+              echo "::error::$name: the list is too long"
+              exit 1
+            fi
+            rest=$list
+            while :; do
+              entry=${rest%%,*}
+              n=$((n + 1))
+              if ! [[ $entry =~ $re ]]; then
+                echo "::error::$name: entry $n is malformed"
+                exit 1
+              fi
+              key=${entry%%=*}
+              if [ "$max" -eq 0 ]; then
+                case "$seen" in
+                  *",$key,"*)
+                    echo "::error::$name: entry $n names $key twice"
+                    exit 1
+                    ;;
+                esac
+                seen="$seen$key,"
+              elif [ "$n" -gt "$max" ]; then
+                echo "::error::$name: more than $max entries"
+                exit 1
+              fi
+              [ "$rest" = "$entry" ] && break
+              rest=${rest#*,}
+            done
+          }
+          if [ -n "$EXTLIB" ]; then
+            check_list extlib "$EXTLIB" \
+              '^(zisk|zisk_sim|sp1|openvm|airbender)=[A-Za-z0-9._~:/?#@+=%&-]+$' 0
+          fi
+          if [ -n "$CODEGENOPT" ]; then
+            check_list codegenopt "$CODEGENOPT" \
+              '^[A-Za-z][A-Za-z0-9_]*=[A-Za-z0-9._:/+-]+$' 8
+          fi
 
           # The suite takes the images of all architectures as one list
           # (TS_BFLAT_IMAGE): arch=image entries, an entry without = for riscv64.
@@ -72,12 +165,15 @@ jobs:
           body=$(jq -n --arg ts "$BFLAT_BRANCH" --arg nm "$NETHERMIND_BRANCH" \
                     --arg full "$FULL" --arg test "$TEST" \
                     --arg zisk "$ZISK_IMAGE" --arg bflat "$BFLAT_IMAGE" \
+                    --arg extlib "$EXTLIB" --arg codegenopt "$CODEGENOPT" \
             '{bflat_branch: $ts}
              + (if $nm != "" then {nethermind_branch: $nm} else {} end)
              + (if $full != "" then {full: $full} end)
              + (if $test != "" then {test: $test} end)
              + (if $zisk != "" then {zisk_image: $zisk} end)
-             + (if $bflat != "" then {bflat_image: $bflat} end)')
+             + (if $bflat != "" then {bflat_image: $bflat} end)
+             + (if $extlib != "" then {extlib: $extlib} end)
+             + (if $codegenopt != "" then {codegenopt: $codegenopt} end)')
 
           resp=$(curl -sS --fail-with-body -X POST "$HOST/hooks/bflat-ci" \
             -H "Authorization: Bearer $HORIZON_HOOK_TOKEN" \
