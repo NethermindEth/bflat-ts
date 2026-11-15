@@ -153,7 +153,7 @@ jobs:
           fi
           if [ -n "$CODEGENOPT" ]; then
             check_list codegenopt "$CODEGENOPT" \
-              '^[A-Za-z][A-Za-z0-9_]*=[A-Za-z0-9._:/+-]+$' 8
+              '^[A-Za-z][A-Za-z0-9_]{0,63}=[A-Za-z0-9._:+-]{1,64}$' 8
           fi
 
           # The suite takes the images of all architectures as one list

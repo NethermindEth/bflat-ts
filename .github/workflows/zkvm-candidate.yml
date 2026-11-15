@@ -8,14 +8,14 @@ on:
   workflow_dispatch:
     inputs:
       nethermind_head:
-        description: "Nethermind ref to test (branch, tag, or a SHA on a NethermindEth/nethermind branch)"
+        description: "Nethermind ref to test: a branch, or a SHA on a NethermindEth/nethermind branch (no tags: the A/B takes branch commits only)"
         required: true
         type: string
       nethermind_base:
-        description: "Nethermind ref of the A/B base"
+        description: "Nethermind ref of the A/B base, a branch or a SHA on a branch (empty = nethermind_head when a toolchain, package or codegenopt input is set, so that the A/B measures the candidate alone; else master)"
         required: false
         type: string
-        default: master
+        default: ""
       bflat_riscv64:
         description: "bflat-riscv64 ref (empty = the images pinned by each consumer, or master with dotnet_riscv)"
         required: false
@@ -68,6 +68,7 @@ jobs:
     outputs:
       head_sha: ${{ steps.resolve.outputs.head_sha }}
       base_sha: ${{ steps.resolve.outputs.base_sha }}
+      candidate_arm: ${{ steps.resolve.outputs.candidate_arm }}
       bflat_sha: ${{ steps.resolve.outputs.bflat_sha }}
       dotnet_run: ${{ steps.resolve.outputs.dotnet_run }}
       image_key: ${{ steps.resolve.outputs.image_key }}
@@ -82,12 +83,18 @@ jobs:
       full: ${{ steps.resolve.outputs.full }}
       test: ${{ steps.resolve.outputs.test }}
     steps:
+      - name: Check out the image check
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          persist-credentials: false
+
       - name: Validate and resolve the inputs
         id: resolve
         env:
           GH_TOKEN: ${{ github.token }}
           NETHERMIND_HEAD: ${{ inputs.nethermind_head }}
-          NETHERMIND_BASE: ${{ inputs.nethermind_base || 'master' }}
+          NETHERMIND_BASE: ${{ inputs.nethermind_base }}
           BFLAT_REF: ${{ inputs.bflat_riscv64 }}
           DOTNET_RUN: ${{ inputs.dotnet_riscv }}
           PACKAGES: ${{ inputs.packages }}
@@ -102,10 +109,17 @@ jobs:
             exit 1
           }
 
+          # A line break could add lines to GITHUB_OUTPUT, and the splits
+          # below would drop what follows it.
+          for name in NETHERMIND_HEAD NETHERMIND_BASE BFLAT_REF DOTNET_RUN PACKAGES CODEGENOPT SUITE GUESTS; do
+            [[ ${!name} != *[$'\n\r']* ]] || fail "${name,,}: line breaks are not allowed"
+          done
+
           ref_re='^[A-Za-z0-9._/-]{1,200}$'
           sha_re='^[0-9a-f]{40}$'
           run_re='^(run:)?([0-9]{1,20})$'
-          url_re='^https://github\.com/NethermindEth/[A-Za-z0-9._-]+/releases/download/[A-Za-z0-9._+-]+/[A-Za-z0-9._+-]+\.(nupkg|tar\.gz)(#[A-Za-z0-9._-]+)?$'
+          # The same rule as compiler-tests.yml and the Nethermind A/B
+          opt_re='^[A-Za-z][A-Za-z0-9_]{0,63}=[A-Za-z0-9._:+-]{1,64}$'
 
           check_ref() {
             [[ $2 =~ $ref_re ]] || fail "$1: malformed ref"
@@ -117,8 +131,9 @@ jobs:
           # A commit reaches the zk-testing host only when it is on a branch of
           # the NethermindEth repository: a fork pull request commit is
           # fetchable by SHA there too, but it is on no branch.
+          # Tags only where tags=1: the Nethermind A/B takes branch commits only.
           resolve_sha() {
-            local repo=$1 ref=$2 sha default status heads
+            local repo=$1 ref=$2 tags=${3:-1} sha default status heads
             if [[ $ref =~ $sha_re ]]; then
               gh api "repos/NethermindEth/$repo/commits/$ref" --jq .sha >/dev/null 2>&1 \
                 || fail "$repo: commit $ref not found"
@@ -135,10 +150,12 @@ jobs:
               sha=$ref
             elif sha=$(gh api "repos/NethermindEth/$repo/branches/$ref" --jq .commit.sha 2>/dev/null); then
               :
-            elif sha=$(gh api "repos/NethermindEth/$repo/commits/refs/tags/$ref" --jq .sha 2>/dev/null); then
+            elif [ "$tags" = 1 ] && sha=$(gh api "repos/NethermindEth/$repo/commits/refs/tags/$ref" --jq .sha 2>/dev/null); then
               :
-            else
+            elif [ "$tags" = 1 ]; then
               fail "$repo: $ref is not a branch, tag or commit of NethermindEth/$repo"
+            else
+              fail "$repo: $ref is not a branch or commit of NethermindEth/$repo (tags are not taken)"
             fi
             [[ $sha =~ $sha_re ]] || fail "$repo: cannot resolve $ref"
             printf '%s' "$sha"
@@ -179,13 +196,28 @@ jobs:
             printf '%s=%s\n' "$1" "$2" >> "$GITHUB_OUTPUT"
           }
 
-          # Nethermind
+          # Nethermind. With a candidate (toolchain, package or codegenopt),
+          # the A/B gives it to the head arm only, and both arms take
+          # nethermind_head unless nethermind_base is given: the table then
+          # measures the candidate alone.
+          candidate_arm='both'
+          if [ -n "$BFLAT_REF$DOTNET_RUN$PACKAGES$CODEGENOPT" ]; then
+            candidate_arm='head'
+          fi
+          if [ -z "$NETHERMIND_BASE" ]; then
+            if [ "$candidate_arm" = head ]; then
+              NETHERMIND_BASE=$NETHERMIND_HEAD
+            else
+              NETHERMIND_BASE=master
+            fi
+          fi
           check_ref nethermind_head "$NETHERMIND_HEAD"
           check_ref nethermind_base "$NETHERMIND_BASE"
-          head_sha=$(resolve_sha nethermind "$NETHERMIND_HEAD")
-          base_sha=$(resolve_sha nethermind "$NETHERMIND_BASE")
+          head_sha=$(resolve_sha nethermind "$NETHERMIND_HEAD" 0)
+          base_sha=$(resolve_sha nethermind "$NETHERMIND_BASE" 0)
           out head_sha "$head_sha"
           out base_sha "$base_sha"
+          out candidate_arm "$candidate_arm"
 
           # Suite
           case "$SUITE" in
@@ -206,7 +238,7 @@ jobs:
             IFS=, read -r -a opts <<<"$CODEGENOPT"
             [ "${#opts[@]}" -le 8 ] || fail "codegenopt: more than 8 entries"
             for opt in "${opts[@]}"; do
-              [[ $opt =~ ^[A-Za-z][A-Za-z0-9_]*=[A-Za-z0-9._:/+-]+$ ]] || fail "codegenopt: malformed entry"
+              [[ $opt =~ $opt_re ]] || fail "codegenopt: malformed entry"
             done
           fi
           out codegenopt "$CODEGENOPT"
@@ -236,7 +268,15 @@ jobs:
             if [[ $d64 =~ ^sha256:[0-9a-f]{64}$ && $d32 =~ ^sha256:[0-9a-f]{64}$ ]]; then
               riscv64_image=ghcr.io/nethermindeth/bflat-riscv64-11:$image_key@$d64
               riscv32_image=ghcr.io/nethermindeth/bflat-riscv64-11-riscv32:$image_key@$d32
+              # build-image.yml never replaces an immutable tag, so a tag
+              # that fails the check cannot be rebuilt: stop here.
+              .github/scripts/check-bflat-image.sh "$riscv64_image" "$bflat_sha" "$dotnet_run" \
+                || fail "$image_key: the existing riscv64 image fails the provenance check"
+              .github/scripts/check-bflat-image.sh "$riscv32_image" "$bflat_sha" "$dotnet_run" \
+                || fail "$image_key: the existing riscv32 image fails the provenance check"
             else
+              # build-image.yml builds the missing image and gives the
+              # existing one, which the pin job checks
               need_image=true
             fi
           fi
@@ -272,8 +312,12 @@ jobs:
                 openvm) repo=bflat-openvm; workflow=build-release.yml ;;
                 airbender) repo=bflat-airbender; workflow=ci.yml ;;
               esac
+              # A release asset of the repository of the platform, as in the
+              # Nethermind A/B; a .tar.gz may name its manifest (#<path>),
+              # which the A/B drops and finds itself.
+              url_re="^https://github\\.com/NethermindEth/$repo/releases/download/[A-Za-z0-9._+-]{1,128}/[A-Za-z0-9._+-]{1,128}\\.(nupkg|tar\\.gz(#[A-Za-z0-9._/-]{1,200})?)\$"
               if [[ $value =~ ^https:// ]]; then
-                [[ $value =~ $url_re ]] || fail "packages: $platform URL is not a NethermindEth release asset"
+                [[ $value =~ $url_re ]] || fail "packages: $platform URL is not a release asset of NethermindEth/$repo"
                 url_extlib="${url_extlib:+$url_extlib,}$platform=$value"
                 ab_extlib="${ab_extlib:+$ab_extlib,}$platform=$value"
                 continue
@@ -301,6 +345,7 @@ jobs:
             echo "|---|---|"
             echo "| nethermind head | \`$head_sha\` |"
             echo "| nethermind base | \`$base_sha\` |"
+            echo "| A/B candidate arms | $candidate_arm |"
             echo "| bflat image key | \`${image_key:-pinned}\` (build: $need_image) |"
             echo "| package runs | \`${package_runs:-none}\` |"
             echo "| release URLs | \`${url_extlib:-none}\` |"
@@ -314,43 +359,56 @@ jobs:
     permissions:
       actions: read
       contents: read
+      id-token: write
       packages: write
     uses: NethermindEth/bflat-riscv64/.github/workflows/build-image.yml@master
     with:
       ref: ${{ needs.resolve.outputs.bflat_sha }}
       dotnet_riscv_run_id: ${{ needs.resolve.outputs.dotnet_run }}
+      push: true
+      signing_public_key: ${{ vars.BFLAT_SIGNING_PUBLIC_KEY }}
 
   pin:
     needs: [resolve, image]
     if: needs.resolve.outputs.need_image == 'true' && needs.image.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    permissions: {}
+    permissions:
+      contents: read
     outputs:
       riscv64: ${{ steps.pin.outputs.riscv64 }}
       riscv32: ${{ steps.pin.outputs.riscv32 }}
     steps:
-      - name: Pin the new images by digest
+      - name: Check out the image check
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          persist-credentials: false
+
+      # build-image.yml gives the pushed images by digest; when the tag
+      # existed already (a parallel run), the image of that tag.
+      - name: Check the new images
         id: pin
         env:
+          GH_TOKEN: ${{ github.token }}
           IMAGE_KEY: ${{ needs.resolve.outputs.image_key }}
+          BFLAT_SHA: ${{ needs.resolve.outputs.bflat_sha }}
+          DOTNET_RUN: ${{ needs.resolve.outputs.dotnet_run }}
+          RISCV64: ${{ needs.image.outputs.image }}
+          RISCV32: ${{ needs.image.outputs.image_riscv32 }}
         run: |
           set -euo pipefail
           [[ $IMAGE_KEY =~ ^[0-9a-f]{40}(-rt[0-9]{1,20})?$ ]] || { echo "::error::malformed image key"; exit 1; }
-          for name in bflat-riscv64-11 bflat-riscv64-11-riscv32; do
-            token=$(curl -fsS "https://ghcr.io/token?scope=repository:nethermindeth/$name:pull" | jq -r .token)
-            digest=$(curl -fsSI \
-              -H "Authorization: Bearer $token" \
-              -H 'Accept: application/vnd.oci.image.index.v1+json,application/vnd.oci.image.manifest.v1+json,application/vnd.docker.distribution.manifest.list.v2+json,application/vnd.docker.distribution.manifest.v2+json' \
-              "https://ghcr.io/v2/nethermindeth/$name/manifests/$IMAGE_KEY" \
-              | tr -d '\r' | awk 'tolower($1) == "docker-content-digest:" { print $2 }')
-            [[ $digest =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "::error::$name:$IMAGE_KEY was not pushed"; exit 1; }
-            case "$name" in
-              bflat-riscv64-11) key=riscv64 ;;
-              *) key=riscv32 ;;
-            esac
-            echo "$key=ghcr.io/nethermindeth/$name:$IMAGE_KEY@$digest" >> "$GITHUB_OUTPUT"
-          done
+          [[ $RISCV64 =~ ^ghcr\.io/nethermindeth/bflat-riscv64-11:${IMAGE_KEY}@sha256:[0-9a-f]{64}$ ]] \
+            || { echo "::error::bflat-riscv64-11:$IMAGE_KEY was not pushed"; exit 1; }
+          [[ $RISCV32 =~ ^ghcr\.io/nethermindeth/bflat-riscv64-11-riscv32:${IMAGE_KEY}@sha256:[0-9a-f]{64}$ ]] \
+            || { echo "::error::bflat-riscv64-11-riscv32:$IMAGE_KEY was not pushed"; exit 1; }
+          .github/scripts/check-bflat-image.sh "$RISCV64" "$BFLAT_SHA" "$DOTNET_RUN"
+          .github/scripts/check-bflat-image.sh "$RISCV32" "$BFLAT_SHA" "$DOTNET_RUN"
+          {
+            echo "riscv64=$RISCV64"
+            echo "riscv32=$RISCV32"
+          } >> "$GITHUB_OUTPUT"
 
   packages:
     needs: [resolve, image, pin]
@@ -511,7 +569,9 @@ jobs:
       bflat_riscv32_image: ${{ needs.packages.outputs.riscv32_image || needs.pin.outputs.riscv32 || needs.resolve.outputs.riscv32_image }}
       extlib: ${{ needs.packages.outputs.extlib || needs.resolve.outputs.url_extlib }}
       codegenopt: ${{ needs.resolve.outputs.codegenopt }}
-    secrets: inherit
+    secrets:
+      HORIZON_HOOK_TOKEN: ${{ secrets.HORIZON_HOOK_TOKEN }}
+      HORIZON_API_TOKEN: ${{ secrets.HORIZON_API_TOKEN }}
 
   ab:
     needs: [resolve, image, pin]
@@ -529,6 +589,7 @@ jobs:
       bflat_riscv32_image: ${{ needs.pin.outputs.riscv32 || needs.resolve.outputs.riscv32_image }}
       extlib: ${{ needs.resolve.outputs.ab_extlib }}
       codegenopt: ${{ needs.resolve.outputs.codegenopt }}
+      candidate_arm: ${{ needs.resolve.outputs.candidate_arm }}
       guests: ${{ needs.resolve.outputs.guests }}
 
   summary:
