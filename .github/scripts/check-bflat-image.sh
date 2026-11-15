@@ -50,11 +50,15 @@ esac
 [[ $run_id =~ ^[0-9]{1,20}$ ]] || fail "$image: no run id label"
 
 info=$(gh api "repos/$run_repo/actions/runs/$run_id" \
-  --jq '[.head_repository.full_name, .path, .status, (.conclusion // "")] | @tsv') \
+  --jq '[.head_repository.full_name, .path, .status, (.conclusion // ""), .head_branch, .event] | @tsv') \
   || fail "$image: run $run_id of $run_repo not found"
-IFS=$'\t' read -r head path status conclusion <<<"$info"
+IFS=$'\t' read -r head path status conclusion branch event <<<"$info"
 [ "$head" = "$run_repo" ] || fail "$image: run $run_id of $run_repo comes from $head"
 [ "${path%%@*}" = "$workflow" ] || fail "$image: run $run_id of $run_repo is not $workflow"
+if [ "$run_repo" = NethermindEth/bflat-ts ]; then
+  [ "$event" = workflow_dispatch ] && [ "$branch" = main ] \
+    || fail "$image: run $run_id of $run_repo is not a dispatch from main"
+fi
 # The run that pushed the image may still run its later jobs.
 [ "$status" != completed ] || [ "$conclusion" = success ] \
   || fail "$image: run $run_id of $run_repo ended with $conclusion"
