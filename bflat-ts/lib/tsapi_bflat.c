@@ -262,7 +262,8 @@ tsapi_bflat_env_codegenopt(const char **opts, unsigned int *n)
         ERROR("TS_BFLAT_CODEGENOPT: the list is too long");
         return TE_EINVAL;
     }
-    strcpy(value, env);
+    strncpy(value, env, sizeof(value) - 1);
+    value[sizeof(value) - 1] = '\0';
 
     for (entry = value; ; entry++)
     {
