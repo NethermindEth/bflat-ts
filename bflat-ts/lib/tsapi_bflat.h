@@ -87,6 +87,50 @@ extern const char *tsapi_bflat_resolve_image(const char *arg,
  */
 extern const char *tsapi_bflat_env_image(const char *arch);
 
+/** Most @c --codegenopt values that @c TS_BFLAT_CODEGENOPT may give. */
+#define TSAPI_BFLAT_CODEGENOPT_MAX 8
+
+/**
+ * Resolve the runtime package that bflat takes with @c --extlib for
+ * @p libc, applying the precedence:
+ *  1. the package of @p libc in the @c TS_BFLAT_EXTLIB environment variable
+ *  2. @p arg
+ *
+ * @c TS_BFLAT_EXTLIB is a comma-separated list of @c platform=package
+ * entries, where the platform is one of @c zisk, @c zisk_sim, @c sp1,
+ * @c openvm and @c airbender, and the package is any value the
+ * @c bflat_extlib test parameter takes. @c zisk_sim takes the package of
+ * @c zisk when the list does not name it. For example,
+ * @c zisk=<url>,airbender=<url>.tar.gz#<manifest>. A platform that the list
+ * does not name keeps @p arg. A malformed list fails every test that builds,
+ * so an override is never dropped without notice.
+ *
+ * @param arg     Value of the @c bflat_extlib test parameter, or @c NULL.
+ * @param libc    Target libc, as passed to bflat @c --libc.
+ * @param extlib  Location for the resolved package: @p arg, or a buffer that
+ *                the next call overwrites.
+ *
+ * @return Status code; @c TE_EINVAL if the variable is malformed.
+ */
+extern te_errno tsapi_bflat_resolve_extlib(const char *arg, const char *libc,
+                                           const char **extlib);
+
+/**
+ * The @c --codegenopt values in the @c TS_BFLAT_CODEGENOPT environment
+ * variable: a comma-separated list of @c name=value entries, at most
+ * #TSAPI_BFLAT_CODEGENOPT_MAX of them. For example,
+ * @c JitMinOpts=1,JitStdOutFile=/src/jit.txt.
+ *
+ * @param opts  Array of #TSAPI_BFLAT_CODEGENOPT_MAX entries for the values,
+ *              which point into a buffer that the next call overwrites.
+ * @param n     Location for the number of values; @c 0 if the variable is
+ *              not set or empty.
+ *
+ * @return Status code; @c TE_EINVAL if the variable is malformed.
+ */
+extern te_errno tsapi_bflat_env_codegenopt(const char **opts,
+                                           unsigned int *n);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

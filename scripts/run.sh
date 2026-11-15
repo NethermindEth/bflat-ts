@@ -40,7 +40,7 @@ if [ "$is_docker" == "1" ] ; then
     export TE_DOCKER_TAG="bflat-ts-build"
     export TE_DOCKER_MOUNT_PATHS="${TS_TOPDIR}:${TE_BASE}"
     export TE_DOCKER_WORK_DIR="$(pwd)"
-    export TE_DOCKER_ENV="TE_BASE:TS_TOPDIR:TS_BFLAT_IMAGE:TS_NETHERMIND_REV"
+    export TE_DOCKER_ENV="TE_BASE:TS_TOPDIR:TS_BFLAT_IMAGE:TS_BFLAT_EXTLIB:TS_BFLAT_CODEGENOPT:TS_NETHERMIND_REV"
     ${TS_TOPDIR}/scripts/docker_env.sh ${TS_TOPDIR}/scripts/run.sh $@
     exit $?
 fi
@@ -68,6 +68,13 @@ Options:
     --bflat-image=<IMAGES>  Override the bflat Docker images (sets TS_BFLAT_IMAGE):
                             one image for riscv64, or a comma-separated list
                             of arch=image, e.g. riscv64=<IMG>,riscv32=<IMG>
+    --bflat-extlib=<PKGS>   Override the runtime packages (sets TS_BFLAT_EXTLIB):
+                            a comma-separated list of platform=package,
+                            e.g. sp1=<URL>,airbender=<URL>.tar.gz#<MANIFEST>
+    --bflat-codegenopt=<OPTS>
+                            Pass extra --codegenopt values to bflat (sets
+                            TS_BFLAT_CODEGENOPT): a comma-separated list of
+                            name=value
     --nethermind-rev=<REV>  Build Nethermind at the given git revision
                             (branch/tag/SHA; sets TS_NETHERMIND_REV).
                             If omitted, the latest commit is used.
@@ -88,6 +95,12 @@ while test -n "$1" ; do
             ;;
         --bflat-image=*)
             export TS_BFLAT_IMAGE="${1#--bflat-image=}"
+            ;;
+        --bflat-extlib=*)
+            export TS_BFLAT_EXTLIB="${1#--bflat-extlib=}"
+            ;;
+        --bflat-codegenopt=*)
+            export TS_BFLAT_CODEGENOPT="${1#--bflat-codegenopt=}"
             ;;
         --nethermind-rev=*)
             export TS_NETHERMIND_REV="${1#--nethermind-rev=}"

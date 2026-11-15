@@ -26,7 +26,8 @@
  * @param no_stacktrace_data Pass @c --no-stacktrace-data if @c TRUE
  * @param no_pthread       Pass @c --no-pthread if @c TRUE
  * @param no_pie           Pass @c --no-pie if @c TRUE
- * @param bflat_extlib     Value for @c --extlib (ziskos library)
+ * @param bflat_extlib     Value for @c --extlib (ziskos library), unless
+ *                         @c TS_BFLAT_EXTLIB overrides it
  * @param zisk_image       Zisk Docker image, or empty for the default
  * @param run_timeout_ms   Timeout for the ziskemu run (ms); 0 = default
  * @param zisk_ta          Agent to run Zisk container on; if omitted uses @p ta
@@ -92,6 +93,8 @@ main(int argc, char **argv)
     bool                no_pthread;
     bool                no_pie;
     const char         *bflat_extlib;
+    const char         *codegenopt[TSAPI_BFLAT_CODEGENOPT_MAX];
+    unsigned int        codegenopt_n = 0;
     const char         *zisk_image;
     int                 run_timeout_ms;
     const char         *zisk_ta = NULL;
@@ -144,6 +147,9 @@ main(int argc, char **argv)
     TEST_GET_BOOL_PARAM(no_pthread);
     TEST_GET_BOOL_PARAM(no_pie);
     TEST_GET_OPT_STRING_PARAM(bflat_extlib);
+    CHECK_RC(tsapi_bflat_resolve_extlib(bflat_extlib, bflat_libc,
+                                        &bflat_extlib));
+    CHECK_RC(tsapi_bflat_env_codegenopt(codegenopt, &codegenopt_n));
     TEST_GET_OPT_STRING_PARAM(zisk_image);
     TEST_GET_INT_PARAM(run_timeout_ms);
     TEST_GET_INT_PARAM(max_startup_steps);
@@ -221,8 +227,9 @@ main(int argc, char **argv)
               bflat_extlib != NULL ? bflat_extlib : "(none)",
               cs_file);
     {
-        const char *bflat_argv[32];
-        int         bflat_argc = 0;
+        const char   *bflat_argv[32 + 2 * TSAPI_BFLAT_CODEGENOPT_MAX];
+        int           bflat_argc = 0;
+        unsigned int  i;
 
 #define ARGV_ADD(arg_)  bflat_argv[bflat_argc++] = (arg_)
         ARGV_ADD("bflat");
@@ -244,6 +251,10 @@ main(int argc, char **argv)
         if (bflat_extlib != NULL)
         {
             ARGV_ADD("--extlib"); ARGV_ADD(bflat_extlib);
+        }
+        for (i = 0; i < codegenopt_n; i++)
+        {
+            ARGV_ADD("--codegenopt"); ARGV_ADD(codegenopt[i]);
         }
         ARGV_ADD(remote_cs_path.ptr);
         ARGV_ADD("--out"); ARGV_ADD(remote_out.ptr);
