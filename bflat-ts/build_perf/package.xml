@@ -52,8 +52,8 @@
             <arg name="bflat_extlib" list="target">
                 <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.153/nethermind.ziskos.runtime.1.4.0-alpha.153.nupkg</value>
                 <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.153/nethermind.ziskos.runtime.1.4.0-alpha.153.nupkg</value>
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.60/nethermind.sp1.runtime.6.9.0.60.nupkg</value>
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.61/nethermind.openvm.runtime.2.1.0.61.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.70/nethermind.openvm.runtime.2.1.0.70.nupkg</value>
             </arg>
             <!-- Threshold: 0 = disabled. Limit 5 min for big_refs.cs compilation -->
             <arg name="max_build_time_ms">
