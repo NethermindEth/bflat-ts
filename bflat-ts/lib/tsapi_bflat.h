@@ -38,8 +38,8 @@ extern "C" {
  */
 #define TSAPI_BFLAT_DEFAULT_IMAGE \
     "nethermindeth/bflat-riscv64-11:" \
-    "dd05dd8af0a14065a9974492007dd5e568acfecc@sha256:" \
-    "34235a4a8050b171dd03562a875752c08db5b6fdb33bb505be1eeeb7c4ea19be"
+    "80f97933b93f86c20aad5a5edbfc08cb9cd9b2b4@sha256:" \
+    "adee1249f66488ee6d3ed64e5a39d88fba343b6a8d38bc62436237f1daa80122"
 
 /**
  * Compile-time default bflat Docker image for @c --arch @c riscv32: the image
