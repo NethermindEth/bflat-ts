@@ -39,6 +39,7 @@ on:
         options:
           - full
           - simple
+          - none
         default: full
       guests:
         description: "guests to report and measure"
@@ -81,6 +82,7 @@ jobs:
       codegenopt: ${{ steps.resolve.outputs.codegenopt }}
       guests: ${{ steps.resolve.outputs.guests }}
       full: ${{ steps.resolve.outputs.full }}
+      suite: ${{ steps.resolve.outputs.suite }}
       test: ${{ steps.resolve.outputs.test }}
     steps:
       - name: Check out the image check
@@ -223,8 +225,10 @@ jobs:
           case "$SUITE" in
             full) out full true; out test '' ;;
             simple) out full false; out test bflat-ts/simple ;;
-            *) fail "suite: $SUITE is not simple or full" ;;
+            none) out full false; out test '' ;;
+            *) fail "suite: $SUITE is not full, simple or none" ;;
           esac
+          out suite "$SUITE"
 
           # Guests
           [[ $GUESTS =~ ^(zisk|sp1|openvm|airbender)(,(zisk|sp1|openvm|airbender)){0,3}$ ]] \
@@ -553,7 +557,7 @@ jobs:
   bflat-ts:
     needs: [resolve, image, pin, packages]
     if: >-
-      !cancelled() && needs.resolve.result == 'success' &&
+      !cancelled() && needs.resolve.result == 'success' && needs.resolve.outputs.suite != 'none' &&
       (needs.image.result == 'success' || needs.image.result == 'skipped') &&
       (needs.pin.result == 'success' || needs.pin.result == 'skipped') &&
       (needs.packages.result == 'success' || needs.packages.result == 'skipped')

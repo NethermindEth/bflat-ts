@@ -129,7 +129,7 @@ jobs:
 | `dotnet_riscv` | dotnet-riscv `build.yml` run id; the image is built with that runtime |
 | `packages` | `platform=value,...` with zisk, sp1, openvm, airbender; value is a git ref, `run:<id>` or a release asset URL of the platform repository (bflat-libziskos, bflat-sp1, bflat-openvm, bflat-airbender; a `.tar.gz` may end with `#<manifest>`) |
 | `codegenopt` | Extra `--codegenopt` values, `name=value,...`, at most 8; a value has letters, digits and `._:+-`, at most 64 |
-| `suite` | `full` (default) or `simple` |
+| `suite` | `full` (default), `simple`, or `none` to skip zk-testing and run only the image, package and A/B stages |
 | `guests`, `ab` | Guests to report and measure; `ab=false` skips the A/B |
 
 A commit must be on a branch of the NethermindEth repository, and a run must come from a branch of that repository and succeed. Give a branch name for a commit that is not on the default branch and is not a branch head. The Nethermind refs take branches and commits only, not tags.
