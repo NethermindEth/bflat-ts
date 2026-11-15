@@ -117,6 +117,44 @@ jobs:
     secrets: inherit
 ```
 
+## Test a candidate
+
+`.github/workflows/zkvm-candidate.yml` tests a candidate toolchain in one dispatch, without a release. It runs this suite on zk-testing and the Nethermind guest A/B, and writes one summary with a verdict per guest and the A/B tables. A stage runs only when its inputs ask for it.
+
+| Input | Description |
+|-------|-------------|
+| `nethermind_head` | Nethermind ref to test (required); `nethermind_base` is the A/B base (default `master`) |
+| `bflat_riscv64` | bflat-riscv64 ref; the workflow takes the image `:<sha>` from ghcr, or builds it |
+| `dotnet_riscv` | dotnet-riscv `build.yml` run id; the image is built with that runtime |
+| `packages` | `platform=value,...` with zisk, sp1, openvm, airbender; value is a git ref, `run:<id>` or a NethermindEth release URL |
+| `codegenopt` | Extra `--codegenopt` values, `name=value,...` |
+| `suite` | `full` (default) or `simple` |
+| `guests`, `ab` | Guests to report and measure; `ab=false` skips the A/B |
+
+A commit must be on a branch of the NethermindEth repository, and a run must come from a branch of that repository and succeed. Give a branch name for a commit that is not on the default branch and is not a branch head.
+
+A JIT option only:
+
+```bash
+gh workflow run zkvm-candidate.yml -R NethermindEth/bflat-ts \
+  -f nethermind_head=master -f codegenopt=<name>=<value>
+```
+
+A runtime package from a pull request run, on the simple suite:
+
+```bash
+gh workflow run zkvm-candidate.yml -R NethermindEth/bflat-ts \
+  -f nethermind_head=master -f packages=sp1=run:<run id> -f suite=simple
+```
+
+A full toolchain: a dotnet-riscv run, a bflat-riscv64 branch and a package branch:
+
+```bash
+gh workflow run zkvm-candidate.yml -R NethermindEth/bflat-ts \
+  -f nethermind_head=<branch> -f dotnet_riscv=<run id> \
+  -f bflat_riscv64=<branch> -f packages=zisk=<branch>,airbender=<branch>
+```
+
 ## Expected results (TRC)
 
 Expected test results are tracked in the Testing Results Comparator database at `conf/trc.xml`. To generate a TRC report:
