@@ -414,11 +414,13 @@ jobs:
             echo "riscv32=$RISCV32"
           } >> "$GITHUB_OUTPUT"
 
+  # Only the bflat-ts suite takes the derived images: the A/B fetches the
+  # packages itself (ab_extlib).
   packages:
     needs: [resolve, image, pin]
     if: >-
       !cancelled() && needs.resolve.result == 'success' &&
-      needs.resolve.outputs.package_runs != '' &&
+      needs.resolve.outputs.package_runs != '' && needs.resolve.outputs.suite != 'none' &&
       (needs.image.result == 'success' || needs.image.result == 'skipped') &&
       (needs.pin.result == 'success' || needs.pin.result == 'skipped')
     runs-on: ubuntu-latest

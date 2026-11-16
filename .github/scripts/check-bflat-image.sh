@@ -49,10 +49,13 @@ case "$run_repo" in
 esac
 [[ $run_id =~ ^[0-9]{1,20}$ ]] || fail "$image: no run id label"
 
+# The fields are joined with US (0x1f), not a tab: IFS whitespace (a tab)
+# merges empty fields, as the null conclusion of a run in progress, and
+# moves the next fields to the wrong names.
 info=$(gh api "repos/$run_repo/actions/runs/$run_id" \
-  --jq '[.head_repository.full_name, .path, .status, (.conclusion // ""), .head_branch, .event] | @tsv') \
+  --jq '[.head_repository.full_name, .path, .status, .conclusion, .head_branch, .event] | map(. // "" | tostring) | join("\u001f")') \
   || fail "$image: run $run_id of $run_repo not found"
-IFS=$'\t' read -r head path status conclusion branch event <<<"$info"
+IFS=$'\x1f' read -r head path status conclusion branch event <<<"$info"
 [ "$head" = "$run_repo" ] || fail "$image: run $run_id of $run_repo comes from $head"
 [ "${path%%@*}" = "$workflow" ] || fail "$image: run $run_id of $run_repo is not $workflow"
 if [ "$run_repo" = NethermindEth/bflat-ts ]; then
