@@ -365,7 +365,7 @@ jobs:
       contents: read
       id-token: write
       packages: write
-    uses: NethermindEth/bflat-riscv64/.github/workflows/build-image.yml@master
+    uses: NethermindEth/bflat-riscv64/.github/workflows/build-image.yml@6f19b2372aaa412e227674255cbc11314f258028
     with:
       ref: ${{ needs.resolve.outputs.bflat_sha }}
       dotnet_riscv_run_id: ${{ needs.resolve.outputs.dotnet_run }}
