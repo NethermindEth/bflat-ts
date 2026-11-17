@@ -77,6 +77,7 @@
 #include "te_config.h"
 #include "tapi_test.h"
 #include "tapi_job.h"
+#include "tapi_job_factory_rpc.h"
 #include "tapi_file.h"
 #include "te_file.h"
 #include "te_string.h"
