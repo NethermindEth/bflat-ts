@@ -153,7 +153,7 @@ jobs:
           fi
           if [ -n "$CODEGENOPT" ]; then
             check_list codegenopt "$CODEGENOPT" \
-              '^[A-Za-z][A-Za-z0-9_]*=[A-Za-z0-9._:/+-]+$' 8
+              '^[A-Za-z][A-Za-z0-9_]{0,63}=[A-Za-z0-9._:+-]{1,64}$' 8
           fi
 
           # The suite takes the images of all architectures as one list
@@ -227,8 +227,15 @@ jobs:
 
           echo "status: $status"
           [ "$status" = success ]
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bflat-ts-junit
+          path: junit.xml
+          if-no-files-found: ignore
       - name: Publish test report
-        uses: mikepenz/action-junit-report@v5
+        uses: mikepenz/action-junit-report@3585e9575db828022551b4231f165eb59a0e74e3 # v5.6.2
         if: always()
         with:
           report_paths: junit.xml

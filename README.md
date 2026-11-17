@@ -117,6 +117,56 @@ jobs:
     secrets: inherit
 ```
 
+## Test a candidate
+
+`.github/workflows/zkvm-candidate.yml` tests a candidate toolchain in one dispatch, without a release. It runs this suite on zk-testing and the Nethermind guest A/B, and writes one summary with a verdict per guest and the A/B tables. A stage runs only when its inputs ask for it.
+
+| Input | Description |
+|-------|-------------|
+| `nethermind_head` | Nethermind branch or commit to test (required, no tags) |
+| `nethermind_base` | A/B base, a branch or commit (empty = `nethermind_head` with a candidate input, else `master`) |
+| `bflat_riscv64` | bflat-riscv64 ref; the workflow takes the image `:<sha>` from ghcr, or builds it |
+| `dotnet_riscv` | dotnet-riscv `build.yml` run id; the image is built with that runtime |
+| `packages` | `platform=value,...` with zisk, sp1, openvm, airbender; value is a git ref, `run:<id>` or a release asset URL of the platform repository (bflat-libziskos, bflat-sp1, bflat-openvm, bflat-airbender; a `.tar.gz` may end with `#<manifest>`) |
+| `codegenopt` | Extra `--codegenopt` values, `name=value,...`, at most 8; a value has letters, digits and `._:+-`, at most 64 |
+| `suite` | `full` (default), `simple`, or `none` to skip zk-testing and run only the image, package and A/B stages |
+| `guests`, `ab` | Guests to report and measure; `ab=false` skips the A/B |
+
+A commit must be on a branch of the NethermindEth repository, and a run must come from a branch of that repository and succeed. Give a branch name for a commit that is not on the default branch and is not a branch head. The Nethermind refs take branches and commits only, not tags.
+
+When `bflat_riscv64`, `dotnet_riscv`, `packages` or `codegenopt` is set, the A/B gives the candidate to the head arm only (`candidate_arm=head` of the Nethermind workflow). Both arms then build `nethermind_head`, unless `nethermind_base` is set, so the table shows the effect of the candidate alone. Without a candidate input, the A/B compares `nethermind_base` (default `master`) with `nethermind_head` on the same toolchain.
+
+The workflow reuses an existing image `:<sha>[-rt<run id>]` only when its labels show that `build-image.yml` of bflat-riscv64 built it from that commit and runtime, in a run of `build-riscv64.yml` of bflat-riscv64 or of this workflow that has not failed (`.github/scripts/check-bflat-image.sh`). An image that fails the check stops the run, because `build-image.yml` does not replace an immutable tag.
+
+A JIT option only, on master against master without it:
+
+```bash
+gh workflow run zkvm-candidate.yml -R NethermindEth/bflat-ts \
+  -f nethermind_head=master -f codegenopt=<name>=<value>
+```
+
+A Nethermind change on the pinned toolchain, against master:
+
+```bash
+gh workflow run zkvm-candidate.yml -R NethermindEth/bflat-ts \
+  -f nethermind_head=<branch> -f suite=simple
+```
+
+A runtime package from a pull request run, on the simple suite:
+
+```bash
+gh workflow run zkvm-candidate.yml -R NethermindEth/bflat-ts \
+  -f nethermind_head=master -f packages=sp1=run:<run id> -f suite=simple
+```
+
+A full toolchain: a dotnet-riscv run, a bflat-riscv64 branch and a package branch:
+
+```bash
+gh workflow run zkvm-candidate.yml -R NethermindEth/bflat-ts \
+  -f nethermind_head=<branch> -f dotnet_riscv=<run id> \
+  -f bflat_riscv64=<branch> -f packages=zisk=<branch>,airbender=<branch>
+```
+
 ## Expected results (TRC)
 
 Expected test results are tracked in the Testing Results Comparator database at `conf/trc.xml`. To generate a TRC report:
