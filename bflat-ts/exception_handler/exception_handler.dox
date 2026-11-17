@@ -18,5 +18,16 @@
  *        - exit() override emitting the Zisk exit ecall (a7=93) so the guest
  *          terminates cleanly instead of EmulationNoCompleted
  *
+ *        With the unwind tables kept, a throw is dispatched in two passes
+ *        over the frames on the stack, and every frame has to be described
+ *        by its unwind info. @c eh_large_frame throws through frames that
+ *        do not fit in a 12-bit immediate and are allocated in two steps:
+ *        a method without a frame pointer keeps its CFA on SP, and both
+ *        steps have to be in its FDE. The test first checks the unwind info
+ *        of the binary against its code (@c eh_frame_check.py, see the
+ *        @c unwind_split_min parameter of @c build) and then runs it;
+ *        @c eh_large_frame_framed is the same program with a frame pointer
+ *        in every method.
+ *
  * @}
  */

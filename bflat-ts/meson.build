@@ -72,6 +72,10 @@ endforeach
 install_data([ 'mainpage.dox', 'package.xml' ],
              install_dir: package_dir)
 
+# build.c runs it on the binary of a test that asks for it (unwind_split_min).
+install_data([ 'eh_frame_check.py' ], install_dir: package_dir,
+             install_mode: 'rwxr-xr-x')
+
 packages = [
     'simple',
     'softfloat',
