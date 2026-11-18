@@ -41,6 +41,11 @@ on:
           - simple
           - none
         default: full
+      require_pass:
+        description: "fail the run when a test of the suite fails (a gate needs it; without it the run only reports)"
+        required: false
+        type: boolean
+        default: false
       guests:
         description: "guests to report and measure"
         required: false
@@ -575,6 +580,7 @@ jobs:
       bflat_riscv32_image: ${{ needs.packages.outputs.riscv32_image || needs.pin.outputs.riscv32 || needs.resolve.outputs.riscv32_image }}
       extlib: ${{ needs.packages.outputs.extlib || needs.resolve.outputs.url_extlib }}
       codegenopt: ${{ needs.resolve.outputs.codegenopt }}
+      require_pass: ${{ inputs.require_pass == true }}
     secrets:
       HORIZON_HOOK_TOKEN: ${{ secrets.HORIZON_HOOK_TOKEN }}
       HORIZON_API_TOKEN: ${{ secrets.HORIZON_API_TOKEN }}
