@@ -14,6 +14,7 @@
 #include "te_config.h"
 #include "te_defs.h"
 #include "te_errno.h"
+#include "rcf_rpc.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -130,6 +131,34 @@ extern te_errno tsapi_bflat_resolve_extlib(const char *arg, const char *libc,
  */
 extern te_errno tsapi_bflat_env_codegenopt(const char **opts,
                                            unsigned int *n);
+
+/** Exit status of @c eh_frame_check.py: the unwind info covers the code. */
+#define TSAPI_BFLAT_UNWIND_OK       0
+/** Exit status of @c eh_frame_check.py: the unwind info does not cover what
+ *  a managed method allocates, or there are fewer split frames than asked. */
+#define TSAPI_BFLAT_UNWIND_MISMATCH 1
+
+/**
+ * Check the unwind info of a RISC-V ELF against its code with
+ * @c eh_frame_check.py, on the agent of @p rpcs (it needs Python 3). The
+ * output of the script goes to the log.
+ *
+ * @param rpcs       RPC server on the agent that has both files.
+ * @param script     Path to @c eh_frame_check.py.
+ * @param elf        Path to the binary.
+ * @param min_split  Number of frames over 2040 bytes allocated in two steps
+ *                   with the CFA on SP that the binary must have; @c 0 to
+ *                   only check.
+ * @param status     Location for the exit status of the script:
+ *                   #TSAPI_BFLAT_UNWIND_OK, #TSAPI_BFLAT_UNWIND_MISMATCH,
+ *                   or another value if the file could not be checked.
+ *
+ * @return Status code; @c TE_ESHCMD if the script was killed by a signal.
+ */
+extern te_errno tsapi_bflat_check_unwind(rcf_rpc_server *rpcs,
+                                         const char *script,
+                                         const char *elf, int min_split,
+                                         int *status);
 
 #ifdef __cplusplus
 } /* extern "C" */
