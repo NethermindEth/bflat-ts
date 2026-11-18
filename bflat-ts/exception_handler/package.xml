@@ -155,6 +155,9 @@
             frames on either architecture; fewer than 100 means they are no
             longer compiled without a frame pointer, and the run would pass
             without testing anything.
+
+            Not on zisk_sim: its stack is 64 KB, less than a few frames of
+            the largest sizes take.
         -->
         <run name="eh_large_frame" template="bflat_build">
             <script name="build" />
@@ -164,9 +167,26 @@
             <arg name="unwind_split_min">
                 <value>100</value>
             </arg>
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv32</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>sp1</value>
+                <value>openvm</value>
+                <value>airbender</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.5/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+            </arg>
             <arg name="expected_stdout" list="target">
                 <value>-</value>
-                <value>ALL PASS</value>
                 <value>ALL PASS</value>
                 <value>ALL PASS</value>
                 <value>ALL PASS</value>
@@ -190,9 +210,26 @@
             <arg name="unwind_split_min">
                 <value>0</value>
             </arg>
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv32</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>sp1</value>
+                <value>openvm</value>
+                <value>airbender</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.5/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+            </arg>
             <arg name="expected_stdout" list="target">
                 <value>-</value>
-                <value>ALL PASS</value>
                 <value>ALL PASS</value>
                 <value>ALL PASS</value>
                 <value>ALL PASS</value>
