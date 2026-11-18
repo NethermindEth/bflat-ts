@@ -56,6 +56,15 @@
  *                        (or equal to @p ta) the same agent is used
  * @param bflat_define    Optional C# preprocessor symbol passed as @c -d:SYMBOL
  *                        (e.g. @c FIXED); omit to compile without any define
+ * @param bflat_codegenopt  Optional @c --codegenopt value of the test itself
+ *                        (@c name=value), given before those of
+ *                        @c TS_BFLAT_CODEGENOPT; omit for none
+ * @param unwind_split_min  Optional. Check the unwind info of the binary
+ *                        against its code with @c eh_frame_check.py before
+ *                        running it, and require at least this many frames
+ *                        over 2040 bytes that are allocated in two steps
+ *                        with the CFA on SP (0 to only check); omit to skip
+ *                        the check. The agent needs Python 3
  *
  * @par Scenario:
  *
@@ -68,6 +77,7 @@
 #include "te_config.h"
 #include "tapi_test.h"
 #include "tapi_job.h"
+#include "tapi_job_factory_rpc.h"
 #include "tapi_file.h"
 #include "te_file.h"
 #include "te_string.h"
@@ -131,6 +141,7 @@ main(int argc, char **argv)
     const char         *openvm_config;
     const char         *bflat_extlib;
     const char         *bflat_define      = NULL;
+    const char         *bflat_codegenopt  = NULL;
     const char         *codegenopt[TSAPI_BFLAT_CODEGENOPT_MAX];
     unsigned int        codegenopt_n      = 0;
 
@@ -170,6 +181,9 @@ main(int argc, char **argv)
     const char         *expected_stdout   = NULL;
     te_bool             remove_eh         = FALSE;
     int                 expected_status   = 0;
+    int                 unwind_split_min  = -1;
+    tapi_job_factory_t *unwind_factory    = NULL;
+    tapi_job_t         *unwind_job        = NULL;
     tapi_job_channel_t *stdout_filter     = NULL;
     tapi_job_buffer_t   stdout_buf        = TAPI_JOB_BUFFER_INIT;
 
@@ -206,6 +220,8 @@ main(int argc, char **argv)
     CHECK_RC(tsapi_bflat_env_codegenopt(codegenopt, &codegenopt_n));
     if (TEST_HAS_PARAM(bflat_define))
         TEST_GET_OPT_STRING_PARAM(bflat_define);
+    if (TEST_HAS_PARAM(bflat_codegenopt))
+        TEST_GET_OPT_STRING_PARAM(bflat_codegenopt);
     TEST_GET_OPT_STRING_PARAM(expected_stdout);
     /* Same "-" convention as the image parameters above: no opinion. */
     if (expected_stdout != NULL && strcmp(expected_stdout, "-") == 0)
@@ -221,6 +237,14 @@ main(int argc, char **argv)
         TEST_GET_BOOL_PARAM(remove_eh);
     if (TEST_HAS_PARAM(expected_status))
         TEST_GET_INT_PARAM(expected_status);
+    /*
+     * Asks for the unwind info of the binary to be checked against its code
+     * (eh_frame_check.py of the package), and says how many frames that are
+     * allocated in two steps with the CFA on SP the binary must have: a
+     * test of such frames must not pass because there are none.
+     */
+    if (TEST_HAS_PARAM(unwind_split_min))
+        TEST_GET_INT_PARAM(unwind_split_min);
     TEST_GET_TA(zisk, zisk_ta);
 
     TEST_STEP("Resolve local path to '%s'", cs_file);
@@ -329,7 +353,7 @@ main(int argc, char **argv)
               cs_file);
     {
         /* Fixed upper bound: base args + all optional flags + src + out + NULL */
-        const char   *bflat_argv[34 + 2 * TSAPI_BFLAT_CODEGENOPT_MAX];
+        const char   *bflat_argv[36 + 2 * TSAPI_BFLAT_CODEGENOPT_MAX];
         int           bflat_argc = 0;
         unsigned int  i;
 
@@ -367,6 +391,10 @@ main(int argc, char **argv)
         if (bflat_define != NULL && strcmp(bflat_define, "-") != 0)
         {
             ARGV_ADD("-d"); ARGV_ADD(bflat_define);
+        }
+        if (bflat_codegenopt != NULL && strcmp(bflat_codegenopt, "-") != 0)
+        {
+            ARGV_ADD("--codegenopt"); ARGV_ADD(bflat_codegenopt);
         }
         for (i = 0; i < codegenopt_n; i++)
         {
@@ -429,6 +457,61 @@ main(int argc, char **argv)
 
     RING("bflat successfully compiled '%s' (arch=%s libc=%s)",
          cs_file, bflat_arch, bflat_libc);
+
+    if (unwind_split_min >= 0)
+    {
+        const char         *binary_stem =
+            remote_out.ptr + strlen(CONTAINER_SRC_DIR) + 1;
+        te_string           script = TE_STRING_INIT;
+        te_string           elf = TE_STRING_INIT;
+        te_string           min_split = TE_STRING_INIT;
+        tapi_job_channel_t *unwind_channels[2];
+        tapi_job_status_t   unwind_status;
+        const char         *unwind_argv[7];
+
+        TEST_STEP("Check the unwind info of the binary against its code");
+        /* The script is installed next to the packages, as build.c is
+         * shared by them. */
+        te_string_append(&script, "%s/../eh_frame_check.py", test_dir);
+        te_string_append(&elf, "%s/%s", src_dir, binary_stem);
+        te_string_append(&min_split, "%d", unwind_split_min);
+
+        unwind_argv[0] = "/usr/bin/env";
+        unwind_argv[1] = "python3";
+        unwind_argv[2] = script.ptr;
+        unwind_argv[3] = elf.ptr;
+        unwind_argv[4] = "--min-split";
+        unwind_argv[5] = min_split.ptr;
+        unwind_argv[6] = NULL;
+
+        CHECK_RC(tapi_job_factory_rpc_create(rpcs, &unwind_factory));
+        CHECK_RC(tapi_job_create(unwind_factory, NULL, unwind_argv[0],
+                                 unwind_argv, NULL, &unwind_job));
+        CHECK_RC(tapi_job_alloc_output_channels(unwind_job, 2,
+                                                unwind_channels));
+        CHECK_RC(tapi_job_attach_filter(
+                     TAPI_JOB_CHANNEL_SET(unwind_channels[0]),
+                     "eh_frame_check stdout", false, TE_LL_RING, NULL));
+        CHECK_RC(tapi_job_attach_filter(
+                     TAPI_JOB_CHANNEL_SET(unwind_channels[1]),
+                     "eh_frame_check stderr", false, TE_LL_ERROR, NULL));
+        CHECK_RC(tapi_job_start(unwind_job));
+        CHECK_RC(tapi_job_wait(unwind_job, BUILD_TIMEOUT_MS, &unwind_status));
+
+        te_string_free(&script);
+        te_string_free(&elf);
+        te_string_free(&min_split);
+
+        if (unwind_status.type != TAPI_JOB_STATUS_EXITED)
+            TEST_FAIL("eh_frame_check.py was killed by a signal (signo=%d)",
+                      unwind_status.value);
+        if (unwind_status.value == 1)
+            TEST_VERDICT("The unwind info of the binary fails the check "
+                         "against its code");
+        if (unwind_status.value != 0)
+            TEST_FAIL("eh_frame_check.py could not check the binary "
+                      "(status %d)", unwind_status.value);
+    }
 
     if (run)
     {
@@ -728,6 +811,11 @@ main(int argc, char **argv)
 cleanup:
     if (run_job != NULL)
         CLEANUP_CHECK_RC(tapi_job_destroy(run_job, -1));
+
+    if (unwind_job != NULL)
+        CLEANUP_CHECK_RC(tapi_job_destroy(unwind_job, -1));
+    if (unwind_factory != NULL)
+        tapi_job_factory_destroy(unwind_factory);
 
     if (qemu_created)
         tsapi_qemu_runner_destroy(&qemu);
