@@ -8,13 +8,19 @@
 // cannot hold throws OutOfMemoryException; a program may catch both and go
 // on (a decoder that takes a length from its input does). The allocation
 // helper does that. The allocation sequence the JIT emits in its place for
-// a zkVM guest has two checks of its own and no way to throw:
+// a zkVM guest has two checks of its own:
 //
-//   - the length is compared, unsigned, with the largest array length;
+//   - the length is compared, unsigned, with the largest length the
+//     sequence takes, and a length it does not take throws
+//     OverflowException (the helper throws OutOfMemoryException for one
+//     that is positive, so either is right here);
 //   - the new heap pointer is compared, unsigned, with the heap floor kept
-//     in the cell under the pointer.
+//     in the cell under the pointer; an array of a valid length that does
+//     not fit ends the guest, which is how the sequence is specified. Those
+//     cases are compiled with HEAP_EXHAUSTION, for a build that keeps the
+//     helper.
 //
-// What can go wrong, besides the exception becoming the end of the guest:
+// What can go wrong:
 //
 //   - a length whose low 32 bits are small and whose high bits are not
 //     (a long, a uint): cut to 32 bits it would make a short array;
@@ -51,7 +57,8 @@ static class Program
             got = "an array of length " + ((Array)o).Length;
         }
         catch (Exception e) { got = e.GetType().Name; }
-        if (got != exception)
+        // "A or B": either is right.
+        if (Array.IndexOf(exception.Split(" or "), got) < 0)
         {
             fails++;
             Console.WriteLine("FAIL " + name + " expected " + exception + " got " + got);
@@ -92,17 +99,19 @@ static class Program
         Expect("long 0x100000005", "OverflowException", () => IntsLong(0x100000000L + Opaque(5)));
         Expect("ulong 0x8000000000000002", "OverflowException", () => IntsULong(0x8000000000000000UL + (ulong)Opaque(2)));
         Expect("uint 0x80000003", "OverflowException", () => IntsUInt(0x80000000u + (uint)Opaque(3)));
-        Expect("int 0x7FFFFFC8 of byte", "OutOfMemoryException", () => Bytes(Opaque(0x7FFFFFC8)));
-        Expect("int int.MaxValue of long", "OutOfMemoryException", () => Longs(Opaque(int.MaxValue)));
+        Expect("int 0x7FFFFFC8 of byte", "OutOfMemoryException or OverflowException", () => Bytes(Opaque(0x7FFFFFC8)));
+        Expect("int int.MaxValue of long", "OutOfMemoryException or OverflowException", () => Longs(Opaque(int.MaxValue)));
+        // The size is larger than the heap pointer: pointer - size would wrap.
+        Expect("int 0x7FFFFFC7 of int", "OutOfMemoryException or OverflowException", () => Ints(Opaque(0x7FFFFFC7)));
+        Expect("int 0x7FFFFFC7 of long", "OutOfMemoryException or OverflowException", () => Longs(Opaque(0x7FFFFFC7)));
+        Expect("int 0x7FFFFFC7 of Guid", "OutOfMemoryException or OverflowException", () => Guids(Opaque(0x7FFFFFC7)));
+        Expect("constant 0x7FFFFFC7 of long", "OutOfMemoryException", () => HugeConstant());
 
+#if HEAP_EXHAUSTION
         // A valid length, more memory than the guest has.
         Expect("int 0x7FFFFFC7 of byte", "OutOfMemoryException", () => Bytes(Opaque(0x7FFFFFC7)));
         Expect("constant 0x7FFFFFC7 of byte", "OutOfMemoryException", () => BigConstant());
-        // The size is larger than the heap pointer: pointer - size wraps.
-        Expect("int 0x7FFFFFC7 of int", "OutOfMemoryException", () => Ints(Opaque(0x7FFFFFC7)));
-        Expect("int 0x7FFFFFC7 of long", "OutOfMemoryException", () => Longs(Opaque(0x7FFFFFC7)));
-        Expect("int 0x7FFFFFC7 of Guid", "OutOfMemoryException", () => Guids(Opaque(0x7FFFFFC7)));
-        Expect("constant 0x7FFFFFC7 of long", "OutOfMemoryException", () => HugeConstant());
+#endif
 
         Console.WriteLine(fails == 0 ? "ALL PASS" : "FAILED " + fails);
         return fails;
