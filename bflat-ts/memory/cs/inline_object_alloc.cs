@@ -441,7 +441,7 @@ static unsafe class Program
             long i = N - 1 - count;
             if (p.A != i || p.B != i * 3L || p.C != ~i) bad++;
             long a = Addr(p);
-            if (prev != 0 && (a - prev < 48 && prev - a < 48)) bad++;   // 40 bytes and the header word
+            if (prev != 0 && (a - prev < (IntPtr.Size == 8 ? 48 : 32) && prev - a < (IntPtr.Size == 8 ? 48 : 32))) bad++;   // 40 bytes and the header word
             prev = a;
             count++;
         }

@@ -113,10 +113,10 @@ static unsafe class Len
     // ---- independent readers: 4-byte loads through a reference to the first element ----
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static int Raw<T>(T[] a) => Unsafe.Add(ref Unsafe.As<T, int>(ref MemoryMarshal.GetArrayDataReference(a)), -2);
+    public static int Raw<T>(T[] a) => Unsafe.Add(ref Unsafe.As<T, int>(ref MemoryMarshal.GetArrayDataReference(a)), IntPtr.Size == 8 ? -2 : -1);
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static int Padding<T>(T[] a) => Unsafe.Add(ref Unsafe.As<T, int>(ref MemoryMarshal.GetArrayDataReference(a)), -1);
+    public static int Padding<T>(T[] a) => IntPtr.Size != 8 ? 0 : Unsafe.Add(ref Unsafe.As<T, int>(ref MemoryMarshal.GetArrayDataReference(a)), -1);
 
     // ---- allocation ----
 

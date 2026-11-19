@@ -255,7 +255,7 @@ static unsafe class Program
                 if (MaxWidened(a, ib) != (a > ib ? a : ib)) bad++;
                 if (MinWidenedU(ua, lb) != (ua < lb ? ua : lb)) bad++;
                 if (MaxWidenedU(la, ub) != (la > ub ? la : ub)) bad++;
-                if (MinN((nint)a, (nint)b) != (nint)(a < b ? a : b)) bad++;
+                if (MinN((nint)a, (nint)b) != ((nint)a < (nint)b ? (nint)a : (nint)b)) bad++;
                 if (MinB((byte)a, (byte)b) != ((byte)a < (byte)b ? (byte)a : (byte)b)) bad++;
                 if (MaxS((short)a, (short)b) != ((short)a > (short)b ? (short)a : (short)b)) bad++;
                 long ml = (ia < ib ? ia : ib) + (long)(ua > ub ? ua : ub);

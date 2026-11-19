@@ -479,14 +479,14 @@ static class Program
         {
             gs[i].V = text[i];
             Check("generic string " + i, i + 1, GStr(gs[i]).Length);
-            Check("generic string size " + i, 8, GStrSize(gs[i]));
+            Check("generic string size " + i, IntPtr.Size, GStrSize(gs[i]));
             Check("generic string shared " + i, i + 1, GShared(gs[i]).Length);
-            Check("generic string shared size " + i, 8, GSharedSize(gs[i]));
+            Check("generic string shared size " + i, IntPtr.Size, GSharedSize(gs[i]));
             Check("generic string base " + i, i + 1, GBaseShared(gs[i]).Length);
         }
         var go = new GO1 { V = text };
         Check("generic object shared", 6, ((string[])GShared<object>(go)).Length);
-        Check("generic object shared size", 8, GSharedSize<object>(go));
+        Check("generic object shared size", IntPtr.Size, GSharedSize<object>(go));
         GBase<long>[] gl = { new GL1<int> { V = 1L << 40 }, new GL1<string> { V = 2L << 40 }, new GL1<object> { V = 3L << 40 }, new GL1<byte> { V = 4L << 40 }, new GBase<long> { V = 5L << 40 } };
         for (int i = 0; i < gl.Length; i++) Check("generic long " + i, (long)(i + 1) << 40, GLong(gl[i]));
         ExpectNull("generic null int", () => GInt(Opaque<IG<int>>(null)));

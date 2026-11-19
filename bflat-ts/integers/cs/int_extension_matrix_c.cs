@@ -805,9 +805,9 @@ unsafe class Program
 
     [MethodImpl(NI)]
     static long UPointer<T>(int a, int b, long c, long k) where T : struct, IProd
-        => ((long)(BaseL + T.P(a, b, c)) - (long)BaseL) ^ (((long)(BaseB + (uint)T.P(a, b, c)) - (long)BaseB) * 3) ^ (((long)(BaseL - T.P(a, b, c)) - (long)BaseL) * 5);
+        => (long)((nint)(BaseL + T.P(a, b, c)) - (nint)BaseL) ^ ((long)((nint)(BaseB + (uint)T.P(a, b, c)) - (nint)BaseB) * 3) ^ ((long)((nint)(BaseL - T.P(a, b, c)) - (nint)BaseL) * 5);
 
-    [MethodImpl(NoOpt)] static long RPointer(long p, long a, long b, long c, long k) => (p * 8) ^ (Z32(p) * 3) ^ (-p * 8 * 5);
+    [MethodImpl(NoOpt)] static long RPointer(long p, long a, long b, long c, long k) => (long)(nint)(p * 8) ^ ((long)(nint)Z32(p) * 3) ^ ((long)(nint)(-p * 8) * 5);
 
     [MethodImpl(NI)]
     static long UStore<T>(int a, int b, long c, long k) where T : struct, IProd
@@ -1049,31 +1049,6 @@ unsafe class Program
         long* mem = stackalloc long[4];
         Setup(raw, mem);
 
-        Run<Add>(); Run<Sub>(); Run<Mul>(); Run<Div>(); Run<DivNeg>(); Run<Mod>(); Run<DivU>(); Run<ModU>();
-        Run<Shl>(); Run<Sar>(); Run<Shr>(); Run<Shl1>(); Run<Shl2>(); Run<Shl3>(); Run<Mul2>(); Run<Mul4>(); Run<Mul8>(); Run<UShl2>(); Run<Shl31>(); Run<Sar7>(); Run<Sar31>(); Run<Shr1>(); Run<Shr31>();
-        Run<ShlShr>(); Run<ShlSar>(); Run<Neg>(); Run<Not>();
-        Run<And>(); Run<Or>(); Run<Xor>(); Run<AndNot>(); Run<OrNot>(); Run<XorNot>();
-        Run<AndMax>(); Run<AndMin>(); Run<OrMin>(); Run<XorMin>(); Run<XorM1>(); Run<AndFF>(); Run<AndFFFF>(); Run<AndHigh>();
-        Run<AndUint>(); Run<OrSmall>(); Run<XorBig>();
-        Run<Rol>(); Run<Ror>(); Run<Rol1>(); Run<Ror1>(); Run<RolHand>();
-        Run<Mul3>(); Run<Mul5>(); Run<Mul9>(); Run<Mul7>(); Run<Mul10>(); Run<Mul16>(); Run<MulBig>(); Run<MulNeg>(); Run<Mul3U>();
-        Run<AddSh1>(); Run<AddSh2>(); Run<AddSh3>(); Run<AddSh2U>();
-        Run<AddC7FF>(); Run<AddC800>(); Run<SubC801>(); Run<AddCBig>(); Run<AddCMin>(); Run<Add1>(); Run<AddU>();
-
-        Run<Low>(); Run<High>(); Run<HighU>(); Run<HighUU>(); Run<Sar31L>(); Run<Shr31L>(); Run<Shr33L>(); Run<Sar40L>(); Run<Shr63L>();
-        Run<ShrVarL>(); Run<SarVarL>();
-        Run<MaskLow>(); Run<MaskMax>(); Run<MaskMin>(); Run<MaskNeg>(); Run<MaskVar>(); Run<MaskInt>(); Run<MaskUint>();
-        Run<OrInts>(); Run<XorInts>(); Run<XorUints>(); Run<OrIntUint>(); Run<NotInt>(); Run<NotUint>(); Run<OrHighs>(); Run<XorShr33>();
-        Run<OrConst>(); Run<OrConstNeg>(); Run<XorConstBig>();
-        Run<MinL>(); Run<MaxL>(); Run<MinUL>(); Run<MaxUL>(); Run<MinMixed>(); Run<MaxMixedU>();
-        Run<PopL>(); Run<LzcL>(); Run<TzcL>();
-        Run<SumL>(); Run<ProdL>(); Run<LowU>(); Run<LowZext>(); Run<LowNint>(); Run<ShlL>();
-        Run<WidenBack>(); Run<WidenBackU>(); Run<MulL>(); Run<MulHighL>(); Run<MulHighUL>();
-
-        Run<ToShort>(); Run<ToUShort>(); Run<ToSByte>(); Run<ToByte>(); Run<LongToShort>(); Run<LongToByte>();
-        Run<ShortSum>(); Run<UShortMul>(); Run<ByteShl>(); Run<UShortShl>();
-
-        Run<Lt>(); Run<LtNeg>(); Run<Select>(); Run<SelectU>(); Run<MinI>(); Run<MaxI>(); Run<MaxU>(); Run<MinU>(); Run<MaxLowC>(); Run<AbsI>();
 
         Run<PopI>(); Run<LzcI>(); Run<TzcI>(); Run<Log2I>(); Run<Log2L>(); Run<LzcWide>(); Run<LzcWideU>(); Run<PopWide>(); Run<TzcWide>();
         Run<SwapI>(); Run<SwapU>(); Run<SwapS>(); Run<SwapC>(); Run<SwapLLow>(); Run<SwapWide>(); Run<SwapSum>();

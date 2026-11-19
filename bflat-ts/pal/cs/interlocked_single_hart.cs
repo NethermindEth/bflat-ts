@@ -240,7 +240,7 @@ static unsafe class Program
                     cell.UL = (ulong)start;
                     if (Cas(ref cell.UL, (ulong)v, (ulong)c) != (ulong)start || cell.UL != (ulong)after) bad++;
                     cell.N = (nint)start;
-                    if (Cas(ref cell.N, (nint)v, (nint)c) != (nint)start || cell.N != (nint)after) bad++;
+                    if (Cas(ref cell.N, (nint)v, (nint)c) != (nint)start || cell.N != ((nint)start == (nint)c ? (nint)v : (nint)start)) bad++;
                 }
         Check("compare-exchange long, ulong, nint", 0, bad);
 
