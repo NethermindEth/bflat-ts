@@ -1,0 +1,226 @@
+<?xml version="1.0" ?>
+<!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
+<package version="1.0">
+    <description>bflat build tests - Calls and frames</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <run-template name="bflat_build">
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+            <arg name="bflat_image">
+                <value>-</value>
+            </arg>
+            <!-- In lockstep with bflat_libc: the Airbender target is riscv32,
+                 which only the riscv32 bflat image builds. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv32</value>
+            </arg>
+            <!-- The targets iterate in lockstep with bflat_extlib below:
+                 each zkVM takes its platform and bindings from its own package
+                 (zisk_sim from the ZisK package); without it bflat does not know
+                 the target. -->
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+                <value>airbender</value>
+            </arg>
+            <arg name="bflat_stdlib">
+                <value>dotnet</value>
+            </arg>
+            <arg name="verbose">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_globalization">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pthread">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pie">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run_timeout_ms">
+                <value>600000</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.5/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+            </arg>
+            <arg name="qemu_path">
+                <value>/usr/bin/qemu-riscv64-static</value>
+            </arg>
+            <arg name="zisk_image">
+                <value>nethermindeth/zisk:1.4.0-alpha@sha256:76bc753857e1807b724979a119ba919af0d857b3ea5deda982fd84b1be2cb930</value>
+            </arg>
+            <!-- Harness images and the OpenVM extension set: "-" takes the
+                 defaults pinned in tsapi_zkvm.h and the config shipped in the
+                 OpenVM image. -->
+            <arg name="zkvm_image">
+                <value>-</value>
+            </arg>
+            <arg name="openvm_config">
+                <value>-</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
+        </run-template>
+
+        <!-- frames without a frame pointer (perf-23) -->
+        <run name="frameless_frames" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>frameless_frames.cs</value>
+            </arg>
+        </run>
+
+        <run name="frameless_frames_framed" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>frameless_frames.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>RiscV64FramelessFrames=0</value>
+            </arg>
+        </run>
+
+        <!-- leaf methods that do not save RA (perf-31) -->
+        <run name="leaf_no_ra" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>leaf_no_ra.cs</value>
+            </arg>
+        </run>
+
+        <run name="leaf_no_ra_ra_saved" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>leaf_no_ra.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>RiscV64ElideLeafRaSave=0</value>
+            </arg>
+        </run>
+
+        <!-- fast tail calls from methods that do not save RA (perf-42) -->
+        <run name="tailcall_no_ra" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>tailcall_no_ra.cs</value>
+            </arg>
+        </run>
+
+        <run name="tailcall_no_ra_ra_saved" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>tailcall_no_ra.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>RiscV64ElideLeafRaSave=0</value>
+            </arg>
+        </run>
+
+        <!-- calls that do not return, as tail calls (perf-50, perf-60) -->
+        <run name="noreturn_calls" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>noreturn_calls.cs</value>
+            </arg>
+        </run>
+
+        <!-- values live across a P/Invoke (perf-27, perf-51) -->
+        <run name="pinvoke_live_values" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>pinvoke_live_values.cs</value>
+            </arg>
+        </run>
+
+        <!-- P/Invokes replaced by a CSR write (perf-56) -->
+        <run name="pinvoke_csr_write" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>pinvoke_csr_write.cs</value>
+            </arg>
+        </run>
+
+        <run name="pinvoke_csr_write_csr" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>pinvoke_csr_write.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkCsrPInvokes=csr_probe:1</value>
+            </arg>
+        </run>
+
+        <!-- INT parameters trusted to be sign-extended by the caller (perf-74) -->
+        <run name="int_params" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_params.cs</value>
+            </arg>
+        </run>
+
+        <!-- small parameters normalized once on entry (perf-75) -->
+        <run name="small_int_params" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>small_int_params.cs</value>
+            </arg>
+        </run>
+
+        <!-- the 32-bit result of a call (perf-43, perf-53) -->
+        <run name="int_call_results" template="bflat_build">
+            <script name="build" />
+            <!-- The 64-bit targets only. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+            </arg>
+            <arg name="cs_file">
+                <value>int_call_results.cs</value>
+            </arg>
+        </run>
+
+        <!-- 64-bit arguments and results (riscv32 01, 02, 06) -->
+        <run name="rv32_long_calls" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rv32_long_calls.cs</value>
+            </arg>
+        </run>
+    </session>
+</package>

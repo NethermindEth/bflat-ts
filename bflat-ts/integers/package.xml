@@ -1,0 +1,254 @@
+<?xml version="1.0" ?>
+<!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
+<package version="1.0">
+    <description>bflat build tests - Integer code generation</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <run-template name="bflat_build">
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+            <arg name="bflat_image">
+                <value>-</value>
+            </arg>
+            <!-- In lockstep with bflat_libc: the Airbender target is riscv32,
+                 which only the riscv32 bflat image builds. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv32</value>
+            </arg>
+            <!-- The targets iterate in lockstep with bflat_extlib below:
+                 each zkVM takes its platform and bindings from its own package
+                 (zisk_sim from the ZisK package); without it bflat does not know
+                 the target. -->
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+                <value>airbender</value>
+            </arg>
+            <arg name="bflat_stdlib">
+                <value>dotnet</value>
+            </arg>
+            <arg name="verbose">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_globalization">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pthread">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pie">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run_timeout_ms">
+                <value>600000</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.5/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+            </arg>
+            <arg name="qemu_path">
+                <value>/usr/bin/qemu-riscv64-static</value>
+            </arg>
+            <arg name="zisk_image">
+                <value>nethermindeth/zisk:1.4.0-alpha@sha256:76bc753857e1807b724979a119ba919af0d857b3ea5deda982fd84b1be2cb930</value>
+            </arg>
+            <!-- Harness images and the OpenVM extension set: "-" takes the
+                 defaults pinned in tsapi_zkvm.h and the config shipped in the
+                 OpenVM image. -->
+            <arg name="zkvm_image">
+                <value>-</value>
+            </arg>
+            <arg name="openvm_config">
+                <value>-</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
+        </run-template>
+
+        <!-- INT locals homed in 8-byte slots (perf-77) -->
+        <run name="wide_int_homes" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>wide_int_homes.cs</value>
+            </arg>
+        </run>
+
+        <!-- 32-bit values in 64-bit registers, every producer against every consumer (perf-28, perf-40, perf-43, perf-53); in three parts, one image being larger than a zkVM takes -->
+        <run name="int_extension_matrix_a" template="bflat_build">
+            <script name="build" />
+            <!-- The 64-bit targets only. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+            </arg>
+            <arg name="cs_file">
+                <value>int_extension_matrix_a.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_extension_matrix_b" template="bflat_build">
+            <script name="build" />
+            <!-- The 64-bit targets only. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+            </arg>
+            <arg name="cs_file">
+                <value>int_extension_matrix_b.cs</value>
+            </arg>
+        </run>
+
+        <run name="int_extension_matrix_c" template="bflat_build">
+            <script name="build" />
+            <!-- The 64-bit targets only. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+            </arg>
+            <arg name="cs_file">
+                <value>int_extension_matrix_c.cs</value>
+            </arg>
+        </run>
+
+        <!-- zero-extending loads and extensions (perf-47, perf-68, perf-69) -->
+        <run name="zero_extended_loads" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>zero_extended_loads.cs</value>
+            </arg>
+        </run>
+
+        <!-- shift counts and their masks (perf-45) -->
+        <run name="shift_counts" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>shift_counts.cs</value>
+            </arg>
+        </run>
+
+        <!-- constants loaded into a register (perf-52, perf-52b, perf-71) -->
+        <run name="load_immediates" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>load_immediates.cs</value>
+            </arg>
+        </run>
+
+        <!-- byte swaps, single-bit operations and Log2 (perf-41, perf-47a) -->
+        <run name="bit_manipulation" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>bit_manipulation.cs</value>
+            </arg>
+        </run>
+
+        <!-- Math.BigMul (perf-48, perf-48a) -->
+        <run name="big_mul" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>big_mul.cs</value>
+            </arg>
+        </run>
+
+        <!-- an offset folded into the load after it (perf-33) -->
+        <run name="index_offset_fold" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>index_offset_fold.cs</value>
+            </arg>
+        </run>
+
+        <!-- 64-bit arithmetic in two registers (riscv32 01, 06) -->
+        <run name="rv32_long_arith" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rv32_long_arith.cs</value>
+            </arg>
+        </run>
+
+        <!-- 64-bit shifts and rotates (riscv32 01, 06) -->
+        <run name="rv32_long_shifts" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rv32_long_shifts.cs</value>
+            </arg>
+        </run>
+
+        <!-- casts to and from 64 bits (riscv32 01, 06) -->
+        <run name="rv32_long_casts" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rv32_long_casts.cs</value>
+            </arg>
+        </run>
+
+        <!-- signed division and high multiplication from the unsigned ones (riscv32 01, 04) -->
+        <run name="rv32_int_muldiv" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rv32_int_muldiv.cs</value>
+            </arg>
+        </run>
+    </session>
+</package>

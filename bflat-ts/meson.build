@@ -96,6 +96,10 @@ packages = [
     'zisk_guest',
     'gvm',
     'exception_handler',
+    'calls',
+    'integers',
+    'alignment',
+    'optimizer',
 ]
 
 bflat_ts_mydir = package_dir

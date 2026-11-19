@@ -59,6 +59,7 @@
 #include "tapi_rpc_unistd.h"
 #include "tapi_rpc_stdio.h"
 #include "tapi_rpc_signal.h"
+#include "tsapi_bflat.h"
 #include "tsapi_zisk.h"
 
 #include <string.h>
@@ -199,6 +200,24 @@ main(int argc, char **argv)
     TEST_STEP("Copy ZiskGuest binary to agent");
     te_string_append(&remote_bin, "%s/%s", work_dir, GUEST_BINARY_NAME);
     CHECK_RC(tapi_file_copy_ta(NULL, local_bin.ptr, ta, remote_bin.ptr));
+
+    TEST_STEP("Check the unwind info of the guest against its code");
+    {
+        te_string script = TE_STRING_INIT;
+        int       unwind_status = 0;
+
+        te_string_append(&script, "%s/../eh_frame_check.py", test_dir.ptr);
+        CHECK_RC(tsapi_bflat_check_unwind(rpcs, script.ptr, remote_bin.ptr,
+                                          0, &unwind_status));
+        te_string_free(&script);
+
+        if (unwind_status == TSAPI_BFLAT_UNWIND_MISMATCH)
+            TEST_VERDICT("The unwind info of the guest fails the check "
+                         "against its code");
+        if (unwind_status != TSAPI_BFLAT_UNWIND_OK)
+            TEST_FAIL("eh_frame_check.py could not check the guest "
+                      "(status %d)", unwind_status);
+    }
 
     TEST_STEP("Copy input.bin to agent");
     te_string_append(&remote_input, "%s/%s", work_dir, INPUT_BIN_NAME);

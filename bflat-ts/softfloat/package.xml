@@ -200,5 +200,69 @@
                 <value>mixed_expr.cs</value>
             </arg>
         </run>
+
+        <!-- soft-float arithmetic (patches 09, 10) -->
+        <run name="soft_float_arith" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>soft_float_arith.cs</value>
+            </arg>
+        </run>
+
+        <!-- soft-float comparisons (patches 09, 10) -->
+        <run name="soft_float_compare" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>soft_float_compare.cs</value>
+            </arg>
+        </run>
+
+        <!-- soft-float conversions (patch 10) -->
+        <run name="soft_float_conv" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>soft_float_conv.cs</value>
+            </arg>
+        </run>
+
+        <!-- float and double arguments and results in integer registers (patch 08) -->
+        <run name="soft_float_calls" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>soft_float_calls.cs</value>
+            </arg>
+        </run>
+
+        <!-- Math functions on soft float (patch 10) -->
+        <run name="soft_float_math" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>soft_float_math.cs</value>
+            </arg>
+        </run>
+
+        <!-- float values across exception handlers (patch 06) -->
+        <run name="soft_float_handlers" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>soft_float_handlers.cs</value>
+            </arg>
+        </run>
+
+        <!-- runtime helpers on soft float (patch 06) -->
+        <run name="soft_float_runtime" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>soft_float_runtime.cs</value>
+            </arg>
+        </run>
+
+        <!-- double and float on the 32-bit target (riscv32 01) -->
+        <run name="rv32_soft_double" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rv32_soft_double.cs</value>
+            </arg>
+        </run>
     </session>
 </package>

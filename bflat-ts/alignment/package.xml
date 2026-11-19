@@ -1,0 +1,215 @@
+<?xml version="1.0" ?>
+<!-- Copyright (C) 2025-2026 Demerzel Solutions Limited (Nethermind) -->
+<package version="1.0">
+    <description>bflat build tests - Alignment of memory accesses</description>
+
+    <author mailto="maksim.menshikov@nethermind.io" />
+
+    <session track_conf="silent">
+        <run-template name="bflat_build">
+            <arg name="ta">
+                <value>agt_main</value>
+            </arg>
+            <arg name="bflat_image">
+                <value>-</value>
+            </arg>
+            <!-- In lockstep with bflat_libc: the Airbender target is riscv32,
+                 which only the riscv32 bflat image builds. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv32</value>
+            </arg>
+            <!-- The targets iterate in lockstep with bflat_extlib below:
+                 each zkVM takes its platform and bindings from its own package
+                 (zisk_sim from the ZisK package); without it bflat does not know
+                 the target. -->
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+                <value>airbender</value>
+            </arg>
+            <arg name="bflat_stdlib">
+                <value>dotnet</value>
+            </arg>
+            <arg name="verbose">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_globalization">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_stacktrace_data">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pthread">
+                <value>TRUE</value>
+            </arg>
+            <arg name="no_pie">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run">
+                <value>TRUE</value>
+            </arg>
+            <arg name="run_timeout_ms">
+                <value>600000</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.5/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+            </arg>
+            <arg name="qemu_path">
+                <value>/usr/bin/qemu-riscv64-static</value>
+            </arg>
+            <arg name="zisk_image">
+                <value>nethermindeth/zisk:1.4.0-alpha@sha256:76bc753857e1807b724979a119ba919af0d857b3ea5deda982fd84b1be2cb930</value>
+            </arg>
+            <!-- Harness images and the OpenVM extension set: "-" takes the
+                 defaults pinned in tsapi_zkvm.h and the config shipped in the
+                 OpenVM image. -->
+            <arg name="zkvm_image">
+                <value>-</value>
+            </arg>
+            <arg name="openvm_config">
+                <value>-</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
+        </run-template>
+
+        <!-- accesses marked as unaligned (perf-35) -->
+        <run name="unaligned_access" template="bflat_build">
+            <script name="build" />
+            <!-- The 64-bit targets only. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+            </arg>
+            <arg name="cs_file">
+                <value>unaligned_access.cs</value>
+            </arg>
+        </run>
+
+        <run name="unaligned_access_byte_wise" template="bflat_build">
+            <script name="build" />
+            <!-- The 64-bit targets only. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+            </arg>
+            <arg name="cs_file">
+                <value>unaligned_access.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitNoUnalignedAccess=1</value>
+            </arg>
+        </run>
+
+        <!-- accesses through addresses of unknown alignment (perf-39, perf-67, perf-76, perf-80, perf-81, perf-82, perf-84) -->
+        <run name="strict_alignment" template="bflat_build">
+            <script name="build" />
+            <!-- The 64-bit targets only. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+            </arg>
+            <arg name="cs_file">
+                <value>strict_alignment.cs</value>
+            </arg>
+        </run>
+
+        <run name="strict_alignment_strict" template="bflat_build">
+            <script name="build" />
+            <!-- The 64-bit targets only. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+                <value>sp1</value>
+                <value>openvm</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+            </arg>
+            <arg name="cs_file">
+                <value>strict_alignment.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitRiscV64StrictAlign=1</value>
+            </arg>
+        </run>
+
+        <!-- unaligned accesses to structs carried in registers (riscv32 03) -->
+        <run name="rv32_unaligned_wrappers" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rv32_unaligned_wrappers.cs</value>
+            </arg>
+        </run>
+
+        <!-- copies of structs aligned to one or two bytes (riscv32 01) -->
+        <run name="rv32_byte_aligned_structs" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rv32_byte_aligned_structs.cs</value>
+            </arg>
+        </run>
+    </session>
+</package>
