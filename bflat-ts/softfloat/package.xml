@@ -207,6 +207,9 @@
             <arg name="cs_file">
                 <value>soft_float_arith.cs</value>
             </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
         </run>
 
         <!-- soft-float comparisons (patches 09, 10) -->
@@ -214,6 +217,9 @@
             <script name="build" />
             <arg name="cs_file">
                 <value>soft_float_compare.cs</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
             </arg>
         </run>
 
@@ -223,6 +229,9 @@
             <arg name="cs_file">
                 <value>soft_float_conv.cs</value>
             </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
         </run>
 
         <!-- float and double arguments and results in integer registers (patch 08) -->
@@ -230,6 +239,9 @@
             <script name="build" />
             <arg name="cs_file">
                 <value>soft_float_calls.cs</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
             </arg>
         </run>
 
@@ -239,6 +251,9 @@
             <arg name="cs_file">
                 <value>soft_float_math.cs</value>
             </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
         </run>
 
         <!-- float values across exception handlers (patch 06) -->
@@ -246,6 +261,9 @@
             <script name="build" />
             <arg name="cs_file">
                 <value>soft_float_handlers.cs</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
             </arg>
         </run>
 
@@ -255,6 +273,9 @@
             <arg name="cs_file">
                 <value>soft_float_runtime.cs</value>
             </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
+            </arg>
         </run>
 
         <!-- double and float on the 32-bit target (riscv32 01) -->
@@ -262,6 +283,9 @@
             <script name="build" />
             <arg name="cs_file">
                 <value>rv32_soft_double.cs</value>
+            </arg>
+            <arg name="expected_stdout">
+                <value>-</value>
             </arg>
         </run>
     </session>

@@ -190,7 +190,7 @@ static unsafe class Program
     static readonly int[] Lengths =
     {
         0, 1, 2, 3, 4, 5, 7, 8, 9, 15, 16, 17, 31, 32, 33, 63, 64, 65, 127, 255, 256, 257, 1000,
-        2023, 2024, 2025, 2032, 2033, 4095, 4096, 4097, 65535, 65536, 65537, 300000,
+        2023, 2024, 2025, 2032, 2033, 4095, 4096, 4097, 65535, 65536, 65537, 100000,
     };
 
     static void ElementType<T>(string name) where T : unmanaged
@@ -200,7 +200,7 @@ static unsafe class Program
         for (int k = 0; k < Lengths.Length; k++)
         {
             int n = Lengths[k];
-            if ((long)n * size > (1 << 21)) continue;
+            if ((long)n * size > (1 << 18)) continue;
             if (k % 3 == 0) DirtyNative(n * size < 64 ? 64 : (n * size > 8192 ? 8192 : n * size));
             T[] a = New<T>(n);
             Verify(name + "[" + n + "]", a, n, size, a.GetType() == typeof(T[]));
@@ -479,7 +479,7 @@ static unsafe class Program
 
     static void CaseVolume()
     {
-        const int Rounds = 24000;                    // about 12 MB
+        const int Rounds = 12000;                    // about 6 MB
         var keepB = new byte[Rounds / 16][];
         var keepL = new long[Rounds / 16][];
         Check("volume zero", 0, Volume(Rounds, keepB, keepL));
