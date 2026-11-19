@@ -10,6 +10,9 @@
 
 #include "te_config.h"
 #include "tapi_test.h"
+#include "tapi_job.h"
+#include "tapi_job_factory_rpc.h"
+#include "te_string.h"
 #include "tsapi_bflat.h"
 
 #include <stdbool.h>
@@ -304,4 +307,70 @@ tsapi_bflat_env_codegenopt(const char **opts, unsigned int *n)
     }
 
     return 0;
+}
+
+/** Time for eh_frame_check.py to read and check one binary. */
+#define TSAPI_BFLAT_UNWIND_TIMEOUT_MS 300000
+
+/* See description in tsapi_bflat.h */
+te_errno
+tsapi_bflat_check_unwind(rcf_rpc_server *rpcs, const char *script,
+                         const char *elf, int min_split, int *status)
+{
+    tapi_job_factory_t *factory = NULL;
+    tapi_job_t         *job = NULL;
+    tapi_job_channel_t *channels[2];
+    tapi_job_status_t   job_status;
+    te_string           min_split_str = TE_STRING_INIT;
+    const char         *job_argv[7];
+    te_errno            rc;
+
+    te_string_append(&min_split_str, "%d", min_split);
+
+    job_argv[0] = "/usr/bin/env";
+    job_argv[1] = "python3";
+    job_argv[2] = script;
+    job_argv[3] = elf;
+    job_argv[4] = "--min-split";
+    job_argv[5] = min_split_str.ptr;
+    job_argv[6] = NULL;
+
+    rc = tapi_job_factory_rpc_create(rpcs, &factory);
+    if (rc == 0)
+        rc = tapi_job_create(factory, NULL, job_argv[0], job_argv, NULL,
+                             &job);
+    if (rc == 0)
+        rc = tapi_job_alloc_output_channels(job, 2, channels);
+    if (rc == 0)
+        rc = tapi_job_attach_filter(TAPI_JOB_CHANNEL_SET(channels[0]),
+                                    "eh_frame_check stdout", false,
+                                    TE_LL_RING, NULL);
+    if (rc == 0)
+        rc = tapi_job_attach_filter(TAPI_JOB_CHANNEL_SET(channels[1]),
+                                    "eh_frame_check stderr", false,
+                                    TE_LL_ERROR, NULL);
+    if (rc == 0)
+        rc = tapi_job_start(job);
+    if (rc == 0)
+        rc = tapi_job_wait(job, TSAPI_BFLAT_UNWIND_TIMEOUT_MS, &job_status);
+    if (rc == 0)
+    {
+        if (job_status.type != TAPI_JOB_STATUS_EXITED)
+        {
+            ERROR("eh_frame_check.py was killed by a signal (signo=%d)",
+                  job_status.value);
+            rc = TE_RC(TE_TAPI, TE_ESHCMD);
+        }
+        else
+        {
+            *status = job_status.value;
+        }
+    }
+
+    if (job != NULL)
+        (void)tapi_job_destroy(job, -1);
+    tapi_job_factory_destroy(factory);
+    te_string_free(&min_split_str);
+
+    return rc;
 }

@@ -105,5 +105,23 @@
                 <value>env_dotnet.cs</value>
             </arg>
         </run>
+
+        <!-- Interlocked on a single hart (patch 18, patch 20, perf-45a) -->
+        <run name="interlocked_single_hart" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interlocked_single_hart.cs</value>
+            </arg>
+        </run>
+
+        <run name="interlocked_single_hart_barriers" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interlocked_single_hart.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitRiscV64NoMemoryBarriers=0</value>
+            </arg>
+        </run>
     </session>
 </package>
