@@ -313,5 +313,13 @@
                 <value>exit_code 1</value>
             </arg>
         </run>
+
+        <!-- unaligned reads of the unwind tables (patch 17) -->
+        <run name="unwind_table_reads" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>unwind_table_reads.cs</value>
+            </arg>
+        </run>
     </session>
 </package>
