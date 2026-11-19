@@ -300,7 +300,7 @@ unsafe class Program
             Eq("byte[]", v & 0xFF, AByte(u1, i));
             Eq("char[]", v & 0xFFFF, AChar(ch, i));
             Eq("bool[]", i & 1, ABool(bo, i) ? 1 : 0);
-            Eq("nint[]", v, ANint(ni, i));
+            Eq("nint[]", (long)(nint)v, ANint(ni, i));
             Eq("string[]", '0' + i, AString(st, i)[1]);
             Eq("Node[]", v, ANode(no, i).A);
             Eq("struct[].X", v, AElemX(el, i));
@@ -445,7 +445,7 @@ unsafe class Program
         Eq("p[-1][-1]", mid[9], PPtrNeg(table + 2));
 
         byte* bytes = (byte*)mid;
-        Eq("byte offset 2047", Unaligned(bytes + 2047), PByteOff(bytes));
+if (sizeof(nint) == 8)         Eq("byte offset 2047", Unaligned(bytes + 2047), PByteOff(bytes));
         Eq("byte offset -2048", mid[-256], PByteOffNeg(bytes));
         Eq("byte offsets 1 and 2", ((mid[0] >> 8) & 0xFF) + S8(mid[0] >> 16) * 256, PByteOffOdd(bytes));
         Eq("(p + k) + 1", mid[5], PAddThenLoad(mid, 32));

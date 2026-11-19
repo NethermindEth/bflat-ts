@@ -76,7 +76,7 @@ static unsafe class Program
         }
     }
 
-    static long Addr(object o) => Unsafe.As<object, long>(ref o);
+    static long Addr(object o) => (long)Unsafe.As<object, nint>(ref o);
 
     [MethodImpl(MethodImplOptions.NoInlining)] static int Opaque(int x) => x;
     [MethodImpl(MethodImplOptions.NoInlining)] static long OpaqueL(long x) => x;
@@ -93,8 +93,8 @@ static unsafe class Program
 
     // The words of an array as the runtime lays it out: the MethodTable, then
     // the length in a 64-bit word, then the elements.
-    static long RawLengthWord(Array a) => *(long*)(Addr(a) + 8);
-    static byte* Data(Array a) => (byte*)(Addr(a) + 16);
+    static long RawLengthWord(Array a) => IntPtr.Size == 8 ? *(long*)(Addr(a) + 8) : *(int*)(Addr(a) + 4);
+    static byte* Data(Array a) => (byte*)(Addr(a) + 2 * IntPtr.Size);
 
     static long NonZero(byte* p, long size)
     {
@@ -141,11 +141,11 @@ static unsafe class Program
         Check(name + " zero", 0, NonZero(Data(a), bytes));
         Check(name + " type", 1, exactType ? 1 : 0);
 
-        long start = Addr(a) - 8, end = Addr(a) + 16 + ((bytes + 7) & ~7L);
+        long start = Addr(a) - 8, end = Addr(a) + 2 * IntPtr.Size + ((bytes + 7) & ~7L);
         for (int i = 0; i < Keep; i++)
         {
             if (kept[i] == null) continue;
-            long s = Addr(kept[i]) - 8, e = Addr(kept[i]) + 16 + ((keptBytes[i] + 7) & ~7L);
+            long s = Addr(kept[i]) - 8, e = Addr(kept[i]) + 2 * IntPtr.Size + ((keptBytes[i] + 7) & ~7L);
             if (start < e && s < end)
             {
                 fails++;
@@ -344,20 +344,20 @@ static unsafe class Program
             if ((k & 1) == 0) DirtyNative(256);
             object[] o = NewObjects(n);
             Check("object[" + n + "] nulls", n, NullCount(o));
-            Verify("object[" + n + "]", o, n, 8, o.GetType() == typeof(object[]));
+            Verify("object[" + n + "]", o, n, IntPtr.Size, o.GetType() == typeof(object[]));
             string[] s = NewStrings(n);
             Check("string[" + n + "] nulls", n, NullCount(s));
-            Verify("string[" + n + "]", s, n, 8, s.GetType() == typeof(string[]));
+            Verify("string[" + n + "]", s, n, IntPtr.Size, s.GetType() == typeof(string[]));
             Thing[] t = NewSubThings(n);
-            Verify("SubThing[" + n + "]", t, n, 8, t.GetType() == typeof(SubThing[]) && t is Thing[] && !(t is object[] and string[]));
+            Verify("SubThing[" + n + "]", t, n, IntPtr.Size, t.GetType() == typeof(SubThing[]) && t is Thing[] && !(t is object[] and string[]));
             int[][] j = NewJagged(n);
-            Verify("int[" + n + "][]", j, n, 8, j.GetType() == typeof(int[][]));
+            Verify("int[" + n + "][]", j, n, IntPtr.Size, j.GetType() == typeof(int[][]));
             ERef[] r = NewWithRefs(n);
-            Verify("ERef[" + n + "]", r, n, 16, r.GetType() == typeof(ERef[]));
+            Verify("ERef[" + n + "]", r, n, Unsafe.SizeOf<ERef>(), r.GetType() == typeof(ERef[]));
             string[] sh = NewShared<string>(n);
-            Verify("shared string[" + n + "]", sh, n, 8, sh.GetType() == typeof(string[]));
+            Verify("shared string[" + n + "]", sh, n, IntPtr.Size, sh.GetType() == typeof(string[]));
             Thing[] sht = NewShared<Thing>(n);
-            Verify("shared Thing[" + n + "]", sht, n, 8, sht.GetType() == typeof(Thing[]));
+            Verify("shared Thing[" + n + "]", sht, n, IntPtr.Size, sht.GetType() == typeof(Thing[]));
         }
         Forget();
 
@@ -408,8 +408,8 @@ static unsafe class Program
                 for (int i = 0; i < n; i++) if (s[i] != c) bad++;
                 Check("string " + n + " content", 0, bad);
                 if (n == 0) continue;
-                Check("string " + n + " terminator", 0, *(char*)(Addr(s) + 12 + 2L * n));
-                long start = Addr(s) - 8, end = Addr(s) + ((12 + 2L * n + 2 + 7) & ~7L);
+                Check("string " + n + " terminator", 0, *(char*)(Addr(s) + IntPtr.Size + 4 + 2L * n));
+                long start = Addr(s) - 8, end = Addr(s) + ((IntPtr.Size + 4 + 2L * n + 2 + 7) & ~7L);
                 int slot = (round * lens.Length + k) % N;
                 for (int i = 0; i < N; i++)
                 {

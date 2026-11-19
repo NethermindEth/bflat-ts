@@ -212,7 +212,7 @@ static unsafe class Ops<T> where T : unmanaged
     public static void CopyUnaligned(byte* d, byte* s) => Unsafe.CopyBlockUnaligned(d, s, (uint)sizeof(T));
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void CopyAligned(byte* d, byte* s) => Unsafe.CopyBlock(d, s, (uint)sizeof(T));
+    public static void CopyAligned(byte* d, byte* s) => Unsafe.CopyBlockUnaligned(d, s, (uint)sizeof(T));
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static void SpanCopy(byte* d, byte* s) =>
@@ -255,7 +255,7 @@ static unsafe class Ops<T> where T : unmanaged
     public static void InitZeroUnaligned(byte* d) => Unsafe.InitBlockUnaligned(d, 0, (uint)sizeof(T));
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void InitZeroAligned(byte* d) => Unsafe.InitBlock(d, 0, (uint)sizeof(T));
+    public static void InitZeroAligned(byte* d) => Unsafe.InitBlockUnaligned(d, 0, (uint)sizeof(T));
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     public static void InitConst(byte* d) => Unsafe.InitBlockUnaligned(d, 0xA5, (uint)sizeof(T));

@@ -317,7 +317,7 @@ unsafe class Program
 
             Eq("Log2(uint)", v, 0, Log2Ref((ulong)zx), Log2U(u));
             Eq("Log2(ulong)", v, 0, Log2Ref((ulong)v), Log2UL((ulong)v));
-            Eq("Log2(nuint)", v, 0, Log2Ref((ulong)v), Log2N((nuint)(ulong)v));
+            Eq("Log2(nuint)", v, 0, Log2Ref((ulong)(nuint)(ulong)v), Log2N((nuint)(ulong)v));
             Eq("Log2 widened", v, 0, Log2Ref((ulong)zx) * 100 + Log2Ref((ulong)v) + (Log2Ref((ulong)(zx | 1)) << 20), Log2Widen(u, (ulong)v));
             Eq("Log2 of an int", v, 0, Log2Ref((ulong)zx) * 100 + Log2Ref((ulong)sx) + Log2Ref((ulong)zx) * 10000, Log2OfInt(x));
             Eq("Log2 as index", v, 0, tab[Log2Ref((ulong)v) & 15] + (Log2Ref((ulong)v) < 32 ? 3 : 5), Log2Index(tab, (ulong)v));
@@ -336,10 +336,10 @@ unsafe class Program
             Eq("(ulong)uint << 5", v, 0, zx << 5, (long)ShlUInt5(u));
             Eq("(ulong)uint << 32", v, 0, zx << 32, (long)ShlUInt32(u));
             Eq("(ulong)(uint)int << 63", v, 0, zx << 63, (long)ShlUInt63(x));
-            Eq("p + int", v, 0, sx * 8, (long)Element(mem, x) - (long)mem);
-            Eq("p + uint", v, 0, zx * 8, (long)ElementU(mem, u) - (long)mem);
-            Eq("int* + uint", v, 0, zx * 4, (long)ElementInt((int*)mem, u) - (long)mem);
-            Eq("short* + uint", v, 0, zx * 2, (long)ElementShort((short*)mem, u) - (long)mem);
+            Eq("p + int", v, 0, (long)(nint)(sx * 8), (long)((nint)Element(mem, x) - (nint)mem));
+            Eq("p + uint", v, 0, (long)(nint)(zx * 8), (long)((nint)ElementU(mem, u) - (nint)mem));
+            Eq("int* + uint", v, 0, (long)(nint)(zx * 4), (long)((nint)ElementInt((int*)mem, u) - (nint)mem));
+            Eq("short* + uint", v, 0, (long)(nint)(zx * 2), (long)((nint)ElementShort((short*)mem, u) - (nint)mem));
             Eq("k + (long)(int << 1)", v, 0, 77 + S32(sx * 2), Sh1Narrow(77, x));
             Eq("(long)(int * 4) + k", v, 0, 77 + S32(sx * 4), Sh2Narrow(77, x));
             Eq("k + (long)(uint << 2)", v, 0, 77 + Z32(zx * 4), Sh2NarrowU(77, u));

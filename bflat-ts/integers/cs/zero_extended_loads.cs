@@ -493,7 +493,7 @@ unsafe class Program
     [MethodImpl(NI)] static long ZxMod(int x, int n) => (long)(uint)(x % n) + (long)(uint)((uint)x % (uint)n);
     [MethodImpl(NI)] static long ZxAdd(long k, int x) => x >= 0 ? k + (long)(uint)x : k + (long)(uint)x + 1;
     [MethodImpl(NI)] static long ZxScale(long k, int x) => x >= 0 ? k + ((long)(uint)x << 3) : k + ((long)(uint)x << 2);
-    [MethodImpl(NI)] static long ZxPointer(long* p, int x) => x >= 0 ? (long)(p + (uint)x) - (long)p : (long)(p + (uint)x) - (long)p + 1;
+    [MethodImpl(NI)] static long ZxPointer(long* p, int x) => x >= 0 ? (long)((nint)(p + (uint)x) - (nint)p) : (long)((nint)(p + (uint)x) - (nint)p) + 1;
     [MethodImpl(NI)] static long ZxLoaded(int i) => Arr[i] >= 0 ? (long)(uint)Arr[i] : (long)(uint)Arr[i] + 1;
     [MethodImpl(NI)] static long ZxUintGuard(uint u) => u < 0x80000000u ? (long)u * 3 : (long)u;
     [MethodImpl(NI)] static long ZxUintGuardHigh(uint u) => u > 0x7FFFFFFFu ? (long)u * 3 : (long)u;
@@ -747,7 +747,7 @@ unsafe class Program
             Eq("zext of masked values", v, 0, (v & 0x7FFFFFFF) + (z & 0x80000000L), ZxMasked(x));
             Eq("zext + long", v, 0, Sel(v >= 0, 5 + z, 6 + z), ZxAdd(5, x));
             Eq("zext scaled + long", v, 0, Sel(v >= 0, 5 + (z << 3), 5 + (z << 2)), ZxScale(5, x));
-            Eq("zext in pointer arithmetic", v, 0, Sel(v >= 0, z * 8, z * 8 + 1), ZxPointer(mem, x));
+            Eq("zext in pointer arithmetic", v, 0, Sel(v >= 0, (long)(nint)(z * 8), (long)(nint)(z * 8) + 1), ZxPointer(mem, x));
             Eq("zext of a load", v, 0, Sel(v >= 0, z, z + 1), ZxLoaded(i));
             Eq("zext behind u < 2^31", v, 0, Sel(z < 0x80000000L, z * 3, z), ZxUintGuard(ToUInt(v)));
             Eq("zext behind u > 2^31-1", v, 0, Sel(z > 0x7FFFFFFFL, z * 3, z), ZxUintGuardHigh(ToUInt(v)));

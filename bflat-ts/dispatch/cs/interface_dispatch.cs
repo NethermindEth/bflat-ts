@@ -440,7 +440,7 @@ static class Program
         Check("generic interface long 0", (1L << 40) * 1000 + 8, GetLong(longs[0]));
         Check("generic interface long 1", 3103, GetLong(longs[1]));
         IGet<string>[] strs = { new GetString(), new GetImpl<string> { V = "impl" }, new GetBoth() };
-        string[] es = { "fixed-8", "impl8", "both102" };
+        string[] es = { "fixed-8", "impl" + IntPtr.Size, "both102" };
         for (int round = 0; round < 3; round++)
             for (int i = 0; i < strs.Length; i++)
             {
@@ -449,7 +449,7 @@ static class Program
             }
         Check("generic interface shared int", 7, GetShared(ints[1]));
         Check("generic interface shared object", 5, ((int[])GetShared<object>(new GetImpl<object> { V = new int[5] })).Length);
-        Check("generic interface shared array", 6, GetShared(new GetImpl<int[]> { V = new int[6] }).Length + WidthShared(new GetImpl<long[]>()) - 8);
+        Check("generic interface shared array", 6, GetShared(new GetImpl<int[]> { V = new int[6] }).Length + WidthShared(new GetImpl<long[]>()) - IntPtr.Size);
 
         IOut<Animal>[] outs = { new MakeAnimal(), new MakeDog(), new MakeBird(), new MakeAny<Dog>(), new MakeAny<Animal>(), new MakeAny<Bird>() };
         int[] eo = { 0, 4, 2, 4, 0, 2 };
@@ -507,9 +507,9 @@ static class Program
     static void CaseGenericVirtual()
     {
         IGvm[] gs = { new Gvm1(), new Gvm2(), new Gvm3<long>(), new Gvm3<byte>(), new Gvm3<string>() };
-        int[] wi = { 4, -4, 408, 401, 408 };
-        int[] wg = { 16, -16, 1608, 1601, 1608 };
-        int[] ws = { 8, -8, 808, 801, 808 };
+        int[] wi = { 4, -4, 408, 401, 400 + IntPtr.Size };
+        int[] wg = { 16, -16, 1608, 1601, 1600 + IntPtr.Size };
+        int[] ws = { IntPtr.Size, -IntPtr.Size, IntPtr.Size * 100 + 8, IntPtr.Size * 100 + 1, IntPtr.Size * 101 };
         string[] ni = { "1:Int32", "2:Int32", "3:Int64Int32", "3:ByteInt32", "3:StringInt32" };
         string[] ns = { "1:String", "2:String", "3:Int64String", "3:ByteString", "3:StringString" };
         for (int round = 0; round < 3; round++)
@@ -602,7 +602,7 @@ static class Program
     static void CaseOther()
     {
         IThrow[] ts = { new Throw<byte>(), new Throw<long>(), new Throw<Guid>(), new Throw<string>(), new Throw<int>(), new Throw<short>() };
-        int[] sz = { 1, 8, 16, 8, 4, 2 };
+        int[] sz = { 1, 8, 16, IntPtr.Size, 4, 2 };
         for (int round = 0; round < 2; round++)
             for (int i = 0; i < ts.Length; i++)
             {
