@@ -67,6 +67,10 @@ The packages that build with `build` iterate over the targets zisk, zisk_sim, sp
 | build_perf | Build-performance tests — compile time measurement |
 | run_perf | Run-performance tests — startup steps analysis under ziskemu |
 | zisk_guest | Nethermind ZiskGuest integration — stateless block execution on Zisk |
+| calls | Calling convention and frames: arguments and results of every width, P/Invokes, tail calls |
+| integers | Integer code generation: extensions, shifts, constants, bit manipulation, 64-bit arithmetic on riscv32 |
+| alignment | Alignment of memory accesses: unaligned and packed data |
+| optimizer | Register allocation, spills, switch tables, inlining and the zkVM code generation switches |
 
 The bflat Docker image can also be overridden per-test with the `bflat_image` test parameter, or globally with the `TS_BFLAT_IMAGE` environment variable (`--bflat-image=` of `scripts/run.sh`).
 

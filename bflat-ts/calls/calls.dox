@@ -1,0 +1,20 @@
+/** @defgroup bflat_ts_calls bflat build - Calls and frames
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests of the calling convention and of the frames of managed methods.
+ *
+ *        The arguments and results of every width as they cross a call: an int
+ *        in a 64-bit register, the small types, a 64-bit value in two
+ *        registers or split with the stack, values that live across a
+ *        P/Invoke. The frames those calls are made from: with and without a
+ *        frame pointer, leaf methods that do not save RA, fast tail calls
+ *        and calls that do not return.
+ *
+ *        A program prints "ALL PASS" and returns zero, or prints every
+ *        failed check and returns non-zero. Where the compiler has a switch
+ *        for what a program tests, a second run builds the same program with
+ *        the switch the other way.
+ *
+ * @}
+ */

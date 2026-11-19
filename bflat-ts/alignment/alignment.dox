@@ -1,0 +1,19 @@
+/** @defgroup bflat_ts_alignment bflat build - Alignment of memory accesses
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests that a load or a store wider than a byte is made at an address aligned for it.
+ *
+ *        The zkVMs that take the riscv32 build stop the guest on a misaligned
+ *        access, so the compiler has to split one it cannot prove aligned:
+ *        accesses marked as unaligned, packed structs, structs aligned to
+ *        one or two bytes, addresses of unknown alignment. An emulator that
+ *        allows misaligned accesses checks only the values.
+ *
+ *        A program prints "ALL PASS" and returns zero, or prints every
+ *        failed check and returns non-zero. Where the compiler has a switch
+ *        for what a program tests, a second run builds the same program with
+ *        the switch the other way.
+ *
+ * @}
+ */
