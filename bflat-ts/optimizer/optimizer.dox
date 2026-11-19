@@ -1,0 +1,17 @@
+/** @defgroup bflat_ts_optimizer bflat build - Optimizer and register allocation
+ * @ingroup bflat_ts
+ * @{
+ *
+ * @brief Tests of the decisions the compiler makes without changing what a method computes.
+ *
+ *        The choice of registers, spills and reloads, switch tables, inlining,
+ *        block weights, null checks, and the code generation switches of the
+ *        zkVM builds.
+ *
+ *        A program prints "ALL PASS" and returns zero, or prints every
+ *        failed check and returns non-zero. Where the compiler has a switch
+ *        for what a program tests, a second run builds the same program with
+ *        the switch the other way.
+ *
+ * @}
+ */

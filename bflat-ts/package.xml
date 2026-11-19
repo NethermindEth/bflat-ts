@@ -88,5 +88,21 @@
         <run>
             <package name="gvm" />
         </run>
+
+        <run>
+            <package name="calls" />
+        </run>
+
+        <run>
+            <package name="integers" />
+        </run>
+
+        <run>
+            <package name="alignment" />
+        </run>
+
+        <run>
+            <package name="optimizer" />
+        </run>
     </session>
 </package>
