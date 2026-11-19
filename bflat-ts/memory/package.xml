@@ -329,6 +329,10 @@
             <arg name="bflat_codegenopt">
                 <value>JitZkBumpAddr=0</value>
             </arg>
+            <!-- With the helper an array that does not fit is an exception. -->
+            <arg name="bflat_define">
+                <value>HEAP_EXHAUSTION</value>
+            </arg>
         </run>
 
         <!-- arrays, block stores and enums (riscv32 02, 03, 06) -->
