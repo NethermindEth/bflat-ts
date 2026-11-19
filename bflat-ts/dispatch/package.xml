@@ -98,5 +98,31 @@
                 <value>virtual_call.cs</value>
             </arg>
         </run>
+
+        <!-- interface dispatch through the cells (perf-38, perf-46a, perf-73, perf-74) -->
+        <run name="interface_dispatch" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>interface_dispatch.cs</value>
+            </arg>
+        </run>
+
+        <!-- devirtualization to the only implementation (perf-72) -->
+        <run name="unique_target_devirt" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>unique_target_devirt.cs</value>
+            </arg>
+        </run>
+
+        <run name="unique_target_devirt_virtual" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>unique_target_devirt.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitEnableExactDevirtualization=0</value>
+            </arg>
+        </run>
     </session>
 </package>

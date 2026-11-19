@@ -105,5 +105,238 @@
                 <value>large_array.cs</value>
             </arg>
         </run>
+
+        <!-- objects allocated on the stack in loops (perf-25) -->
+        <run name="stack_objects_in_loops" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>stack_objects_in_loops.cs</value>
+            </arg>
+        </run>
+
+        <run name="stack_objects_in_loops_heap" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>stack_objects_in_loops.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitObjectStackAllocation=0</value>
+            </arg>
+        </run>
+
+        <!-- GC locals that are not zeroed in the prolog (perf-83, perf-85) -->
+        <run name="uninit_gc_locals" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>uninit_gc_locals.cs</value>
+            </arg>
+        </run>
+
+        <run name="uninit_gc_locals_must_init" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>uninit_gc_locals.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkNoGcMustInit=0</value>
+            </arg>
+        </run>
+
+        <!-- fixed statements without pinning (perf-61) -->
+        <run name="fixed_pinned" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>fixed_pinned.cs</value>
+            </arg>
+        </run>
+
+        <run name="fixed_pinned_pinned" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>fixed_pinned.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkNoPinning=0</value>
+            </arg>
+        </run>
+
+        <!-- memmove of every length, offset and overlap (perf-29, perf-54, perf-58, perf-66) -->
+        <run name="memmove_lengths" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>memmove_lengths.cs</value>
+            </arg>
+        </run>
+
+        <!-- inline comparison of byte ranges (perf-30) -->
+        <run name="sequence_equal" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sequence_equal.cs</value>
+            </arg>
+        </run>
+
+        <run name="sequence_equal_call" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>sequence_equal.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitRiscV64DmaCompare=0</value>
+            </arg>
+        </run>
+
+        <!-- unrolled block copies and fills (perf-44, perf-50a, perf-65) -->
+        <run name="block_copies" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>block_copies.cs</value>
+            </arg>
+        </run>
+
+        <run name="block_copies_no_csr" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>block_copies.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkMemcpyCsr=0</value>
+            </arg>
+        </run>
+
+        <!-- moves of a constant size between overlapping ranges (perf-50b) -->
+        <run name="const_size_moves" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>const_size_moves.cs</value>
+            </arg>
+        </run>
+
+        <!-- zeroing of the frame in the prolog (perf-64) -->
+        <run name="frame_zero_init" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>frame_zero_init.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkInitLocallocOnly=0</value>
+            </arg>
+        </run>
+
+        <run name="frame_zero_init_no_csr" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>frame_zero_init.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkMemsetCsr=0</value>
+            </arg>
+        </run>
+
+        <!-- INT fields loaded as whole words (perf-78) -->
+        <run name="object_word_loads" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>object_word_loads.cs</value>
+            </arg>
+        </run>
+
+        <run name="object_word_loads_no_bump" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>object_word_loads.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkBumpAddr=0</value>
+            </arg>
+        </run>
+
+        <!-- the array length read and written as a word (perf-73, perf-79) -->
+        <run name="array_length_word" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>array_length_word.cs</value>
+            </arg>
+        </run>
+
+        <run name="array_length_word_no_bump" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>array_length_word.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkBumpAddr=0</value>
+            </arg>
+        </run>
+
+        <!-- stores of references without a write barrier (perf-24) -->
+        <run name="gc_ref_stores" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>gc_ref_stores.cs</value>
+            </arg>
+        </run>
+
+        <!-- objects allocated inline (perf-26) -->
+        <run name="inline_object_alloc" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>inline_object_alloc.cs</value>
+            </arg>
+        </run>
+
+        <run name="inline_object_alloc_helper" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>inline_object_alloc.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkBumpAddr=0</value>
+            </arg>
+        </run>
+
+        <!-- arrays allocated inline (patch 22, perf-49, perf-52) -->
+        <run name="inline_array_alloc" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>inline_array_alloc.cs</value>
+            </arg>
+        </run>
+
+        <run name="inline_array_alloc_helper" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>inline_array_alloc.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkBumpAddr=0</value>
+            </arg>
+        </run>
+
+        <!-- array lengths that cannot be allocated (perf-26, perf-49, perf-52) -->
+        <run name="array_length_checks" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>array_length_checks.cs</value>
+            </arg>
+        </run>
+
+        <run name="array_length_checks_helper" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>array_length_checks.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkBumpAddr=0</value>
+            </arg>
+        </run>
+
+        <!-- arrays, block stores and enums (riscv32 02, 03, 06) -->
+        <run name="rv32_arrays_blocks" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>rv32_arrays_blocks.cs</value>
+            </arg>
+        </run>
     </session>
 </package>
