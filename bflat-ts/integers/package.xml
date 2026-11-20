@@ -203,6 +203,27 @@
             </arg>
         </run>
 
+        <!-- byte swaps through rev8 alone, without the rest of Zbb, on the
+             riscv32 target (riscv32 10). Airbender only: it decodes rev8. -->
+        <run name="bit_manipulation_zk_rev8" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>bit_manipulation.cs</value>
+            </arg>
+            <arg name="bflat_arch" list="target">
+                <value>riscv32</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>airbender</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.5/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkRev8=1</value>
+            </arg>
+        </run>
+
         <!-- Math.BigMul (perf-48, perf-48a) -->
         <run name="big_mul" template="bflat_build">
             <script name="build" />
