@@ -248,7 +248,7 @@
                 <value>frame_zero_init.cs</value>
             </arg>
             <arg name="bflat_codegenopt">
-                <value>JitZkMemsetCsr=0</value>
+                <value>JitZkInitLocallocOnly=0;JitZkMemsetCsr=0</value>
             </arg>
         </run>
 

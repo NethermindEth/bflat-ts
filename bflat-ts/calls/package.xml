@@ -164,6 +164,19 @@
 
         <run name="pinvoke_csr_write_csr" template="bflat_build">
             <script name="build" />
+            <!-- ZisK only: the other targets do not execute a CSR instruction. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv64</value>
+                <value>riscv64</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>zisk</value>
+                <value>zisk_sim</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.156/nethermind.ziskos.runtime.1.4.0-alpha.156.nupkg</value>
+            </arg>
             <arg name="cs_file">
                 <value>pinvoke_csr_write.cs</value>
             </arg>
