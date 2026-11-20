@@ -17,8 +17,10 @@
 # its FDE; a missing second step is what this check is for, and it fails on
 # a managed method (one with an LSDA) whose CFA offset is less than what the
 # prolog allocated. Other disagreements are in hand-written stubs, which
-# describe their frame ahead of allocating it or not at all; they are listed
-# with --verbose and do not fail the check.
+# describe their frame ahead of allocating it or not at all, and in FDEs of
+# managed methods that the linker moved over native code (a method that a
+# platform library replaces with --wrap); they are listed with --verbose and
+# do not fail the check.
 #
 # Usage:
 #   eh_frame_check.py ELF [--min-split N] [--verbose]
@@ -472,8 +474,19 @@ def main():
     counts = {"ok": 0, "fp": 0, "behind": 0, "ahead": 0}
     split = 0
     bad, notes = [], []
+    native = sorted((begin, end) for begin, end, _, lsda in fdes if not lsda)
+    native_begins = [begin for begin, _ in native]
     for begin, end, rows, lsda in fdes:
         cls, allocated, steps, pc, off = check_fde(elf, begin, end, rows)
+        if lsda:
+            # The code of a function that has an FDE of its own without an
+            # LSDA is not a managed method: the linker moved the FDE of one
+            # there together with the symbol it names (--wrap of a managed
+            # method by a platform library).
+            i = bisect.bisect_right(native_begins, begin) - 1
+            if (i >= 0 and native[i][1] > begin) or \
+               (i + 1 < len(native) and native[i + 1][0] < end):
+                lsda = False
         counts[cls] += 1
         how = "+".join(str(n) for _, n in steps) or "nothing"
         if cls in ("behind", "ahead"):

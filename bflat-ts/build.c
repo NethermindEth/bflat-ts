@@ -56,9 +56,9 @@
  *                        (or equal to @p ta) the same agent is used
  * @param bflat_define    Optional C# preprocessor symbol passed as @c -d:SYMBOL
  *                        (e.g. @c FIXED); omit to compile without any define
- * @param bflat_codegenopt  Optional @c --codegenopt value of the test itself
- *                        (@c name=value), given before those of
- *                        @c TS_BFLAT_CODEGENOPT; omit for none
+ * @param bflat_codegenopt  Optional @c --codegenopt values of the test itself
+ *                        (@c name=value, several separated by semicolons), given
+ *                        before those of @c TS_BFLAT_CODEGENOPT; omit for none
  * @param unwind_split_min  Optional. The unwind info of every binary is
  *                        checked against its code with @c eh_frame_check.py
  *                        before it is run; this requires at least this many
@@ -357,9 +357,10 @@ main(int argc, char **argv)
               cs_file);
     {
         /* Fixed upper bound: base args + all optional flags + src + out + NULL */
-        const char   *bflat_argv[36 + 2 * TSAPI_BFLAT_CODEGENOPT_MAX];
+        const char   *bflat_argv[36 + 4 * TSAPI_BFLAT_CODEGENOPT_MAX];
         int           bflat_argc = 0;
         unsigned int  i;
+        char          own_opts[256];
 
 #define ARGV_ADD(arg_)  bflat_argv[bflat_argc++] = (arg_)
 
@@ -398,7 +399,27 @@ main(int argc, char **argv)
         }
         if (bflat_codegenopt != NULL && strcmp(bflat_codegenopt, "-") != 0)
         {
-            ARGV_ADD("--codegenopt"); ARGV_ADD(bflat_codegenopt);
+            char         *opt = own_opts;
+            unsigned int  own_n = 0;
+
+            if (strlen(bflat_codegenopt) >= sizeof(own_opts))
+                TEST_FAIL("bflat_codegenopt is too long");
+            strcpy(own_opts, bflat_codegenopt);
+            while (opt != NULL)
+            {
+                char *next = strchr(opt, ';');
+
+                if (next != NULL)
+                    *next++ = '\0';
+                if (*opt != '\0')
+                {
+                    if (own_n++ == TSAPI_BFLAT_CODEGENOPT_MAX)
+                        TEST_FAIL("bflat_codegenopt has more than %d values",
+                                  TSAPI_BFLAT_CODEGENOPT_MAX);
+                    ARGV_ADD("--codegenopt"); ARGV_ADD(opt);
+                }
+                opt = next;
+            }
         }
         for (i = 0; i < codegenopt_n; i++)
         {

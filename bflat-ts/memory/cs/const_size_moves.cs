@@ -21,9 +21,10 @@
 //     eight, which use two overlapping narrow accesses;
 //   - the same for a struct assignment of a constant size.
 //
-// Math.Min and Math.Max on integers have one instruction each with Zbb. The
-// zkVM guests are built without Zbb, so here they are branches; the cases
-// are kept for a target that has it.
+// Math.Min and Math.Max on integers have one instruction each with Zbb, which
+// works on whole registers; the result of the 32-bit forms is still an INT,
+// which the code after it extends or wraps. ZisK guests are built with Zbb;
+// on the other targets these are branches.
 //
 // One generic method per length is compiled, with the length taken from the
 // size of a struct; it moves inside one buffer at every distance from -9 to
@@ -226,6 +227,12 @@ static unsafe class Program
     [MethodImpl(NoInl)] static int Clamp(int x, int lo, int hi) => Math.Max(lo, Math.Min(x, hi));
     [MethodImpl(NoInl)] static long MinOfLoads(int[] a, int i, int j) => Math.Min(a[i], a[j]) + (long)Math.Max((uint)a[i], (uint)a[j]);
     [MethodImpl(NoInl)] static int MinConst(int a) => Math.Min(a, 100) + Math.Max(a, -100);
+    // The result is an INT whatever the width of the instruction: what follows extends it or wraps at
+    // 32 bits.
+    [MethodImpl(NoInl)] static uint MaxShifted(uint a, uint b) => Math.Max(a, b) >> 4;
+    [MethodImpl(NoInl)] static bool MaxPlusOneIsNegative(int a, int b) => Math.Max(a, b) + 1 < 0;
+    [MethodImpl(NoInl)] static ulong MinWidenedAfter(uint a, uint b) => (ulong)Math.Min(a, b) * 3;
+    [MethodImpl(NoInl)] static long MaxAdded(uint a, uint b, long c) => c + Math.Max(a, b);
     [MethodImpl(NoInl)] static nint MinN(nint a, nint b) => Math.Min(a, b);
     [MethodImpl(NoInl)] static byte MinB(byte a, byte b) => Math.Min(a, b);
     [MethodImpl(NoInl)] static short MaxS(short a, short b) => Math.Max(a, b);
@@ -260,6 +267,10 @@ static unsafe class Program
                 if (MaxS((short)a, (short)b) != ((short)a > (short)b ? (short)a : (short)b)) bad++;
                 long ml = (ia < ib ? ia : ib) + (long)(ua > ub ? ua : ub);
                 if (MinOfLoads(ints, i, j) != ml) bad++;
+                if (MaxShifted(ua, ub) != (ua > ub ? ua : ub) >> 4) bad++;
+                if (MaxPlusOneIsNegative(ia, ib) != (unchecked((ia > ib ? ia : ib) + 1) < 0)) bad++;
+                if (MinWidenedAfter(ua, ub) != (ulong)(ua < ub ? ua : ub) * 3) bad++;
+                if (MaxAdded(ua, ub, a) != a + (long)(ua > ub ? ua : ub)) bad++;
                 int lo = ia < ib ? ia : ib, hi = ia < ib ? ib : ia;
                 for (int k = 0; k < edges.Length; k += 3)
                 {
