@@ -60,8 +60,8 @@
             <arg name="bflat_extlib" list="target">
                 <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.157/nethermind.ziskos.runtime.1.4.0-alpha.157.nupkg</value>
                 <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.157/nethermind.ziskos.runtime.1.4.0-alpha.157.nupkg</value>
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.93/nethermind.sp1.runtime.6.9.0.93.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.83/nethermind.openvm.runtime.2.1.0.83.nupkg</value>
                 <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.9/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
             </arg>
             <arg name="qemu_path">
@@ -181,8 +181,8 @@
             </arg>
             <arg name="bflat_extlib" list="target">
                 <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.157/nethermind.ziskos.runtime.1.4.0-alpha.157.nupkg</value>
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.93/nethermind.sp1.runtime.6.9.0.93.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.83/nethermind.openvm.runtime.2.1.0.83.nupkg</value>
                 <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.9/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
             </arg>
             <arg name="expected_stdout" list="target">
@@ -224,8 +224,8 @@
             </arg>
             <arg name="bflat_extlib" list="target">
                 <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.157/nethermind.ziskos.runtime.1.4.0-alpha.157.nupkg</value>
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.93/nethermind.sp1.runtime.6.9.0.93.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.83/nethermind.openvm.runtime.2.1.0.83.nupkg</value>
                 <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.9/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
             </arg>
             <arg name="expected_stdout" list="target">
@@ -277,7 +277,7 @@
                 <value>sp1</value>
             </arg>
             <arg name="bflat_extlib">
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.93/nethermind.sp1.runtime.6.9.0.93.nupkg</value>
             </arg>
             <arg name="expected_status">
                 <value>1</value>
@@ -300,7 +300,7 @@
                 <value>sp1</value>
             </arg>
             <arg name="bflat_extlib">
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.93/nethermind.sp1.runtime.6.9.0.93.nupkg</value>
             </arg>
             <arg name="remove_eh">
                 <value>TRUE</value>
