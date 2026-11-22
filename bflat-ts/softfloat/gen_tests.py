@@ -506,9 +506,9 @@ def gen_package_xml():
                 <value
                 >https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.157/nethermind.ziskos.runtime.1.4.0-alpha.157.nupkg</value>
                 <value
-                >https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.87/nethermind.sp1.runtime.6.9.0.87.nupkg</value>
+                >https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.93/nethermind.sp1.runtime.6.9.0.93.nupkg</value>
                 <value
-                >https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.73/nethermind.openvm.runtime.2.1.0.73.nupkg</value>
+                >https://api.nuget.org/v3-flatcontainer/nethermind.openvm.runtime/2.1.0.83/nethermind.openvm.runtime.2.1.0.83.nupkg</value>
                 <value
                 >https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.9/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
             </arg>
