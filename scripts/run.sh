@@ -134,6 +134,8 @@ fi
 if [ "${TE_WORKSPACE_DIR}" == "" ] ; then
     export TE_WORKSPACE_DIR="${TE_BUILD}/workspace"
 fi
+# The TE builder takes the directory only if it exists, and /tmp otherwise.
+mkdir -p "${TE_WORKSPACE_DIR}"
 
 TS_CONF_DIRS=
 TS_CONF_DIRS+="\"${TS_TOPDIR}\"/conf:"
@@ -159,11 +161,10 @@ else
     echo FAIL
 fi
 
-# Best-effort copy of build logs for diagnostics: the glob may match several
-# TE workspaces (parallel/stale runs), and clashes must not affect the
-# script's exit code — that belongs to the dispatcher result.
-mkdir -p ${TS_TOPDIR}/meson-logs
-rm -rf ${TS_TOPDIR}/meson-logs/*
-cp -R /tmp/te_ws*/build/meson-logs/* ${TS_TOPDIR}/meson-logs/ 2>/dev/null || true
+# Best-effort copy of the build logs of this run for diagnostics: it must not
+# affect the script's exit code, which belongs to the dispatcher result.
+mkdir -p "${TS_TOPDIR}/meson-logs"
+rm -rf "${TS_TOPDIR}"/meson-logs/*
+cp -R "${TE_WORKSPACE_DIR}"/te_ws_*/build/meson-logs/* "${TS_TOPDIR}/meson-logs/" 2>/dev/null || true
 
 exit $TS_RC
