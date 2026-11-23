@@ -211,5 +211,13 @@
                 <value>rv32_byte_aligned_structs.cs</value>
             </arg>
         </run>
+
+        <!-- struct values taken from memory aligned for their fields only -->
+        <run name="struct_values_unaligned" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>struct_values_unaligned.cs</value>
+            </arg>
+        </run>
     </session>
 </package>
