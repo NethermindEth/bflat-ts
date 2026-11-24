@@ -235,5 +235,44 @@
                 <value>rv32_long_calls.cs</value>
             </arg>
         </run>
+
+        <!-- frames of many sizes, alone and in recursion -->
+        <run name="frame_shapes" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>frame_shapes.cs</value>
+            </arg>
+        </run>
+
+        <run name="frame_shapes_framed" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>frame_shapes.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>RiscV64FramelessFrames=0</value>
+            </arg>
+        </run>
+
+        <run name="frame_shapes_ra_saved" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>frame_shapes.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>RiscV64ElideLeafRaSave=0</value>
+            </arg>
+        </run>
+
+        <!-- calls that do not return, to a method with the handler convention -->
+        <run name="handler_noreturn_calls" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>handler_noreturn_calls.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitZkHandlerConv=1;RiscV64ElideLeafRaSave=1</value>
+            </arg>
+        </run>
     </session>
 </package>

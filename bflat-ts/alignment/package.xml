@@ -211,5 +211,54 @@
                 <value>rv32_byte_aligned_structs.cs</value>
             </arg>
         </run>
+
+        <!-- struct values taken from memory aligned for their fields only -->
+        <run name="struct_values_unaligned" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>struct_values_unaligned.cs</value>
+            </arg>
+        </run>
+
+        <!-- the accesses of the 64-bit runs above on the 32-bit target -->
+        <run name="unaligned_access_rv32_strict" template="bflat_build">
+            <script name="build" />
+            <!-- The 32-bit target, with every base tested. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv32</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>airbender</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.9/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+            </arg>
+            <arg name="cs_file">
+                <value>unaligned_access.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitRiscV64StrictAlign=1</value>
+            </arg>
+        </run>
+
+        <run name="strict_alignment_rv32_strict" template="bflat_build">
+            <script name="build" />
+            <!-- The 32-bit target, with every base tested. -->
+            <arg name="bflat_arch" list="target">
+                <value>riscv32</value>
+            </arg>
+            <arg name="bflat_libc" list="target">
+                <value>airbender</value>
+            </arg>
+            <arg name="bflat_extlib" list="target">
+                <value>https://github.com/NethermindEth/bflat-airbender/releases/download/v1.0.9/libairbender-riscv32.tar.gz#libairbender.bflat.manifest</value>
+            </arg>
+            <arg name="cs_file">
+                <value>strict_alignment.cs</value>
+            </arg>
+            <arg name="bflat_codegenopt">
+                <value>JitRiscV64StrictAlign=1</value>
+            </arg>
+        </run>
     </session>
 </package>

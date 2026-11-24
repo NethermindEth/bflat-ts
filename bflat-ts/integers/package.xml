@@ -271,5 +271,13 @@
                 <value>rv32_int_muldiv.cs</value>
             </arg>
         </run>
+
+        <!-- 32-bit fields of structs that arrive in registers -->
+        <run name="int_fields_in_registers" template="bflat_build">
+            <script name="build" />
+            <arg name="cs_file">
+                <value>int_fields_in_registers.cs</value>
+            </arg>
+        </run>
     </session>
 </package>
