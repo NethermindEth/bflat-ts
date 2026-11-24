@@ -152,9 +152,21 @@ mkdir -p "${TE_TMP}"
 
 export TE_TS_SRC="${TS_TOPDIR}/bflat-ts"
 
+# The RCF ports of this run (conf/env.localhost), kept in rcf_ports so that
+# what is left of the run can be found and stopped (scripts/own_run.sh).
+if [ -z "${TS_RCF_PORTS}" ] && [ -z "${TE_RCF_PORT_BASE}" ] ; then
+    TS_RCF_PORTS="$(python3 "${TS_TOPDIR}/scripts/rcf_ports.py" 2>/dev/null)" || TS_RCF_PORTS=""
+fi
+[ -n "${TS_RCF_PORTS}" ] || TS_RCF_PORTS="${TE_RCF_PORT_BASE:-50012} $(( ${TE_RCF_PORT_BASE:-50012} + 1 ))"
+export TS_RCF_PORTS
+printf '%s\n' "${TS_RCF_PORTS}" > "${RUNDIR}/rcf_ports"
+
 eval "${TE_BASE}/dispatcher.sh ${TS_DEFAULT_OPTS} ${TS_OPTS} " \
     "--script=scripts/ta-def"
 TS_RC=$?
+# Whatever the dispatcher left running belongs to this run only.
+. "${TS_TOPDIR}/scripts/own_run.sh"
+ts_stop_own_run "${RUNDIR}" "${TS_RCF_PORTS}"
 if [ "$TS_RC" == "0" ] ; then
     echo OK
 else

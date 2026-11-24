@@ -46,10 +46,20 @@ TAR="${TS_TOPDIR}/te_logs.tar"
 
 # ── Step 2: copy te_logs.tar to Bublik incoming directory ────────────────────
 
+# Runs on one host publish one at a time, each under a name of its own: the
+# import takes every file of the incoming directory.
+NAME="te_logs-${HORIZON_RUN_ID:-$(date -u +%Y%m%d%H%M%S)-$$}.tar"
+LOCK="${BUBLIK_LOCK:-/tmp/bflat-ts-publish.lock}"
+exec 9> "${LOCK}"
 echo ""
-echo "==> Copying te_logs.tar to '${BUBLIK_PATH}'..."
-cp "${TAR}" "${BUBLIK_PATH}/"
-echo "Copied: ${TAR} -> ${BUBLIK_PATH}/te_logs.tar"
+echo "==> Waiting for the publish lock '${LOCK}'..."
+flock 9
+
+echo ""
+echo "==> Copying te_logs.tar to '${BUBLIK_PATH}/${NAME}'..."
+cp "${TAR}" "${BUBLIK_PATH}/.${NAME}.part"
+mv "${BUBLIK_PATH}/.${NAME}.part" "${BUBLIK_PATH}/${NAME}"
+echo "Copied: ${TAR} -> ${BUBLIK_PATH}/${NAME}"
 
 # ── Step 3: trigger Bublik publish ───────────────────────────────────────────
 
