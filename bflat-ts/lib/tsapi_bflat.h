@@ -39,8 +39,8 @@ extern "C" {
  */
 #define TSAPI_BFLAT_DEFAULT_IMAGE \
     "nethermindeth/bflat-riscv64-11:" \
-    "4d6c260c633e79de383973f70bbd8b0ca8380bbb@sha256:" \
-    "1e1c33f7fec9552534ae93143374ab22cde07e435bdf315e882de7ccc16dc7ae"
+    "85efc7543bc6b2c962e8004c2b60443c8fd66b46@sha256:" \
+    "63a20045bdff590e19e6b8a58581d7880dd7ef4d9e43db65ae082e57af1a62da"
 
 /**
  * Compile-time default bflat Docker image for @c --arch @c riscv32: the image
@@ -50,8 +50,8 @@ extern "C" {
  */
 #define TSAPI_BFLAT_RISCV32_DEFAULT_IMAGE \
     "nethermindeth/bflat-riscv64-11-riscv32:" \
-    "4d6c260c633e79de383973f70bbd8b0ca8380bbb@sha256:" \
-    "d0f7b3f2ff4895150d9cf6a1ba16b2d5da192e6dab7ebbec04ee6cefa5fbc86a"
+    "85efc7543bc6b2c962e8004c2b60443c8fd66b46@sha256:" \
+    "fffada7093e519bd23f4569d1068eb9619e4c60e48a7ae2d908e499f8c5788cd"
 
 /**
  * Resolve the bflat Docker image that builds for @p arch, applying the
