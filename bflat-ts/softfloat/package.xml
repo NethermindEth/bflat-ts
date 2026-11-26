@@ -58,7 +58,7 @@
             </arg>
             <arg name="bflat_extlib" list="target">
                 <value
-                >https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.157/nethermind.ziskos.runtime.1.4.0-alpha.157.nupkg</value>
+                >https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.158/nethermind.ziskos.runtime.1.4.0-alpha.158.nupkg</value>
                 <value
                 >https://api.nuget.org/v3-flatcontainer/nethermind.sp1.runtime/6.9.0.93/nethermind.sp1.runtime.6.9.0.93.nupkg</value>
                 <value

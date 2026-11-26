@@ -47,7 +47,7 @@
                 <value>TRUE</value>
             </arg>
             <arg name="bflat_extlib">
-                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.157/nethermind.ziskos.runtime.1.4.0-alpha.157.nupkg</value>
+                <value>https://api.nuget.org/v3-flatcontainer/nethermind.ziskos.runtime/1.4.0-alpha.158/nethermind.ziskos.runtime.1.4.0-alpha.158.nupkg</value>
             </arg>
             <arg name="zisk_image">
                 <value>nethermindeth/zisk:1.4.0-alpha@sha256:76bc753857e1807b724979a119ba919af0d857b3ea5deda982fd84b1be2cb930</value>
