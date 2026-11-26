@@ -114,6 +114,16 @@
 /* Separates a release archive from the manifest in it in bflat_extlib. */
 #define EXTLIB_ARCHIVE_SUFFIX  ".tar.gz#"
 
+/**
+ * Download of the extlib archive: GitHub can take well over the default
+ * 10 s RPC timeout to serve a release asset, and drops a connection now and
+ * then. curl makes up to 4 attempts of at most 12 s each, 2 s apart (54 s at
+ * worst), so it ends before the RPC wait gives up.
+ */
+#define EXTLIB_DOWNLOAD_TIMEOUT_MS  (60 * 1000)
+#define EXTLIB_CURL_RETRY  "--retry 3 --retry-all-errors --retry-delay 2 " \
+                           "--max-time 12"
+
 /** Build timeout: 5 minutes should be enough even on a slow machine */
 #define BUILD_TIMEOUT_MS  (5 * 60 * 1000)
 
@@ -318,7 +328,8 @@ main(int argc, char **argv)
         RPC_AWAIT_ERROR(rpcs);
         pid = rpc_te_shell_cmd(rpcs,
                                "mkdir -p %s/" EXTLIB_DIR " && "
-                               "curl -fsSL -o %s/extlib.tar.gz '%.*s' && "
+                               "curl -fsSL " EXTLIB_CURL_RETRY " "
+                               "-o %s/extlib.tar.gz '%.*s' && "
                                "tar -xzf %s/extlib.tar.gz -C %s/" EXTLIB_DIR,
                                -1, NULL, NULL, NULL,
                                src_dir, src_dir, url_len, bflat_extlib,
@@ -327,6 +338,7 @@ main(int argc, char **argv)
             TEST_FAIL("Failed to start the download of '%.*s'",
                       url_len, bflat_extlib);
         RPC_AWAIT_ERROR(rpcs);
+        rpcs->timeout = EXTLIB_DOWNLOAD_TIMEOUT_MS;
         if (rpc_waitpid(rpcs, pid, &st, 0) != pid ||
             st.flag != RPC_WAIT_STATUS_EXITED || st.value != 0)
             TEST_FAIL("Failed to download and unpack '%.*s'",
